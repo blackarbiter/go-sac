@@ -1,0 +1,3 @@
+# configs/dev.yaml
+logger:
+  level: "debug"

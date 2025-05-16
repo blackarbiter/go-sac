@@ -1,0 +1,30 @@
+# configs/prod.yaml
+database:
+  mysql:
+    host: "prod-mysql-cluster"
+    password: "${DB_PASSWORD}"  # 从环境变量读取
+    max_open_conns: 100
+  redis:
+    host: "prod-redis-sentinel"
+    password: "${REDIS_PASSWORD}"
+
+mq:
+  rabbitmq:
+    host: "prod-rabbitmq"
+    username: "prod_user"
+    password: "${RABBITMQ_PASSWORD}"
+
+storage:
+  minio:
+    endpoint: "prod-minio:9000"
+    use_ssl: true
+
+server:
+  http:
+    port: 80
+  grpc:
+    port: 50051
+
+security:
+  jwt_secret: "${JWT_SECRET}"
+  aes_key: "${AES_KEY}"

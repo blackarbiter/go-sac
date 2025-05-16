@@ -1,0 +1,139 @@
+目录结构
+.
+├── cmd/                                 # 所有服务入口
+│   ├── task-service/                    # 任务服务主程序
+│   │   ├── main.go                      # 任务服务启动入口
+│   │   └── wire_gen.go                  # 依赖注入生成代码
+│   ├── scan-service/                    # 扫描服务主程序
+│   │   ├── main.go                      
+│   │   └── wire_gen.go                  
+│   ├── asset-service/                   # 资产服务主程序
+│   │   ├── main.go                      
+│   │   └── wire_gen.go                  
+│   ├── file-service/                    # 文件服务主程序
+│   │   ├── main.go                      
+│   │   └── wire_gen.go                  
+│   └── message-service/                 # 消息服务主程序
+│       ├── main.go                      
+│       └── wire_gen.go                  
+├── internal/                            # 私有模块实现
+│   ├── task/                            # 任务服务模块
+│   │   ├── transport/                   # 通信协议层
+│   │   │   ├── http/                    # HTTP接口
+│   │   │   │   ├── handler.go          # API请求处理器
+│   │   │   │   ├── middleware.go        # 鉴权/限流中间件
+│   │   │   │   └── router.go            # Gin路由定义
+│   │   │   └── grpc/                    # gRPC接口
+│   │   │       ├── server.go            # gRPC服务端实现
+│   │   │       └── client.go            # gRPC客户端桩代码
+│   │   ├── service/                     # 业务逻辑层
+│   │   │   ├── task_service.go          # 任务生成/调度逻辑
+│   │   │   └── task_validator.go        # 任务参数校验器
+│   │   ├── repository/                  # 数据访问层
+│   │   │   ├── mysql/                   # MySQL操作
+│   │   │   │   ├── task_repo.go         # 任务表CRUD
+│   │   │   │   └── asset_repo.go        # 资产关联查询
+│   │   │   └── cache/                   # Redis缓存
+│   │   │       └── task_cache.go        # 任务状态缓存
+│   │   └── dto/                         # 数据传输对象
+│   │       ├── request.go               # API请求结构体
+│   │       └── response.go              # API响应结构体
+│   ├── scan/                            # 扫描服务模块
+│   │   ├── scanner/                     # 扫描引擎实现
+│   │   │   ├── sql_injection.go         # SQL注入检测器
+│   │   │   ├── xss.go                   # XSS漏洞检测器
+│   │   │   └── port_scan.go             # 端口扫描器
+│   │   ├── worker/                      # 任务执行池
+│   │   │   ├── pool.go                  # 协程池管理
+│   │   │   └── dispatcher.go            # 任务优先级分发
+│   │   └── event/                       # 消息事件处理
+│   │       ├── consumer.go              # RabbitMQ任务消费者
+│   │       └── producer.go              # 结果队列生产者
+│   ├── asset/                           # 资产服务模块
+│   │   ├── transport/                   
+│   │   ├── service/                     
+│   │   └── repository/                  
+│   ├── storage/                         # 存储服务模块
+│   │   ├── result/                      # 结果服务
+│   │   │   ├── transport/               
+│   │   │   ├── service/                 
+│   │   │   └── repository/              
+│   │   ├── rule/                        # 规则服务
+│   │   │   ├── transport/               
+│   │   │   ├── service/                 
+│   │   │   └── repository/              
+│   │   └── file/                        # 文件服务
+│   │       ├── transport/                
+│   │       ├── service/                 
+│   │       └── repository/              
+│   └── message/                         # 消息服务模块
+│       ├── notification/                # 通知服务
+│       │   ├── transport/               
+│       │   ├── service/                 
+│       │   └── repository/              
+│       └── monitoring/                  # 监控服务
+│           ├── transport/               
+│           ├── service/                 
+│           └── repository/              
+├── pkg/                                 # 公共库
+│   ├── mq/                              # 消息队列封装
+│   │   ├── rabbitmq/                    
+│   │   │   ├── producer.go              # 消息发布者
+│   │   │   └── consumer.go              # 消息消费者
+│   │   └── kafka/                       # (预留)
+│   ├── storage/                         # 存储抽象
+│   │   ├── mysql/                       
+│   │   │   ├── connector.go            # 数据库连接池
+│   │   │   └── migration.go            # 迁移脚本
+│   │   └── minio/                       
+│   │       ├── client.go               # 文件操作接口
+│   │       └── presign.go              # 签名URL生成
+│   ├── logger/                          
+│   │   ├── zap.go                      # 日志初始化
+│   │   └── lumberjack.go               # 日志轮转
+│   └── utils/                          
+│       ├── validator/                  # 参数校验
+│       │   └── custom.go               # 正则校验规则
+│       └── crypt/                      # 加解密
+│           └── aes.go                  # AES-GCM实现
+├── api/                                 # API协议定义
+│   ├── v1/                             
+│   │   ├── task.proto                  # 任务服务gRPC协议
+│   │   ├── task.pb.go                  # 生成代码
+│   │   └── swagger.yaml                # OpenAPI文档
+│   ├── v2/                             # (预留)
+├── configs/                             # 配置文件
+│   ├── base.yaml                       # 基础配置
+│   ├── dev.yaml                        # 开发环境
+│   ├── test.yaml                       # 测试环境
+│   └── prod.yaml                       # 生产环境
+├── deployments/                        # 部署配置
+│   ├── docker/                         
+│   │   ├── task-service.Dockerfile     # 任务服务镜像
+│   │   ├── scan-service.Dockerfile     
+│   │   ├── mysql.Dockerfile            # 数据库镜像
+│   │   └── rabbitmq.Dockerfile         
+│   ├── kubernetes/                     
+│   │   ├── task-service-deployment.yaml # K8s部署文件
+│   │   ├── scan-service-deployment.yaml 
+│   │   ├── service.yaml                # 服务暴露
+│   │   └── ingress.yaml                # 流量入口
+│   └── terraform/                      
+│       └── aws/                        
+│           ├── ecs.tf                  # ECS集群配置
+│           └── rds.tf                  # 数据库配置
+├── scripts/                             # 辅助脚本
+│   ├── migrate.sh                      # 数据库迁移
+│   ├── codegen.sh                      # Protobuf生成
+│   ├── lint.sh                         # 代码检查
+│   └── build-all.sh                    # 全量编译
+└── test/                               # 测试代码
+    ├── unit/                           # 单元测试
+    │   ├── task_service_test.go        
+    │   ├── scan_scanner_test.go        
+    │   └── asset_repo_test.go          
+    ├── integration/                    # 集成测试
+    │   ├── task_api_test.go            
+    │   └── mq_consumer_test.go         
+    └── e2e/                            # 端到端测试
+        └── full_workflow_test.go       

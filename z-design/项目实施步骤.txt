@@ -1,0 +1,142 @@
+4. 项目实施步骤
+阶段一：基础设施准备（3天）
+1. 项目骨架初始化
+  - 创建基础目录结构：
+mkdir -p cmd/{task,scan,asset,file,message}-service internal/{task,scan,asset,storage,message}/{transport,service,repository} pkg/{mq,storage,logger,utils} api/v1 configs deployments/{docker,kubernetes,terraform/aws} scripts test/{unit,integration,e2e}
+  - 初始化Go模块：go mod init github.com/your-org/security-scan-system（根目录）
+2. 容器化环境搭建
+  - 编写MySQL容器定义：deployments/docker/mysql.Dockerfile
+  - 配置RabbitMQ容器：deployments/docker/rabbitmq.Dockerfile
+  - 构建Minio容器：deployments/docker/minio.Dockerfile
+  - 容器网络验证脚本：scripts/validate_network.sh
+3. 配置管理系统
+  - 基础配置模板：configs/base.yaml
+  - 开发环境配置：configs/dev.yaml
+  - 生产环境配置：configs/prod.yaml
+  - 配置加载工具：pkg/config/loader.go
+
+---
+阶段二：核心组件开发（12天）
+模块组1：存储抽象层（4天）
+1. 对象存储模块
+  - Minio客户端入口：pkg/storage/minio/client.go
+  - 文件加密实现：pkg/storage/minio/encrypt.go
+  - 预签名URL生成：pkg/storage/minio/presign.go
+2. 关系型数据库模块
+  - 连接池管理：pkg/storage/mysql/connector.go
+  - 自动迁移系统：pkg/storage/mysql/migration.go
+  - 慢查询监控：pkg/storage/mysql/monitor.go
+3. 缓存系统
+  - Redis连接管理：pkg/storage/redis/connector.go
+  - 分布式锁实现：pkg/storage/redis/lock.go
+模块组2：消息通信层（3天）
+1. 消息生产者
+  - 可靠消息发布：pkg/mq/rabbitmq/producer.go
+  - 消息压缩模块：pkg/mq/compression/gzip.go
+2. 消息消费者
+  - 智能ACK处理：pkg/mq/rabbitmq/consumer.go
+  - 死信队列支持：pkg/mq/rabbitmq/dead_letter.go
+模块组3：安全组件（3天）
+1. 输入校验系统
+  - SQL注入检测：pkg/utils/validator/sql_injection.go
+  - XSS过滤模块：pkg/utils/validator/xss.go
+2. 加密模块
+  - AES-GCM实现：pkg/utils/crypt/aes.go
+  - 密钥轮换策略：pkg/utils/crypt/key_rotation.go
+模块组4：监控体系（2天）
+1. 指标收集
+  - Prometheus客户端：pkg/metrics/prometheus.go
+  - 自定义指标定义：pkg/metrics/custom_metrics.go
+2. 日志系统
+  - Zap初始化：pkg/logger/zap.go
+  - 日志轮转配置：pkg/logger/lumberjack.go
+
+---
+阶段三：服务模块开发（18天）
+服务组1：任务服务（5天）
+1. API网关层
+  - HTTP路由定义：internal/task/transport/http/router.go
+  - JWT中间件：internal/task/transport/http/middleware.go
+  - Swagger文档：api/v1/swagger.yaml
+2. 业务逻辑层
+  - 任务状态机：internal/task/service/state_machine.go
+  - 调度器实现：internal/task/service/scheduler.go
+3. 数据持久层
+  - 任务存储实现：internal/task/repository/mysql/task_repo.go
+  - 缓存策略：internal/task/repository/cache/redis_cache.go
+服务组2：扫描服务（6天）
+1. 扫描引擎
+  - SQL注入检测：internal/scan/scanner/sql_injection.go
+  - 端口扫描器：internal/scan/scanner/port_scan.go
+2. 任务调度
+  - 协程池管理：internal/scan/worker/pool.go
+  - 优先级队列：internal/scan/worker/priority_queue.go
+3. 结果处理
+  - 漏洞格式化：internal/scan/result/formatter.go
+  - 风险评级：internal/scan/result/risk_evaluator.go
+服务组3：资产服务（3天）
+1. 资产管理
+  - IP段管理：internal/asset/service/ip_manager.go
+  - 资产发现：internal/asset/service/discovery.go
+2. 关联系统
+  - CMDB接口：internal/asset/integration/cmdb_adapter.go
+  - 标签系统：internal/asset/service/tag_service.go
+服务组4：文件服务（2天）
+1. 文件管理
+  - 分片上传：internal/storage/file/service/chunk_upload.go
+  - 版本控制：internal/storage/file/service/version_control.go
+2. 安全功能
+  - 病毒扫描：internal/storage/file/service/virus_scan.go
+  - 访问审计：internal/storage/file/repository/access_log.go
+服务组5：消息服务（2天）
+1. 通知系统
+  - 邮件模板：internal/message/notification/template/email_templates.go
+  - 企业微信适配器：internal/message/notification/adapter/wechat_adapter.go
+2. 监控看板
+  - 实时看板API：internal/message/monitoring/transport/http/dashboard.go
+  - 健康检查：internal/message/monitoring/service/health_check.go
+
+---
+阶段四：系统集成（7天）
+1. 服务发现
+  - Consul注册实现：pkg/discovery/consul/register.go
+  - 健康检查端点：internal/task/transport/http/healthz.go
+2. 通信协议
+  - gRPC接口定义：api/v1/task.proto
+  - Protobuf生成脚本：scripts/codegen.sh
+3. 配置中心
+  - Consul配置加载：pkg/config/consul_loader.go
+  - 热更新监听：pkg/config/hot_reload.go
+4. 安全加固
+  - mTLS证书管理：pkg/security/mtls/cert_manager.go
+  - RBAC策略文件：configs/rbac_policies.yaml
+
+---
+阶段五：质量保障（10天）
+1. 单元测试
+  - 状态机测试：test/unit/task_state_machine_test.go
+  - 加密算法测试：test/unit/crypt_aes_test.go
+2. 集成测试
+  - 服务间调用测试：test/integration/service_communication_test.go
+  - 消息队列可靠性测试：test/integration/mq_reliability_test.go
+3. 压力测试
+  - 高并发任务测试：test/load/task_load_test.go
+  - 文件上传压测：test/load/file_upload_test.go
+4. 安全测试
+  - 渗透测试用例：test/security/penetration_test_cases.yaml
+  - OWASP验证报告：reports/owasp_validation.pdf
+
+---
+阶段六：部署上线（5天）
+1. 容器化部署
+  - 任务服务镜像：deployments/docker/task-service.Dockerfile
+  - 扫描服务镜像：deployments/docker/scan-service.Dockerfile
+2. Kubernetes编排
+  - 任务服务部署：deployments/kubernetes/task-service-deployment.yaml
+  - Ingress配置：deployments/kubernetes/ingress.yaml
+3. 持续交付
+  - CI流水线定义：.gitlab-ci.yml（根目录）
+  - 金丝雀发布配置：deployments/kubernetes/canary.yaml
+4. 监控告警
+  - Prometheus规则：deployments/monitoring/prometheus_rules.yml
+  - 告警接收配置：deployments/monitoring/alertmanager.yml

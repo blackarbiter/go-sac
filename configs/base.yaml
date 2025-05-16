@@ -1,0 +1,51 @@
+# configs/base.yaml
+database:
+  mysql:
+    host: "localhost"
+    port: 3306
+    username: "root"
+    password: "1234qwer"
+    name: "security_scan"
+    max_open_conns: 20
+  redis:
+    host: "localhost"
+    port: 6379
+    password: ""
+    db: 0
+
+mq:
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+    vhost: "/"
+    consumer:
+      prefetch_count: 10
+      retry_interval: 5s
+
+storage:
+  minio:
+    endpoint: "localhost:9000"
+    access_key: "admin"
+    secret_key: "1234qwer"
+    use_ssl: false
+    bucket: "scan-results"
+
+server:
+  http:
+    port: 8088
+    timeout: 30s
+  grpc:
+    port: 50051
+    timeout: 10s
+
+logger:
+  level: "info"
+  encoding: "console"
+  output_paths: ["stdout"]
+  error_output_paths: ["stderr"]
+
+security:
+  jwt_secret: "b7e5f2a9c1d34e8f0a6b2d8c5a3e7f1d"
+  aes_key: "b7e5f2a9c1d34e8f0a6b2d8c5a3e7f1d"
