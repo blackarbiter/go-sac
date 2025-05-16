@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 	"strings"
 	"time"
 
@@ -72,19 +73,29 @@ func (c *Client) GetObject(ctx context.Context, objectPath string, opts minio.Ge
 // PutObjects 批量上传文件
 func (c *Client) PutObjects(ctx context.Context, objects map[string]io.Reader, opts minio.PutObjectOptions) error {
 	for objectPath, reader := range objects {
-		// 获取文件大小
-		readerAt, ok := reader.(io.ReaderAt)
-		if !ok {
-			return fmt.Errorf("reader必须实现io.ReaderAt接口: %s", objectPath)
-		}
+		var size int64
+		var err error
 
-		// 获取文件大小
-		fileInfo, err := readerAt.(interface{ Stat() (interface{}, error) }).Stat()
-		if err != nil {
-			return fmt.Errorf("获取文件大小失败: %w", err)
+		// 尝试获取文件大小
+		switch r := reader.(type) {
+		case *os.File:
+			fileInfo, err := r.Stat()
+			if err != nil {
+				return fmt.Errorf("获取文件大小失败: %w", err)
+			}
+			size = fileInfo.Size()
+		case io.ReadSeeker:
+			size, err = r.Seek(0, io.SeekEnd)
+			if err != nil {
+				return fmt.Errorf("获取文件大小失败: %w", err)
+			}
+			_, err = r.Seek(0, io.SeekStart)
+			if err != nil {
+				return fmt.Errorf("重置文件指针失败: %w", err)
+			}
+		default:
+			return fmt.Errorf("reader必须实现io.ReadSeeker接口或为*os.File: %s", objectPath)
 		}
-
-		size := fileInfo.(interface{ Size() int64 }).Size()
 
 		// 上传文件
 		_, err = c.PutObject(ctx, objectPath, reader, size, opts)
@@ -141,20 +152,117 @@ func (c *Client) GetLargeObject(ctx context.Context, objectPath string, writer i
 	return err
 }
 
-// ListObjects 列出指定目录下的所有对象
-func (c *Client) ListObjects(ctx context.Context, dirPath string, recursive bool) <-chan minio.ObjectInfo {
-	bucket := c.getBucketFromPath(dirPath)
-	prefix := c.getObjectNameFromPath(dirPath)
+// ObjectResult 增强的返回结果类型，包含对象信息和目录前缀
+type ObjectResult struct {
+	Object minio.ObjectInfo
+	IsDir  bool
+}
 
-	// 确保目录路径以/结尾
-	if !strings.HasSuffix(prefix, "/") {
-		prefix += "/"
+// ListObjects 列出指定路径下的对象和目录
+func (c *Client) ListObjects(ctx context.Context, path string, recursive bool) <-chan ObjectResult {
+	resultChan := make(chan ObjectResult)
+
+	go func() {
+		defer close(resultChan)
+
+		// 1. 增强路径解析
+		bucket, prefix := parseMinioPath(path)
+		if bucket == "" {
+			bucket = c.config.DefaultBucket
+		}
+
+		// 2. 智能处理前缀格式
+		processedPrefix := processPrefix(prefix, recursive)
+
+		// 3. 配置列表参数
+		opts := minio.ListObjectsOptions{
+			Prefix:    processedPrefix,
+			Recursive: recursive,
+			UseV1:     false, // 强制使用v2 API
+		}
+
+		// 4. 执行列表操作
+		objCh := c.client.ListObjects(ctx, bucket, opts)
+
+		// 5. 处理返回结果
+		for objInfo := range objCh {
+			// 处理错误对象
+			if objInfo.Err != nil {
+				c.logger.Error("列出对象失败",
+					zap.String("bucket", bucket),
+					zap.String("prefix", processedPrefix),
+					zap.Error(objInfo.Err))
+				continue
+			}
+
+			// 处理普通文件对象
+			if objInfo.Key != "" {
+				// 检查是否为目录（通过检查Key是否以斜杠结尾）
+				isDir := strings.HasSuffix(objInfo.Key, "/")
+				resultChan <- ObjectResult{
+					Object: objInfo,
+					IsDir:  isDir,
+				}
+			}
+		}
+	}()
+
+	return resultChan
+}
+
+// parseMinioPath 增强路径解析方法
+func parseMinioPath(path string) (bucket, prefix string) {
+	// 处理空路径的特殊情况
+	if path == "" {
+		return "", ""
 	}
 
-	return c.client.ListObjects(ctx, bucket, minio.ListObjectsOptions{
-		Prefix:    prefix,
-		Recursive: recursive,
-	})
+	// 分割bucket和前缀
+	parts := strings.SplitN(path, "/", 2)
+	if len(parts) == 1 {
+		return parts[0], ""
+	}
+
+	// 处理根目录的情况
+	if parts[1] == "" {
+		return parts[0], ""
+	}
+
+	return parts[0], parts[1]
+}
+
+// processPrefix 智能处理前缀格式
+func processPrefix(prefix string, recursive bool) string {
+	// 空前缀直接返回
+	if prefix == "" {
+		return ""
+	}
+
+	// 递归模式不需要特殊处理
+	if recursive {
+		return prefix
+	}
+
+	// 非递归模式处理规则：
+	switch {
+	case strings.Contains(prefix, "."):
+		// 包含扩展名的视为精确匹配
+		return prefix
+	case strings.HasSuffix(prefix, "/"):
+		// 已有目录结尾符
+		return prefix
+	default:
+		// 添加目录结尾符
+		return prefix + "/"
+	}
+}
+
+// getDelimiter 获取目录分隔符
+func getDelimiter(recursive bool) string {
+	if recursive {
+		return "" // 递归模式不使用分隔符
+	}
+	return "/" // 非递归模式使用目录分隔符
 }
 
 // RemoveObject 删除单个对象

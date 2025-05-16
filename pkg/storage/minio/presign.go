@@ -2,96 +2,79 @@ package minio
 
 import (
 	"context"
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"net/http"
 	"net/url"
 	"time"
-
-	_ "github.com/minio/minio-go/v7/pkg/signer"
 )
 
 // PresignConfig 预签名配置
 type PresignConfig struct {
-	Expires time.Duration
-	Secure  bool
-	Headers http.Header
+	Expires     time.Duration     // URL有效期
+	ContentType string            // 内容类型
+	Metadata    map[string]string // 自定义元数据
+	QueryParams url.Values        // 自定义查询参数
 }
 
-// GetPresignedPutURL 生成安全的上传URL
+// GetPresignedPutURL 生成临时上传URL
 func (c *Client) GetPresignedPutURL(ctx context.Context, bucket, object string, cfg PresignConfig) (*url.URL, error) {
-	reqParams := make(url.Values)
-
-	presignedURL, err := c.client.PresignHeader(ctx, "PUT", bucket, object, cfg.Expires, reqParams, cfg.Headers)
-	if err != nil {
-		return nil, fmt.Errorf("生成预签名URL失败: %w", err)
+	// 设置请求参数
+	reqParams := cfg.QueryParams
+	if reqParams == nil {
+		reqParams = make(url.Values)
 	}
 
-	// 添加安全校验参数
-	return c.signWithHmac(presignedURL, cfg), nil
+	// 创建请求头
+	headers := make(http.Header)
+	if cfg.ContentType != "" {
+		headers.Set("Content-Type", cfg.ContentType)
+	}
+
+	// 添加元数据
+	for k, v := range cfg.Metadata {
+		headers.Set("x-amz-meta-"+k, v)
+	}
+
+	// 设置过期时间，如果未设置，默认为24小时
+	expires := cfg.Expires
+	if expires == 0 {
+		expires = 24 * time.Hour
+	}
+
+	// 直接使用Minio客户端的预签名功能
+	presignedURL, err := c.client.PresignHeader(ctx, "PUT", bucket, object, expires, reqParams, headers)
+	if err != nil {
+		return nil, fmt.Errorf("生成上传预签名URL失败: %w", err)
+	}
+
+	return presignedURL, nil
 }
 
-// GetPresignedGetURL 生成安全的下载URL
+// GetPresignedGetURL 生成临时下载URL
 func (c *Client) GetPresignedGetURL(ctx context.Context, bucket, object string, cfg PresignConfig) (*url.URL, error) {
-	reqParams := make(url.Values)
+	// 设置请求参数
+	reqParams := cfg.QueryParams
+	if reqParams == nil {
+		reqParams = make(url.Values)
+	}
 
-	// 使用正确的Presign方法签名
-	presignedURL, err := c.client.PresignedGetObject(
-		ctx,
-		bucket,
-		object,
-		cfg.Expires,
-		reqParams,
-	)
+	// 设置过期时间，如果未设置，默认为24小时
+	expires := cfg.Expires
+	if expires == 0 {
+		expires = 24 * time.Hour
+	}
+
+	// 创建请求头（对于GET请求，通常不需要额外请求头）
+	headers := make(http.Header)
+	for k, v := range cfg.Metadata {
+		headers.Set(k, v)
+	}
+
+	// 直接使用Minio客户端的预签名功能
+	presignedURL, err := c.client.PresignHeader(ctx, "GET", bucket, object, expires, reqParams, headers)
 	if err != nil {
-		return nil, fmt.Errorf("生成预签名URL失败: %w", err)
+		return nil, fmt.Errorf("生成下载预签名URL失败: %w", err)
 	}
 
-	return c.signWithHmac(presignedURL, cfg), nil
-}
-
-// signWithHmac 增加HMAC二次签名
-func (c *Client) signWithHmac(u *url.URL, cfg PresignConfig) *url.URL {
-	// 计算HMAC签名
-	h := hmac.New(sha256.New, []byte(c.config.SecretKey))
-	h.Write([]byte(u.String()))
-	signature := hex.EncodeToString(h.Sum(nil))
-
-	// 添加签名参数
-	q := u.Query()
-	q.Set("x-security-sig", signature)
-	u.RawQuery = q.Encode()
-
-	return u
-}
-
-// VerifyPresignedRequest 验证请求签名
-func (c *Client) VerifyPresignedRequest(r *http.Request) bool {
-	if r == nil || r.URL == nil {
-		return false
-	}
-
-	// 获取URL查询参数的副本，避免修改原始请求
-	params := r.URL.Query()
-
-	// 提取签名参数
-	signature := params.Get("x-security-sig")
-	if signature == "" {
-		return false
-	}
-
-	// 创建用于计算签名的URL副本
-	verifyURL := *r.URL
-	verifyParams := verifyURL.Query()
-	verifyParams.Del("x-security-sig")
-	verifyURL.RawQuery = verifyParams.Encode()
-
-	// 重新计算签名
-	h := hmac.New(sha256.New, []byte(c.config.SecretKey))
-	h.Write([]byte(verifyURL.String()))
-	expected := hex.EncodeToString(h.Sum(nil))
-
-	return hmac.Equal([]byte(signature), []byte(expected))
+	return presignedURL, nil
 }

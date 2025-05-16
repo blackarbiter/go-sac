@@ -3,9 +3,11 @@ package minio
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"net/http"
-	"net/url"
+	"os"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -15,9 +17,7 @@ import (
 )
 
 func TestPresignedURL(t *testing.T) {
-	// 跳过真实服务器测试
-	t.Skip("此测试需要真实的MinIO服务器")
-
+	// 使用本地MinIO服务器配置
 	cfg := ClientConfig{
 		Endpoint:       "localhost:9000",
 		AccessKey:      "admin",
@@ -26,227 +26,193 @@ func TestPresignedURL(t *testing.T) {
 		RequestTimeout: time.Second * 5,
 	}
 
+	// 创建MinIO客户端
 	client, err := NewClient(cfg, zap.NewNop())
 	assert.NoError(t, err)
 
 	ctx := context.Background()
 
-	// 测试生成上传URL
-	t.Run("GetPresignedPutURL", func(t *testing.T) {
-		// 生成PUT URL
-		putURL, err := client.GetPresignedPutURL(
-			ctx,
-			"test-bucket",
-			"test-object.txt",
-			PresignConfig{
-				Expires: time.Hour,
-			},
-		)
-		assert.NoError(t, err)
-		assert.NotNil(t, putURL)
-		assert.Contains(t, putURL.Query().Get("x-security-sig"), "")
+	// 确保测试存储桶存在
+	err = client.ensureBucketExists(ctx, "test-bucket")
+	assert.NoError(t, err)
 
-		// 使用URL上传文件
-		content := []byte("test content")
-		req, err := http.NewRequest(http.MethodPut, putURL.String(), bytes.NewReader(content))
+	// 创建临时测试目录
+	tempDir := t.TempDir()
+	t.Logf("测试目录: %s", tempDir)
+
+	// 1. 创建测试文件
+	uploadDir := filepath.Join(tempDir, "upload")
+	err = os.MkdirAll(uploadDir, 0755)
+	assert.NoError(t, err)
+
+	uploadTestFile := filepath.Join(uploadDir, "test-upload.txt")
+	uploadContent := []byte("这是一个通过预签名URL上传的测试文件内容")
+	err = os.WriteFile(uploadTestFile, uploadContent, 0644)
+	assert.NoError(t, err)
+	t.Logf("创建上传测试文件: %s (大小: %d 字节)", uploadTestFile, len(uploadContent))
+
+	// 2. 创建下载目录
+	downloadDir := filepath.Join(tempDir, "download")
+	err = os.MkdirAll(downloadDir, 0755)
+	assert.NoError(t, err)
+	t.Logf("创建下载目录: %s", downloadDir)
+
+	// 测试预签名上传与下载
+	t.Run("预签名上传与下载", func(t *testing.T) {
+		// 定义文件对象信息
+		bucket := "test-bucket"
+		objectKey := fmt.Sprintf("presigned-test-%d.txt", time.Now().Unix())
+		t.Logf("测试对象: %s/%s", bucket, objectKey)
+
+		// 步骤1: 生成上传URL
+		t.Log("步骤1: 生成预签名上传URL")
+		putURL, err := client.GetPresignedPutURL(ctx, bucket, objectKey, PresignConfig{
+			Expires:     time.Hour,
+			ContentType: "text/plain",
+			Metadata: map[string]string{
+				"description": "测试文件",
+				"created-by":  "presign-test",
+			},
+		})
+		assert.NoError(t, err)
+		t.Logf("生成上传URL: %s", putURL.String())
+
+		// 步骤2: 使用预签名URL上传文件
+		t.Log("步骤2: 使用预签名URL上传文件")
+
+		// 读取文件内容到内存
+		fileContent, err := os.ReadFile(uploadTestFile)
+		assert.NoError(t, err)
+
+		// 创建HTTP请求，使用内存中的内容而不是文件流
+		req, err := http.NewRequest(http.MethodPut, putURL.String(), bytes.NewReader(fileContent))
 		assert.NoError(t, err)
 		req.Header.Set("Content-Type", "text/plain")
+		req.Header.Set("Content-Length", fmt.Sprintf("%d", len(fileContent)))
 
-		// 验证签名
-		assert.True(t, client.VerifyPresignedRequest(req))
+		// 添加元数据头
+		req.Header.Set("x-amz-meta-description", "测试文件")
+		req.Header.Set("x-amz-meta-created-by", "presign-test")
 
-		// 发送请求
-		resp, err := http.DefaultClient.Do(req)
-		assert.NoError(t, err)
-		assert.Equal(t, http.StatusOK, resp.StatusCode)
-		resp.Body.Close()
-
-		// 验证文件已上传
-		obj, err := client.GetObject(ctx, "test-bucket/test-object.txt", minio.GetObjectOptions{})
-		assert.NoError(t, err)
-		defer obj.Close()
-
-		downloaded, err := io.ReadAll(obj)
-		assert.NoError(t, err)
-		assert.Equal(t, content, downloaded)
-	})
-
-	// 测试生成下载URL
-	t.Run("GetPresignedGetURL", func(t *testing.T) {
-		// 先上传一个测试文件
-		content := []byte("test content for download")
-		_, err := client.PutObject(
-			ctx,
-			"test-bucket/download-test.txt",
-			bytes.NewReader(content),
-			int64(len(content)),
-			minio.PutObjectOptions{},
-		)
-		assert.NoError(t, err)
-
-		// 生成GET URL
-		getURL, err := client.GetPresignedGetURL(
-			ctx,
-			"test-bucket",
-			"download-test.txt",
-			PresignConfig{
-				Expires: time.Hour,
-			},
-		)
-		assert.NoError(t, err)
-		assert.NotNil(t, getURL)
-		assert.Contains(t, getURL.Query().Get("x-security-sig"), "")
-
-		// 使用URL下载文件
-		req, err := http.NewRequest(http.MethodGet, getURL.String(), nil)
-		assert.NoError(t, err)
-
-		// 验证签名
-		assert.True(t, client.VerifyPresignedRequest(req))
+		t.Logf("设置Content-Length: %d", len(fileContent))
 
 		// 发送请求
 		resp, err := http.DefaultClient.Do(req)
 		assert.NoError(t, err)
-		assert.Equal(t, http.StatusOK, resp.StatusCode)
+		defer resp.Body.Close()
 
-		// 验证下载的内容
-		downloaded, err := io.ReadAll(resp.Body)
-		resp.Body.Close()
+		// 验证上传成功
+		assert.Equal(t, http.StatusOK, resp.StatusCode, "上传响应状态码应为200")
+		t.Logf("上传成功，状态码: %d", resp.StatusCode)
+
+		// 步骤3: 验证文件已上传到MinIO
+		t.Log("步骤3: 验证文件已上传到MinIO")
+		objectInfo, err := client.StatObject(ctx, bucket+"/"+objectKey, minio.StatObjectOptions{})
 		assert.NoError(t, err)
-		assert.Equal(t, content, downloaded)
+		assert.Equal(t, int64(len(uploadContent)), objectInfo.Size, "上传文件大小不匹配")
+		assert.Equal(t, "text/plain", objectInfo.ContentType, "文件内容类型不匹配")
+		assert.Equal(t, "测试文件", objectInfo.UserMetadata["Description"], "文件元数据不匹配")
+		t.Logf("文件成功上传到MinIO，大小: %d 字节, 内容类型: %s", objectInfo.Size, objectInfo.ContentType)
+
+		// 步骤4: 生成下载URL
+		t.Log("步骤4: 生成预签名下载URL")
+		getURL, err := client.GetPresignedGetURL(ctx, bucket, objectKey, PresignConfig{
+			Expires: time.Hour,
+		})
+		assert.NoError(t, err)
+		t.Logf("生成下载URL: %s", getURL.String())
+
+		// 步骤5: 使用预签名URL下载文件
+		t.Log("步骤5: 使用预签名URL下载文件")
+		downloadResp, err := http.Get(getURL.String())
+		assert.NoError(t, err)
+		defer downloadResp.Body.Close()
+
+		// 验证下载成功
+		assert.Equal(t, http.StatusOK, downloadResp.StatusCode, "下载响应状态码应为200")
+		t.Logf("下载成功，状态码: %d", downloadResp.StatusCode)
+
+		// 步骤6: 保存下载的文件
+		t.Log("步骤6: 保存下载的文件")
+		downloadFile := filepath.Join(downloadDir, "downloaded.txt")
+		out, err := os.Create(downloadFile)
+		assert.NoError(t, err)
+		defer out.Close()
+
+		written, err := io.Copy(out, downloadResp.Body)
+		assert.NoError(t, err)
+		out.Close() // 确保文件被完全写入
+		t.Logf("文件下载到: %s, 大小: %d 字节", downloadFile, written)
+
+		// 步骤7: 验证下载的文件内容
+		t.Log("步骤7: 验证下载的文件内容")
+		downloadedContent, err := os.ReadFile(downloadFile)
+		assert.NoError(t, err)
+		assert.Equal(t, uploadContent, downloadedContent, "下载的文件内容与上传的内容不匹配")
+		t.Logf("文件内容验证成功，内容长度: %d 字节", len(downloadedContent))
+
+		// 步骤8: 清理测试文件
+		t.Log("步骤8: 清理测试文件")
+		err = client.RemoveObject(ctx, bucket+"/"+objectKey, minio.RemoveObjectOptions{})
+		assert.NoError(t, err)
+		t.Logf("测试对象 %s/%s 已从MinIO中删除", bucket, objectKey)
 	})
 
-	// 测试URL安全性
-	t.Run("URLSecurity", func(t *testing.T) {
-		// 生成PUT URL
-		putURL, err := client.GetPresignedPutURL(
-			ctx,
-			"test-bucket",
-			"security-test.txt",
-			PresignConfig{
-				Expires: time.Hour,
+	// 测试预签名URL的元数据和参数
+	t.Run("元数据和参数", func(t *testing.T) {
+		// 定义文件对象信息
+		bucket := "test-bucket"
+		objectKey := fmt.Sprintf("metadata-test-%d.txt", time.Now().Unix())
+
+		// 生成带自定义元数据和参数的上传URL
+		t.Log("生成带自定义元数据和参数的上传URL")
+		putURL, err := client.GetPresignedPutURL(ctx, bucket, objectKey, PresignConfig{
+			Expires:     time.Hour,
+			ContentType: "application/json",
+			Metadata: map[string]string{
+				"description": "JSON测试文件",
+				"version":     "1.0",
 			},
-		)
-		assert.NoError(t, err)
-
-		// 测试篡改签名
-		req := &http.Request{URL: putURL}
-		assert.True(t, client.VerifyPresignedRequest(req))
-
-		// 篡改签名
-		q := putURL.Query()
-		q.Set("x-security-sig", "invalid")
-		req.URL.RawQuery = q.Encode()
-		assert.False(t, client.VerifyPresignedRequest(req))
-
-		// 测试篡改路径
-		req.URL.Path = "/test-bucket/another-object.txt"
-		assert.False(t, client.VerifyPresignedRequest(req))
-
-		// 测试篡改查询参数
-		q = req.URL.Query()
-		q.Set("x-amz-date", "invalid-date")
-		req.URL.RawQuery = q.Encode()
-		assert.False(t, client.VerifyPresignedRequest(req))
-	})
-
-	// 测试URL过期
-	t.Run("URLExpiration", func(t *testing.T) {
-		// 生成一个1秒后过期的URL
-		putURL, err := client.GetPresignedPutURL(
-			ctx,
-			"test-bucket",
-			"expiration-test.txt",
-			PresignConfig{
-				Expires: time.Second,
+			QueryParams: map[string][]string{
+				"response-content-disposition": {"attachment; filename=\"test.json\""},
 			},
-		)
+		})
 		assert.NoError(t, err)
+		t.Logf("生成上传URL: %s", putURL.String())
 
-		// 等待URL过期
-		time.Sleep(time.Second * 2)
+		// 上传JSON内容
+		jsonContent := []byte(`{"name":"测试","value":123}`)
 
-		// 尝试使用过期的URL
-		content := []byte("test content")
-		req, err := http.NewRequest(http.MethodPut, putURL.String(), bytes.NewReader(content))
+		// 创建请求，使用内存中的内容
+		req, err := http.NewRequest(http.MethodPut, putURL.String(), bytes.NewReader(jsonContent))
 		assert.NoError(t, err)
-		req.Header.Set("Content-Type", "text/plain")
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Content-Length", fmt.Sprintf("%d", len(jsonContent)))
 
-		resp, err := http.DefaultClient.Do(req)
-		assert.NoError(t, err)
-		assert.Equal(t, http.StatusForbidden, resp.StatusCode)
-		resp.Body.Close()
-	})
+		// 添加元数据头
+		req.Header.Set("x-amz-meta-description", "JSON测试文件")
+		req.Header.Set("x-amz-meta-version", "1.0")
 
-	// 测试自定义请求头
-	t.Run("CustomHeaders", func(t *testing.T) {
-		headers := http.Header{}
-		headers.Set("Content-Type", "application/json")
-		headers.Set("x-amz-meta-custom", "test-value")
-
-		putURL, err := client.GetPresignedPutURL(
-			ctx,
-			"test-bucket",
-			"headers-test.txt",
-			PresignConfig{
-				Expires: time.Hour,
-				Headers: headers,
-			},
-		)
-		assert.NoError(t, err)
-
-		// 使用URL上传文件
-		content := []byte(`{"test": "content"}`)
-		req, err := http.NewRequest(http.MethodPut, putURL.String(), bytes.NewReader(content))
-		assert.NoError(t, err)
-		req.Header = headers
-
-		// 验证签名
-		assert.True(t, client.VerifyPresignedRequest(req))
+		t.Logf("设置Content-Length: %d和元数据", len(jsonContent))
 
 		// 发送请求
 		resp, err := http.DefaultClient.Do(req)
 		assert.NoError(t, err)
+		defer resp.Body.Close()
+
+		// 验证上传成功
 		assert.Equal(t, http.StatusOK, resp.StatusCode)
-		resp.Body.Close()
 
 		// 验证元数据
-		info, err := client.StatObject(ctx, "test-bucket/headers-test.txt", minio.StatObjectOptions{})
+		objectInfo, err := client.StatObject(ctx, bucket+"/"+objectKey, minio.StatObjectOptions{})
 		assert.NoError(t, err)
-		assert.Equal(t, "application/json", info.ContentType)
-		assert.Equal(t, "test-value", info.UserMetadata["x-amz-meta-custom"])
+		assert.Equal(t, "application/json", objectInfo.ContentType)
+		assert.Equal(t, "JSON测试文件", objectInfo.UserMetadata["Description"])
+		assert.Equal(t, "1.0", objectInfo.UserMetadata["Version"])
+		t.Logf("元数据验证成功: %v", objectInfo.UserMetadata)
+
+		// 清理对象
+		err = client.RemoveObject(ctx, bucket+"/"+objectKey, minio.RemoveObjectOptions{})
+		assert.NoError(t, err)
 	})
-}
-
-// 添加一个独立的单元测试，不依赖MinIO服务器
-func TestSignWithHmac(t *testing.T) {
-	// 创建客户端
-	cfg := ClientConfig{
-		Endpoint:  "localhost:9000",
-		AccessKey: "admin",
-		SecretKey: "test-secret-key",
-	}
-	client, _ := NewClient(cfg, zap.NewNop())
-
-	// 创建测试URL
-	testURL, _ := url.Parse("https://test-minio.example.com/test-bucket/test-object?X-Amz-Algorithm=AWS4-HMAC-SHA256")
-
-	// 签名URL
-	signedURL := client.signWithHmac(testURL, PresignConfig{
-		Expires: time.Hour,
-	})
-
-	// 验证签名存在
-	assert.NotEmpty(t, signedURL.Query().Get("x-security-sig"))
-
-	// 验证签名
-	req := &http.Request{URL: signedURL}
-	assert.True(t, client.VerifyPresignedRequest(req))
-
-	// 篡改签名应失败
-	q := signedURL.Query()
-	q.Set("x-security-sig", "invalid")
-	signedURL.RawQuery = q.Encode()
-	req = &http.Request{URL: signedURL}
-	assert.False(t, client.VerifyPresignedRequest(req))
 }
