@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant App as 应用程序
+    participant Connector as DB连接器
+    participant Migration as 数据库迁移
+    participant Monitor as 查询监控
+    participant MySQL as MySQL数据库
+
+    App->>+Migration: 启动时执行迁移
+    Migration->>MySQL: 执行迁移脚本
+    MySQL-->>Migration: 返回迁移结果
+    Migration-->>-App: 完成初始化
+
+    App->>+Connector: 初始化数据库连接
+    Connector->>MySQL: 建立连接池
+    MySQL-->>Connector: 返回连接状态
+    Connector-->>-App: 返回连接器实例
+
+    App->>+Connector: 执行业务操作
+    loop 事务/重试逻辑
+        Connector->>Connector: 开启事务/重试
+        Connector->>Monitor: 包装查询监控
+        Monitor->>MySQL: 执行SQL查询
+        MySQL-->>Monitor: 返回结果
+        Monitor-->>Connector: 记录指标
+        Connector-->>App: 返回结果
+    end

@@ -1,0 +1,25 @@
+graph TD
+    subgraph 基础设施层
+        A[DB连接器] -->|提供连接池| D[(MySQL)]
+        B[迁移模块] -->|执行版本控制| D
+        C[监控模块] -->|收集指标| E([Prometheus])
+    end
+
+    subgraph 数据访问层
+        F[GORM ORM] -->|依赖| A
+        G[原生SQL操作] -->|依赖| A
+    end
+
+    subgraph 业务逻辑层
+        H[应用服务] -->|调用| F
+        H -->|调用| G
+        H -->|触发| B
+        H -->|埋点| C
+    end
+
+    style A fill:#f9f,stroke:#333
+    style B fill:#f9f,stroke:#333
+    style C fill:#f9f,stroke:#333
+    style F fill:#ccf,stroke:#333
+    style G fill:#ccf,stroke:#333
+    style H fill:#9f9,stroke:#333
