@@ -1,0 +1,25 @@
+graph TD
+    subgraph RabbitMQ Package
+        A[Consumer] -->|uses| B[DLXHandler]
+        A -->|publishes to DLX| D[RabbitMQ Server]
+        C[Producer] -->|publishes messages| D
+        B -->|consumes from DLX| D
+        A -->|consumes from main queue| D
+    end
+
+    subgraph Compression Package
+        E[GzipCompress]
+        F[GzipDecompress]
+    end
+
+    subgraph Business Modules
+        G[Service A] -->|calls| C
+        G -->|uses| E
+        H[Service B] -->|provides handler to| A
+        H -->|uses| F
+        I[DLX Processor] -->|provides handler to| B
+    end
+
+    A -->|retries exceeded| B
+    C -->|optional compression| E
+    A -->|optional decompression| F

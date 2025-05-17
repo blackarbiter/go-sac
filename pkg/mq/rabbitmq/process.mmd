@@ -1,0 +1,24 @@
+sequenceDiagram
+    participant ServiceA
+    participant Producer
+    participant RabbitMQ
+    participant Consumer
+    participant ServiceB
+    participant DLXHandler
+    participant DLXProcessor
+
+    ServiceA->>Producer: Publish(data)
+    Producer->>Producer: Optional: GzipCompress(data)
+    Producer->>RabbitMQ: Publish message
+    RabbitMQ->>Consumer: Deliver message
+    Consumer->>ServiceB: Call handler
+    ServiceB->>Consumer: Return error
+    Consumer->>Consumer: Retry logic
+    Consumer->>RabbitMQ: Re-publish with delay
+    loop RetryLimit times
+        RabbitMQ-->>Consumer: Redeliver
+        Consumer->>ServiceB: Retry handler
+    end
+    Consumer->>RabbitMQ: Nack (move to DLX)
+    RabbitMQ->>DLXHandler: Dead letter
+    DLXHandler->>DLXProcessor: Handle dead message
