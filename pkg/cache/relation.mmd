@@ -1,0 +1,24 @@
+graph TD
+    subgraph Business Modules
+        BM[Business Module]
+    end
+
+    subgraph cache package
+        CS[[CacheStrategy]]
+        RCS[RedisCacheStrategy]
+        RCS -->|implements| CS
+        RCS -->|uses| RC[redis.Connector]
+    end
+
+    subgraph redis package
+        RC[Connector]
+        DL[DistributedLock]
+        RC -->|manages| RClient[redis.Client]
+        DL -->|requires| RClient
+    end
+
+    BM -->|1. Creates with| RC
+    BM -->|2. Uses| RCS
+    BM -->|3. Creates with| DL
+    RCS -->|4. Performs operations via| RClient
+    DL -->|5. Acquires/Releases via| RClient
