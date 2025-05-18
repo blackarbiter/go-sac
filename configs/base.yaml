@@ -45,6 +45,16 @@ logger:
   encoding: "console"
   output_paths: ["stdout"]
   error_output_paths: ["stderr"]
+  env: development
+  rotation:
+    max_size: 100 # MB
+    max_backups: 30
+    max_age: 90 # days
+
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
 
 security:
   jwt_secret: "b7e5f2a9c1d34e8f0a6b2d8c5a3e7f1d"

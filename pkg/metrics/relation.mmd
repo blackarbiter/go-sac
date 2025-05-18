@@ -1,0 +1,25 @@
+graph TD
+    subgraph 主业务系统
+        A[Web服务] --> B[MonitorMiddleware]
+        C[后台任务处理器] --> D[扫描任务队列]
+        C --> E[数据库连接池]
+    end
+
+    subgraph Metrics模块
+        B --> |记录HTTP指标| F[/文档2中的\nHttpRequestsTotal\nResponseTimeHistogram/]
+        D --> |更新队列指标| G[/文档1中的\nScanTasksQueue/]
+        E --> |更新连接池指标| H[/文档1中的\nDatabaseConnections/]
+    end
+
+    subgraph 监控系统
+        I[Prometheus] --> |定期抓取| J[:9090/metrics]
+        K[Grafana] --> |查询数据| I
+    end
+
+    style A fill:#e1f5fe,stroke:#039be5
+    style C fill:#f0f4c3,stroke:#afb42b
+    style F fill:#ffcdd2,stroke:#e53935
+    style G fill:#c8e6c9,stroke#43a047
+    style H fill:#c8e6c9,stroke#43a047
+    style I fill:#b3e5fc,stroke#01579b
+    style K fill:#e1bee7,stroke#8e24aa
