@@ -1,5 +1,0 @@
-{"level":"info","ts":"2025-05-19T10:10:44.955+0800","caller":"task-service/main.go:44","msg":"task service started"}
-{"level":"info","ts":"2025-05-19T10:10:44.955+0800","caller":"http/server.go:42","msg":"starting HTTP server","port":8088}
-{"level":"info","ts":"2025-05-19T10:13:39.531+0800","caller":"http/server.go:53","msg":"stopping HTTP server"}
-{"level":"info","ts":"2025-05-19T10:13:39.531+0800","caller":"http/server.go:59","msg":"HTTP server stopped"}
-{"level":"info","ts":"2025-05-19T10:13:39.531+0800","caller":"task-service/main.go:52","msg":"service stopped gracefully"}
