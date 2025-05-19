@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant Main
+    participant WireGen
+    participant Components
+    
+    Main->>WireGen: 执行go generate
+    WireGen->>Components: 分析依赖关系
+    Components-->>WireGen: 返回依赖图
+    WireGen->>Main: 生成wire_gen.go
+    Main->>wire_gen.go: 调用InitializeApplication
+    wire_gen.go->>Components: 按顺序初始化组件
+    Components-->>Main: 返回Application实例
+    Main->>Components: 启动服务

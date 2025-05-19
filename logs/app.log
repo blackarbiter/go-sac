@@ -1,0 +1,28 @@
+{"level":"info","ts":"2025-05-19T10:13:37.791+0800","caller":"task-service/main.go:44","msg":"task service started"}
+{"level":"info","ts":"2025-05-19T10:13:37.791+0800","caller":"http/server.go:42","msg":"starting HTTP server","port":8088}
+{"level":"error","ts":"2025-05-19T10:13:37.791+0800","caller":"task-service/main.go:40","msg":"http server error","error":"listen tcp :8088: bind: address already in use"}
+{"level":"info","ts":"2025-05-19T10:14:54.719+0800","caller":"http/server.go:53","msg":"stopping HTTP server"}
+{"level":"info","ts":"2025-05-19T10:14:54.720+0800","caller":"http/server.go:59","msg":"HTTP server stopped"}
+{"level":"info","ts":"2025-05-19T10:14:54.720+0800","caller":"task-service/main.go:52","msg":"service stopped gracefully"}
+{"level":"info","ts":"2025-05-19T10:15:09.345+0800","caller":"task-service/main.go:44","msg":"task service started"}
+{"level":"info","ts":"2025-05-19T10:15:09.345+0800","caller":"http/server.go:42","msg":"starting HTTP server","port":8088}
+{"level":"info","ts":"2025-05-19T10:20:14.365+0800","caller":"http/server.go:53","msg":"stopping HTTP server"}
+{"level":"info","ts":"2025-05-19T10:20:14.365+0800","caller":"http/server.go:59","msg":"HTTP server stopped"}
+{"level":"info","ts":"2025-05-19T10:20:14.365+0800","caller":"task-service/main.go:52","msg":"service stopped gracefully"}
+{"level":"info","ts":"2025-05-19T10:20:18.292+0800","caller":"task-service/main.go:44","msg":"task service started"}
+{"level":"info","ts":"2025-05-19T10:20:18.292+0800","caller":"http/server.go:42","msg":"starting HTTP server","port":8088}
+{"level":"info","ts":"2025-05-19T10:21:43.908+0800","caller":"http/server.go:53","msg":"stopping HTTP server"}
+{"level":"info","ts":"2025-05-19T10:21:43.908+0800","caller":"http/server.go:59","msg":"HTTP server stopped"}
+{"level":"info","ts":"2025-05-19T10:21:43.908+0800","caller":"task-service/main.go:52","msg":"service stopped gracefully"}
+{"level":"info","ts":"2025-05-19T10:21:46.118+0800","caller":"http/server.go:42","msg":"starting HTTP server","port":8088}
+{"level":"info","ts":"2025-05-19T10:21:46.118+0800","caller":"task-service/main.go:44","msg":"task service started"}
+{"level":"info","ts":"2025-05-19T10:22:41.329+0800","caller":"http/server.go:53","msg":"stopping HTTP server"}
+{"level":"info","ts":"2025-05-19T10:22:41.329+0800","caller":"http/server.go:59","msg":"HTTP server stopped"}
+{"level":"info","ts":"2025-05-19T10:22:41.329+0800","caller":"task-service/main.go:52","msg":"service stopped gracefully"}
+{"level":"info","ts":"2025-05-19T10:23:42.664+0800","caller":"task-service/main.go:44","msg":"task service started"}
+{"level":"info","ts":"2025-05-19T10:23:42.664+0800","caller":"http/server.go:42","msg":"starting HTTP server","port":8088}
+{"level":"info","ts":"2025-05-19T10:23:51.882+0800","caller":"handlers/create_task.go:66","msg":"0"}
+{"level":"info","ts":"2025-05-19T10:24:42.874+0800","caller":"handlers/create_task.go:66","msg":"12"}
+{"level":"info","ts":"2025-05-19T10:24:47.292+0800","caller":"http/server.go:53","msg":"stopping HTTP server"}
+{"level":"info","ts":"2025-05-19T10:24:47.293+0800","caller":"http/server.go:59","msg":"HTTP server stopped"}
+{"level":"info","ts":"2025-05-19T10:24:47.293+0800","caller":"task-service/main.go:52","msg":"service stopped gracefully"}

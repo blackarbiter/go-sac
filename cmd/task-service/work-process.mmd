@@ -1,0 +1,24 @@
+graph LR
+    main((main.go)) -->|依赖注入| wire[wire.go]
+    wire -->|构建| Application
+    Application --> HTTPServer[http.Server]
+    HTTPServer -->|包含| Router[gin.Engine]
+    Router -->|使用| Handlers
+    Handlers -->|依赖| Service[TaskService]
+    Service -->|依赖| Repository[TaskRepository]
+    Repository -->|需要| Config[config.Config]
+    
+    subgraph HTTP Layer
+        HTTPServer --> Middleware[JWTValidation]
+        Router -->|路由| CreateTask[POST /tasks]
+        Router -->|路由| GetTaskStatus[GET /tasks/:id]
+    end
+    
+    subgraph Business Layer
+        Service --> CreateTaskLogic[创建任务逻辑]
+        Service --> GetStatusLogic[查询状态逻辑]
+    end
+    
+    subgraph Data Layer
+        Repository --> DB[(模拟数据库)]
+    end
