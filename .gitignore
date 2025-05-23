@@ -32,4 +32,6 @@ cmd/file-service/logs
 cmd/message-service/logs
 cmd/scan-service/logs
 cmd/task-service/logs
+mq_usage
+examples/mq_usage/mq_usage
 
