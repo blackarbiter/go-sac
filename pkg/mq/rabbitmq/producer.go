@@ -3,6 +3,7 @@ package rabbitmq
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -21,11 +22,35 @@ type ProducerConfig struct {
 	RetryInterval time.Duration
 }
 
+// NewProducer creates a new producer using URL
 func NewProducer(config ProducerConfig) (*Producer, error) {
 	p := &Producer{config: config}
 	if err := p.connect(); err != nil {
 		return nil, err
 	}
+	return p, nil
+}
+
+// NewProducerWithConnection creates a new producer using an existing connection
+func NewProducerWithConnection(conn *amqp.Connection, config ProducerConfig) (*Producer, error) {
+	channel, err := conn.Channel()
+	if err != nil {
+		return nil, fmt.Errorf("failed to open channel: %w", err)
+	}
+
+	// Enable publisher confirms
+	if err := channel.Confirm(false); err != nil {
+		channel.Close()
+		return nil, fmt.Errorf("failed to enable confirm mode: %w", err)
+	}
+
+	p := &Producer{
+		conn:         conn,
+		channel:      channel,
+		confirmsChan: channel.NotifyPublish(make(chan amqp.Confirmation, 1)),
+		config:       config,
+	}
+
 	return p, nil
 }
 
