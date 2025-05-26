@@ -21,7 +21,7 @@ func GetLogWriter() zapcore.WriteSyncer {
 	return zapcore.AddSync(lumberJackLogger)
 }
 
-// 可选：如需配置日志保留策略，可创建Options结构体
+// GetLogWriterWithOptions 可选：如需配置日志保留策略，可创建Options结构体
 func GetLogWriterWithOptions() zapcore.WriteSyncer {
 	opt := &lumberjack.Options{
 		MaxAge:     30,   // 保留30天
@@ -40,7 +40,7 @@ func GetLogWriterWithOptions() zapcore.WriteSyncer {
 	return zapcore.AddSync(lumberJackLogger)
 }
 
-// 保持原有初始化逻辑不变
+// InitZapWithRotation 保持原有初始化逻辑不变
 func InitZapWithRotation(env string) {
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder

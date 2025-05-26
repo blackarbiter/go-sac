@@ -32,7 +32,7 @@ func (t ScanType) String() string {
 	case ScanTypeSecuritySpecCheck:
 		return "SecuritySpecCheck"
 	case ScanTypeStaticCodeAnalysis:
-		return "StaticCodeAnalysis"
+		return "SAST"
 	case ScanTypeContainerImageScan:
 		return "ContainerImageScan"
 	case ScanTypeHostSecurityCheck:
@@ -63,7 +63,7 @@ func ParseScanType(s string) (ScanType, error) {
 		return ScanTypeThreatModeling, nil
 	case "SecuritySpecCheck":
 		return ScanTypeSecuritySpecCheck, nil
-	case "StaticCodeAnalysis":
+	case "SAST":
 		return ScanTypeStaticCodeAnalysis, nil
 	case "ContainerImageScan":
 		return ScanTypeContainerImageScan, nil

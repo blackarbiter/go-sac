@@ -3,6 +3,7 @@ package http
 import (
 	"github.com/blackarbiter/go-sac/internal/task/service"
 	"github.com/blackarbiter/go-sac/internal/task/transport/http/handlers"
+	"github.com/blackarbiter/go-sac/pkg/middleware"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -28,7 +29,7 @@ func NewRouter() *gin.Engine {
 	r.Use(
 		gin.Logger(),
 		gin.Recovery(),
-		JWTValidation(), // JWT验证
+		middleware.JWTValidation(), // JWT验证
 	)
 
 	// Swagger UI
@@ -39,8 +40,20 @@ func NewRouter() *gin.Engine {
 	{
 		tasks := api.Group("/tasks")
 		{
-			tasks.POST("", handlers.CreateTask)
-			tasks.GET("/:id", handlers.GetTaskStatus)
+			// 获取任务处理器
+			h := handlers.GetTaskHandler()
+
+			// 任务管理
+			tasks.POST("/scan", h.CreateScanTask)               // 创建扫描任务
+			tasks.POST("/asset", h.CreateAssetTask)             // 创建资产任务
+			tasks.POST("/scan/batch", h.BatchCreateScanTasks)   // 批量创建扫描任务
+			tasks.POST("/asset/batch", h.BatchCreateAssetTasks) // 批量创建资产任务
+			tasks.GET("/:id", h.GetTaskStatus)                  // 获取任务状态
+			tasks.POST("/batch/status", h.BatchGetTaskStatus)   // 批量获取任务状态
+			tasks.PUT("/:id/status", h.UpdateTaskStatus)        // 更新任务状态
+			tasks.GET("", h.ListTasks)                          // 列出任务
+			tasks.POST("/:id/cancel", h.CancelTask)             // 取消任务
+			tasks.POST("/batch/cancel", h.BatchCancelTasks)     // 批量取消任务
 		}
 	}
 

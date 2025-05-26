@@ -5,7 +5,7 @@ database:
     port: 3306
     username: "root"
     password: "1234qwer"
-    name: "security_scan"
+    name: "sac"
     max_open_conns: 20
   redis:
     host: "localhost"

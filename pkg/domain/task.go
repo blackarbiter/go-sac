@@ -52,10 +52,10 @@ type Task struct {
 
 // ScanTaskPayload 扫描任务的载荷
 type ScanTaskPayload struct {
-	TargetID   string                 `json:"target_id"`   // 目标ID（可以是资产ID）
-	TargetType string                 `json:"target_type"` // 目标类型
-	ScanType   ScanType               `json:"scan_type"`   // 扫描类型
-	Options    map[string]interface{} `json:"options"`     // 扫描选项
+	AssetID   string                 `json:"asset_id"`   // 资产ID
+	AssetType AssetType              `json:"asset_type"` // 资产类型
+	ScanType  ScanType               `json:"scan_type"`  // 扫描类型
+	Options   map[string]interface{} `json:"options"`    // 扫描选项
 }
 
 // AssetTaskPayload 资产更新任务的载荷
@@ -67,12 +67,12 @@ type AssetTaskPayload struct {
 }
 
 // NewScanTask 创建一个新的扫描任务
-func NewScanTask(scanType ScanType, targetID, targetType string, options map[string]interface{}, priority TaskPriority, userID uint) (*Task, error) {
+func NewScanTask(scanType ScanType, assetID string, assetType AssetType, options map[string]interface{}, priority TaskPriority, userID uint) (*Task, error) {
 	payload := ScanTaskPayload{
-		TargetID:   targetID,
-		TargetType: targetType,
-		ScanType:   scanType,
-		Options:    options,
+		AssetID:   assetID,
+		AssetType: assetType,
+		ScanType:  scanType,
+		Options:   options,
 	}
 
 	payloadBytes, err := json.Marshal(payload)
@@ -148,7 +148,7 @@ func (t *Task) GetAssetPayload() (*AssetTaskPayload, error) {
 	return &payload, nil
 }
 
-// 错误定义
+// ErrInvalidTaskType 错误定义
 var (
 	ErrInvalidTaskType = NewDomainError("invalid task type")
 )

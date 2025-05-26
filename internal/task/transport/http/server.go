@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -41,7 +42,7 @@ func NewServer(cfg *config.Config, taskService service.TaskService) *Server {
 func (s *Server) Start(ctx context.Context) error {
 	logger.Logger.Info("starting HTTP server", zap.Int("port", s.cfg.Server.HTTP.Port))
 
-	if err := s.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+	if err := s.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		return err
 	}
 

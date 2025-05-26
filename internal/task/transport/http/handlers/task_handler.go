@@ -186,3 +186,66 @@ func (h *TaskHandler) ListTasks(c *gin.Context) {
 
 	c.JSON(http.StatusOK, result)
 }
+
+// CancelTask 处理取消任务请求
+func (h *TaskHandler) CancelTask(c *gin.Context) {
+	taskID := c.Param("id")
+	if taskID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "task id is required"})
+		return
+	}
+
+	// 调用服务层取消任务
+	if err := h.taskService.CancelTask(c.Request.Context(), taskID); err != nil {
+		logger.Logger.Error("failed to cancel task", zap.Error(err), zap.String("task_id", taskID))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to cancel task: " + err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "task cancelled successfully"})
+}
+
+// BatchGetTaskStatus 处理批量获取任务状态请求
+func (h *TaskHandler) BatchGetTaskStatus(c *gin.Context) {
+	var req struct {
+		TaskIDs []string `json:"task_ids" binding:"required,min=1"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 调用服务层批量获取任务状态
+	tasks, err := h.taskService.BatchGetTaskStatus(c.Request.Context(), req.TaskIDs)
+	if err != nil {
+		logger.Logger.Error("failed to batch get task status", zap.Error(err))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to batch get task status: " + err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"tasks": tasks})
+}
+
+// BatchCancelTasks 处理批量取消任务请求
+func (h *TaskHandler) BatchCancelTasks(c *gin.Context) {
+	var req struct {
+		TaskIDs []string `json:"task_ids" binding:"required,min=1"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 调用服务层批量取消任务
+	failedIDs, err := h.taskService.BatchCancelTasks(c.Request.Context(), req.TaskIDs)
+	if err != nil {
+		logger.Logger.Error("failed to batch cancel tasks", zap.Error(err))
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":      "failed to batch cancel tasks: " + err.Error(),
+			"failed_ids": failedIDs,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "tasks cancelled successfully"})
+}

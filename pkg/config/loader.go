@@ -162,3 +162,34 @@ func replaceEnvVariables(v *viper.Viper) {
 		}
 	}
 }
+
+// GetRabbitMQURL 根据配置生成RabbitMQ连接URL
+func (c *Config) GetRabbitMQURL() string {
+	rabbitCfg := c.MQ.RabbitMQ
+
+	// 构建URL，格式为：amqp://username:password@host:port/vhost
+	vhost := rabbitCfg.VHost
+	if vhost != "" && vhost[0] != '/' {
+		vhost = "/" + vhost
+	}
+
+	return fmt.Sprintf("amqp://%s:%s@%s:%d%s",
+		rabbitCfg.Username,
+		rabbitCfg.Password,
+		rabbitCfg.Host,
+		rabbitCfg.Port,
+		vhost)
+}
+
+// GetMySQLDSN 根据配置生成MySQL DSN
+func (c *Config) GetMySQLDSN() string {
+	mysqlCfg := c.Database.MySQL
+
+	// 使用标准DSN格式
+	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		mysqlCfg.Username,
+		mysqlCfg.Password,
+		mysqlCfg.Host,
+		mysqlCfg.Port,
+		mysqlCfg.Name)
+}

@@ -112,6 +112,40 @@ func (p *TaskPublisher) PublishAssetTask(ctx context.Context, operation string, 
 	)
 }
 
+// DeleteScanTask 从消息队列中删除扫描任务
+func (p *TaskPublisher) DeleteScanTask(ctx context.Context, scanType string, priority int, payload []byte) error {
+	// 构建路由键
+	routingKey := fmt.Sprintf("scan.%s", scanType)
+
+	// 从队列中删除消息
+	return p.producer.PublishWithHeaders(
+		ctx,
+		"",         // exchange
+		routingKey, // routing key
+		amqp.Table{
+			"priority": priority,
+		},
+		uint8(priority),
+		payload,
+	)
+}
+
+// DeleteAssetTask 从消息队列中删除资产任务
+func (p *TaskPublisher) DeleteAssetTask(ctx context.Context, operation string, payload []byte) error {
+	// 构建路由键
+	routingKey := fmt.Sprintf("asset.%s", operation)
+
+	// 从队列中删除消息
+	return p.producer.PublishWithHeaders(
+		ctx,
+		"",         // exchange
+		routingKey, // routing key
+		amqp.Table{},
+		0, // 默认优先级
+		payload,
+	)
+}
+
 // Close closes the publisher
 func (p *TaskPublisher) Close() error {
 	return p.producer.Close()
