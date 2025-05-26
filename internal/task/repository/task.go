@@ -17,7 +17,9 @@ type TaskEntity struct {
 	Type        string    `gorm:"type:varchar(10);not null;index"` // scan或asset
 	Status      string    `gorm:"type:varchar(20);not null;index"`
 	Priority    int       `gorm:"type:int;not null;index"`
-	SubType     string    `gorm:"type:varchar(50);not null;index"`
+	SubType     string    `gorm:"type:varchar(50);not null;index"` // 扫描类型或操作类型
+	AssetID     string    `gorm:"type:varchar(36);not null;index"` // 资产ID
+	AssetType   string    `gorm:"type:varchar(50);not null;index"` // 资产类型
 	Payload     []byte    `gorm:"type:json;not null"`
 	UserID      uint      `gorm:"type:int;not null;index"`
 	CreatedAt   time.Time `gorm:"not null"`
@@ -39,7 +41,9 @@ type Task struct {
 	Type        string     `json:"type"`
 	Status      string     `json:"status"`
 	Priority    int        `json:"priority"`
-	SubType     string     `json:"sub_type"`
+	SubType     string     `json:"sub_type"`   // 扫描类型或操作类型
+	AssetID     string     `json:"asset_id"`   // 资产ID
+	AssetType   string     `json:"asset_type"` // 资产类型
 	Payload     []byte     `json:"payload"`
 	UserID      uint       `json:"user_id"`
 	CreatedAt   time.Time  `json:"created_at"`
@@ -83,6 +87,8 @@ func convertToEntity(task *Task) *TaskEntity {
 		Status:      task.Status,
 		Priority:    task.Priority,
 		SubType:     task.SubType,
+		AssetID:     task.AssetID,
+		AssetType:   task.AssetType,
 		Payload:     task.Payload,
 		UserID:      task.UserID,
 		CreatedAt:   task.CreatedAt,
@@ -102,6 +108,8 @@ func convertToDomain(entity *TaskEntity) *Task {
 		Status:      entity.Status,
 		Priority:    entity.Priority,
 		SubType:     entity.SubType,
+		AssetID:     entity.AssetID,
+		AssetType:   entity.AssetType,
 		Payload:     entity.Payload,
 		UserID:      entity.UserID,
 		CreatedAt:   entity.CreatedAt,

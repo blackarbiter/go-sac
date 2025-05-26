@@ -17,7 +17,9 @@ type TaskDTO struct {
 	Type        string `json:"type"`
 	Status      string `json:"status"`
 	Priority    int    `json:"priority"`
-	SubType     string `json:"sub_type"`
+	SubType     string `json:"sub_type"`   // 扫描类型或操作类型
+	AssetID     string `json:"asset_id"`   // 资产ID
+	AssetType   string `json:"asset_type"` // 资产类型
 	UserID      uint   `json:"user_id"`
 	CreatedAt   string `json:"created_at"`
 	UpdatedAt   string `json:"updated_at"`
@@ -111,6 +113,8 @@ func convertToDTO(task *repository.Task) *TaskDTO {
 		Status:     task.Status,
 		Priority:   task.Priority,
 		SubType:    task.SubType,
+		AssetID:    task.AssetID,
+		AssetType:  task.AssetType,
 		UserID:     task.UserID,
 		CreatedAt:  task.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
 		UpdatedAt:  task.UpdatedAt.Format("2006-01-02T15:04:05Z07:00"),
@@ -158,12 +162,14 @@ func (s *taskService) CreateScanTask(ctx context.Context, req *CreateScanTaskReq
 
 	// 转换为仓库实体
 	repoTask := &repository.Task{
-		Type:     string(task.Type),
-		Status:   string(task.Status),
-		Priority: int(task.Priority),
-		SubType:  task.SubType,
-		Payload:  task.Payload,
-		UserID:   task.UserID,
+		Type:      string(task.Type),
+		Status:    string(task.Status),
+		Priority:  int(task.Priority),
+		SubType:   req.ScanType, // 存储扫描类型
+		AssetID:   req.AssetID,
+		AssetType: req.AssetType,
+		Payload:   task.Payload,
+		UserID:    task.UserID,
 	}
 
 	// 保存到数据库
@@ -172,7 +178,7 @@ func (s *taskService) CreateScanTask(ctx context.Context, req *CreateScanTaskReq
 	}
 
 	// 发布到消息队列
-	if err := s.taskPublisher.PublishScanTask(ctx, task.SubType, int(task.Priority), task.Payload); err != nil {
+	if err := s.taskPublisher.PublishScanTask(ctx, req.ScanType, int(task.Priority), task.Payload); err != nil {
 		// 如果发布失败，更新任务状态为失败
 		_ = s.taskRepo.UpdateStatus(ctx, repoTask.ID, string(domain.TaskStatusFailed), "Failed to publish task to message queue")
 		return "", err
@@ -203,12 +209,14 @@ func (s *taskService) CreateAssetTask(ctx context.Context, req *CreateAssetTaskR
 
 	// 转换为仓库实体
 	repoTask := &repository.Task{
-		Type:     string(task.Type),
-		Status:   string(task.Status),
-		Priority: int(task.Priority),
-		SubType:  task.SubType,
-		Payload:  task.Payload,
-		UserID:   task.UserID,
+		Type:      string(task.Type),
+		Status:    string(task.Status),
+		Priority:  int(task.Priority),
+		SubType:   req.Operation, // 存储操作类型
+		AssetID:   req.AssetID,
+		AssetType: req.AssetType,
+		Payload:   task.Payload,
+		UserID:    task.UserID,
 	}
 
 	// 保存到数据库
@@ -260,12 +268,14 @@ func (s *taskService) BatchCreateScanTasks(ctx context.Context, req *BatchCreate
 
 		// 转换为仓库实体
 		repoTask := &repository.Task{
-			Type:     string(task.Type),
-			Status:   string(task.Status),
-			Priority: int(task.Priority),
-			SubType:  task.SubType,
-			Payload:  task.Payload,
-			UserID:   task.UserID,
+			Type:      string(task.Type),
+			Status:    string(task.Status),
+			Priority:  int(task.Priority),
+			SubType:   taskReq.ScanType, // 存储扫描类型
+			AssetID:   taskReq.AssetID,
+			AssetType: taskReq.AssetType,
+			Payload:   task.Payload,
+			UserID:    task.UserID,
 		}
 
 		tasks = append(tasks, repoTask)
@@ -320,12 +330,14 @@ func (s *taskService) BatchCreateAssetTasks(ctx context.Context, req *BatchCreat
 
 		// 转换为仓库实体
 		repoTask := &repository.Task{
-			Type:     string(task.Type),
-			Status:   string(task.Status),
-			Priority: int(task.Priority),
-			SubType:  task.SubType,
-			Payload:  task.Payload,
-			UserID:   task.UserID,
+			Type:      string(task.Type),
+			Status:    string(task.Status),
+			Priority:  int(task.Priority),
+			SubType:   taskReq.Operation, // 存储操作类型
+			AssetID:   taskReq.AssetID,
+			AssetType: taskReq.AssetType,
+			Payload:   task.Payload,
+			UserID:    task.UserID,
 		}
 
 		tasks = append(tasks, repoTask)
@@ -349,7 +361,7 @@ func (s *taskService) BatchCreateAssetTasks(ctx context.Context, req *BatchCreat
 				continue
 			}
 
-			if err := s.taskPublisher.PublishAssetTask(ctx, payload.Operation, task.Payload); err != nil {
+			if err := s.taskPublisher.PublishAssetTask(ctx, task.SubType, task.Payload); err != nil {
 				// 如果发布失败，更新任务状态为失败
 				_ = s.taskRepo.UpdateStatus(ctx, task.ID, string(domain.TaskStatusFailed), fmt.Sprintf("Failed to publish task to message queue: %v", err))
 				continue
