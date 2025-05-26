@@ -2,6 +2,7 @@ package domain
 
 import (
 	"encoding/json"
+	"github.com/google/uuid"
 	"time"
 )
 
@@ -33,6 +34,19 @@ const (
 	PriorityHigh   TaskPriority = 2
 )
 
+func (t TaskPriority) String() string {
+	switch t {
+	case 2:
+		return "high"
+	case 1:
+		return "medium"
+	case 0:
+		return "low"
+	default:
+		return "low"
+	}
+}
+
 // Task 表示一个任务实体
 type Task struct {
 	ID          string       `json:"id"`
@@ -52,6 +66,7 @@ type Task struct {
 
 // ScanTaskPayload 扫描任务的载荷
 type ScanTaskPayload struct {
+	TaskID    string                 `json:"task_id"`    // 任务ID
 	AssetID   string                 `json:"asset_id"`   // 资产ID
 	AssetType AssetType              `json:"asset_type"` // 资产类型
 	ScanType  ScanType               `json:"scan_type"`  // 扫描类型
@@ -60,6 +75,7 @@ type ScanTaskPayload struct {
 
 // AssetTaskPayload 资产更新任务的载荷
 type AssetTaskPayload struct {
+	TaskID    string                 `json:"task_id"`    // 任务ID
 	AssetID   string                 `json:"asset_id"`   // 资产ID
 	AssetType AssetType              `json:"asset_type"` // 资产类型
 	Operation string                 `json:"operation"`  // 操作类型：create, update, delete
@@ -68,7 +84,9 @@ type AssetTaskPayload struct {
 
 // NewScanTask 创建一个新的扫描任务
 func NewScanTask(scanType ScanType, assetID string, assetType AssetType, options map[string]interface{}, priority TaskPriority, userID uint) (*Task, error) {
+	taskID := uuid.New().String()
 	payload := ScanTaskPayload{
+		TaskID:    taskID,
 		AssetID:   assetID,
 		AssetType: assetType,
 		ScanType:  scanType,
@@ -82,6 +100,7 @@ func NewScanTask(scanType ScanType, assetID string, assetType AssetType, options
 
 	now := time.Now()
 	return &Task{
+		ID:        taskID,
 		Type:      TaskTypeScan,
 		Status:    TaskStatusPending,
 		Priority:  priority,
@@ -95,7 +114,9 @@ func NewScanTask(scanType ScanType, assetID string, assetType AssetType, options
 
 // NewAssetTask 创建一个新的资产更新任务
 func NewAssetTask(assetType AssetType, assetID, operation string, data map[string]interface{}, userID uint) (*Task, error) {
+	taskID := uuid.New().String()
 	payload := AssetTaskPayload{
+		TaskID:    taskID,
 		AssetID:   assetID,
 		AssetType: assetType,
 		Operation: operation,
@@ -109,6 +130,7 @@ func NewAssetTask(assetType AssetType, assetID, operation string, data map[strin
 
 	now := time.Now()
 	return &Task{
+		ID:        taskID,
 		Type:      TaskTypeAsset,
 		Status:    TaskStatusPending,
 		Priority:  PriorityMedium, // 资产任务默认中优先级

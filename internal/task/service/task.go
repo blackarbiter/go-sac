@@ -162,6 +162,7 @@ func (s *taskService) CreateScanTask(ctx context.Context, req *CreateScanTaskReq
 
 	// 转换为仓库实体
 	repoTask := &repository.Task{
+		ID:        task.ID,
 		Type:      string(task.Type),
 		Status:    string(task.Status),
 		Priority:  int(task.Priority),
@@ -209,6 +210,7 @@ func (s *taskService) CreateAssetTask(ctx context.Context, req *CreateAssetTaskR
 
 	// 转换为仓库实体
 	repoTask := &repository.Task{
+		ID:        task.ID,
 		Type:      string(task.Type),
 		Status:    string(task.Status),
 		Priority:  int(task.Priority),
@@ -268,6 +270,7 @@ func (s *taskService) BatchCreateScanTasks(ctx context.Context, req *BatchCreate
 
 		// 转换为仓库实体
 		repoTask := &repository.Task{
+			ID:        task.ID,
 			Type:      string(task.Type),
 			Status:    string(task.Status),
 			Priority:  int(task.Priority),
@@ -330,6 +333,7 @@ func (s *taskService) BatchCreateAssetTasks(ctx context.Context, req *BatchCreat
 
 		// 转换为仓库实体
 		repoTask := &repository.Task{
+			ID:        task.ID,
 			Type:      string(task.Type),
 			Status:    string(task.Status),
 			Priority:  int(task.Priority),

@@ -3,6 +3,7 @@ package rabbitmq
 import (
 	"context"
 	"fmt"
+	"github.com/blackarbiter/go-sac/pkg/domain"
 	"time"
 
 	"github.com/blackarbiter/go-sac/pkg/mq"
@@ -63,7 +64,8 @@ func (p *TaskPublisher) Publish(ctx context.Context, exchange, routingKey string
 // PublishScanTask 发布扫描任务
 func (p *TaskPublisher) PublishScanTask(ctx context.Context, scanType string, priority int, payload []byte) error {
 	// 构建路由键
-	routingKey := fmt.Sprintf("scan.%s", scanType)
+	taskPriority := domain.TaskPriority(priority)
+	routingKey := fmt.Sprintf("scan.%s.%s", scanType, taskPriority.String())
 	return p.publish(ctx, routingKey, priority, payload)
 }
 
