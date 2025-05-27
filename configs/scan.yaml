@@ -1,0 +1,8 @@
+imports:
+  - base.yaml
+
+server:
+  http:
+    port: 8089  # scan服务使用8089端口
+  grpc:
+    port: 50052

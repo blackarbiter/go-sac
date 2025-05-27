@@ -1,0 +1,8 @@
+imports:
+  - base.yaml
+
+server:
+  http:
+    port: 8092  # asset服务使用8092端口
+  grpc:
+    port: 50055

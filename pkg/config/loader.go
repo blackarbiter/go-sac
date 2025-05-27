@@ -100,41 +100,38 @@ func validateConfig(cfg *Config) error {
 	return nil
 }
 
-func Load(env string) (*Config, error) {
+func Load(server string) (*Config, error) {
 	v := viper.New()
-
-	// 基础配置
-	v.SetConfigName("base")
-	// 设置多级搜索路径
-	v.AddConfigPath("./configs")        // 项目根目录执行时
-	v.AddConfigPath("../../configs")    // test/unit目录执行时
-	v.AddConfigPath("../../../configs") // test/integration目录执行时
-
 	v.SetConfigType("yaml")
 
-	// 读取环境配置
-	if env != "" {
-		v.SetConfigName(env)
-		v.AddConfigPath("./configs")
+	// 1. 强制先加载 base.yaml
+	v.SetConfigName("base")
+	v.AddConfigPath("./configs")
+	v.AddConfigPath("../../configs")
+	v.AddConfigPath("../../../configs")
+	if err := v.ReadInConfig(); err != nil {
+		return nil, fmt.Errorf("failed to load base config: %w", err)
 	}
 
-	// 环境变量支持
-	v.AutomaticEnv()
-	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
-
-	// 合并配置
-	if err := v.MergeInConfig(); err != nil {
-		return nil, fmt.Errorf("failed to read config: %w", err)
+	// 2. 加载环境特定配置（如 scan.yaml）
+	if server != "" {
+		v.SetConfigName(server)
+		// 注意：此处不需要重复添加 ConfigPath，Viper 会复用之前的路径配置
+		if err := v.MergeInConfig(); err != nil {
+			return nil, fmt.Errorf("failed to merge %s config: %w", server, err)
+		}
 	}
 
-	// 处理环境变量替换
+	// 3. 处理环境变量替换
 	replaceEnvVariables(v)
 
+	// 4. 解析配置到结构体
 	var cfg Config
 	if err := v.Unmarshal(&cfg); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal config: %w", err)
 	}
 
+	// 5. 验证配置
 	if err := validateConfig(&cfg); err != nil {
 		return nil, fmt.Errorf("config validation failed: %w", err)
 	}

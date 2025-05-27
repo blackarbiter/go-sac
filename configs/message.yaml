@@ -1,0 +1,8 @@
+imports:
+  - base.yaml
+
+server:
+  http:
+    port: 8090  # message服务使用8090端口
+  grpc:
+    port: 50053

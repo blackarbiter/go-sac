@@ -19,7 +19,7 @@ func main() {
 	defer stop()
 
 	// 配置加载
-	cfg, err := config.Load("")
+	cfg, err := config.Load("scan")
 	if err != nil {
 		panic("config load failed: " + err.Error())
 	}

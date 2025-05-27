@@ -18,7 +18,7 @@ func TestLoadBaseConfig(t *testing.T) {
 	t.Logf("Current working directory: %s", wd) // 打印当前路径
 
 	// 执行配置加载
-	cfg, err := config.Load("")
+	cfg, err := config.Load("scan")
 	if err != nil {
 		t.Fatalf("Failed to load config: %v", err) // 提前终止避免空指针
 	}

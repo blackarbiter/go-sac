@@ -1,0 +1,8 @@
+imports:
+  - base.yaml
+
+server:
+  http:
+    port: 8088  # task服务使用8088端口
+  grpc:
+    port: 50051

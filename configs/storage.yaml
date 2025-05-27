@@ -1,0 +1,8 @@
+imports:
+  - base.yaml
+
+server:
+  http:
+    port: 8091  # storage服务使用8091端口
+  grpc:
+    port: 50054
