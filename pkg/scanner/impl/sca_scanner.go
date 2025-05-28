@@ -26,7 +26,7 @@ func (s *SCAScanner) Scan(ctx context.Context, task *domain.ScanTaskPayload) (*d
 	result := domain.NewScanResult(task.TaskID, domain.ScanTypeSca, task.AssetID, task.AssetType)
 
 	// 模拟扫描过程
-	time.Sleep(100 * time.Millisecond)
+	time.Sleep(2000 * time.Millisecond)
 
 	// 设置成功结果
 	result.SetSuccess(task.Options)

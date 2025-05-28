@@ -3,10 +3,12 @@ package rabbitmq
 import (
 	"context"
 	"fmt"
-	"log"
+	"github.com/blackarbiter/go-sac/pkg/logger"
+	"github.com/blackarbiter/go-sac/pkg/service"
 
 	"github.com/blackarbiter/go-sac/pkg/mq"
 	amqp "github.com/rabbitmq/amqp091-go"
+	"go.uber.org/zap"
 )
 
 // ScanConsumer implements a specialized consumer for scan tasks
@@ -93,18 +95,18 @@ func (c *ScanConsumer) consume(ctx context.Context, queueName string, prefetchCo
 				return
 			case delivery, ok := <-deliveries:
 				if !ok {
-					log.Printf("Consumer channel closed")
+					logger.Logger.Warn("Consumer channel closed")
 					return
 				}
 
 				// Process the message
 				err := handler.HandleMessage(ctx, delivery.Body)
 				if err != nil {
-					log.Printf("Error processing message: %v", err)
+					logger.Logger.Error("Error processing message: ", zap.Error(err))
 					// 不再重新入队，直接拒绝消息，消息将进入死信队列
 					err := delivery.Nack(false, false)
 					if err != nil {
-						log.Printf("Delivery to dead letter error...")
+						logger.Logger.Error("Delivery to dead letter error: ", zap.Error(err))
 						return
 					} // 第二个参数设为false，表示不重新入队
 				} else {
@@ -119,6 +121,27 @@ func (c *ScanConsumer) consume(ctx context.Context, queueName string, prefetchCo
 	}()
 
 	return nil
+}
+
+// 新增方法：将消息投递到调度器通道
+func (c *ScanConsumer) ConsumeToScheduler(ctx context.Context, scheduler *service.PriorityScheduler) error {
+	// 为每个队列创建独立的消费通道
+	highMsgs, _ := c.channel.Consume(ScanHighPriorityQueue, "", false, false, false, false, nil)
+	medMsgs, _ := c.channel.Consume(ScanMediumPriorityQueue, "", false, false, false, false, nil)
+	lowMsgs, _ := c.channel.Consume(ScanLowPriorityQueue, "", false, false, false, false, nil)
+
+	for {
+		select {
+		case msg := <-highMsgs:
+			scheduler.HighPriorityChan <- msg // 高优先进通道
+		case msg := <-medMsgs:
+			scheduler.MedPriorityChan <- msg
+		case msg := <-lowMsgs:
+			scheduler.LowPriorityChan <- msg
+		case <-ctx.Done():
+			return nil
+		}
+	}
 }
 
 // Close closes the consumer

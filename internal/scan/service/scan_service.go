@@ -3,7 +3,13 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"github.com/blackarbiter/go-sac/pkg/service"
+	amqp "github.com/rabbitmq/amqp091-go"
+	"go.uber.org/zap"
+	"net/http"
 	"sync"
+	"time"
 
 	"github.com/blackarbiter/go-sac/pkg/domain"
 
@@ -11,7 +17,6 @@ import (
 	"github.com/blackarbiter/go-sac/pkg/mq/rabbitmq"
 	"github.com/blackarbiter/go-sac/pkg/scanner"
 	"github.com/google/wire"
-	"go.uber.org/zap"
 )
 
 // ScanService 扫描服务
@@ -54,33 +59,29 @@ func (s *ScanService) Start(ctx context.Context) error {
 		return err
 	}
 
-	// 启动高优先级队列消费者
+	// 创建带缓冲的通道（大小根据吞吐量配置）
+	scheduler := &service.PriorityScheduler{
+		HighPriorityChan: make(chan amqp.Delivery, 1000),
+		MedPriorityChan:  make(chan amqp.Delivery, 500),
+		LowPriorityChan:  make(chan amqp.Delivery, 200),
+		StopChan:         make(chan struct{}),
+		Handler:          s,
+	}
+
+	// 启动统一消费者（替换原有的三个独立消费者）
 	s.wg.Add(1)
 	go func() {
 		defer s.wg.Done()
-		if err := s.scanConsumer.ConsumeHighPriority(ctx, s); err != nil {
-			logger.Logger.Error("high priority consumer error", zap.Error(err))
-		}
+		scheduler.Start(ctx) // 核心调度逻辑
 	}()
 
-	// 启动中优先级队列消费者
-	s.wg.Add(1)
+	// 启动队列监听协程（向调度器填充消息）
 	go func() {
-		defer s.wg.Done()
-		if err := s.scanConsumer.ConsumeMediumPriority(ctx, s); err != nil {
-			logger.Logger.Error("medium priority consumer error", zap.Error(err))
+		err := s.scanConsumer.ConsumeToScheduler(ctx, scheduler)
+		if err != nil {
+			logger.Logger.Error("consume to scheduler error: ", zap.Error(err))
 		}
 	}()
-
-	// 启动低优先级队列消费者
-	s.wg.Add(1)
-	go func() {
-		defer s.wg.Done()
-		if err := s.scanConsumer.ConsumeLowPriority(ctx, s); err != nil {
-			logger.Logger.Error("low priority consumer error", zap.Error(err))
-		}
-	}()
-
 	return nil
 }
 
@@ -102,7 +103,8 @@ func (s *ScanService) HandleMessage(ctx context.Context, message []byte) error {
 	if err := json.Unmarshal(message, &task); err != nil {
 		return err
 	}
-	logger.Logger.Info("Consumer task: " + task.TaskID)
+	priority, err := GetTaskPriority(task.TaskID, "123")
+	logger.Logger.Info("Consumer task: " + task.TaskID + ", Priority: " + string(rune(priority)))
 	// 获取对应的扫描器
 	sne, err := s.scannerFactory.GetScanner(task.ScanType)
 	if err != nil {
@@ -120,6 +122,7 @@ func (s *ScanService) HandleMessage(ctx context.Context, message []byte) error {
 	if err != nil {
 		return err
 	}
+	//todo：task状态更新
 
 	return s.resultPublisher.PublishScanResult(ctx, resultBytes)
 }
@@ -128,3 +131,38 @@ func (s *ScanService) HandleMessage(ctx context.Context, message []byte) error {
 var ProviderSet = wire.NewSet(
 	NewScanService,
 )
+
+func GetTaskPriority(taskID, authToken string) (int, error) {
+	// 创建HTTP客户端
+	client := &http.Client{Timeout: 10 * time.Second}
+
+	// 构建请求对象
+	url := fmt.Sprintf("http://localhost:8088/api/v1/tasks/%s", taskID)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return 0, fmt.Errorf("创建请求失败: %w", err)
+	}
+
+	// 设置授权头[7,8](@ref)
+	req.Header.Set("Authorization", "Bearer "+authToken)
+
+	// 发送请求
+	resp, err := client.Do(req)
+	if err != nil {
+		return 0, fmt.Errorf("请求失败: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// 检查状态码
+	if resp.StatusCode != http.StatusOK {
+		return 0, fmt.Errorf("异常状态码: %d", resp.StatusCode)
+	}
+
+	// 解析JSON响应[4,5](@ref)
+	var task domain.Task
+	if err := json.NewDecoder(resp.Body).Decode(&task); err != nil {
+		return 0, fmt.Errorf("JSON解析失败: %w", err)
+	}
+
+	return int(task.Priority), nil
+}
