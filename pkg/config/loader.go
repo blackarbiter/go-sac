@@ -190,3 +190,11 @@ func (c *Config) GetMySQLDSN() string {
 		mysqlCfg.Port,
 		mysqlCfg.Name)
 }
+
+func (c *Config) GetTaskApiBaseURL() string {
+	return fmt.Sprintf("http://%s:%d", "127.0.0.1", 8088)
+}
+
+func (c *Config) GetAuthToken() string {
+	return "1234567890"
+}

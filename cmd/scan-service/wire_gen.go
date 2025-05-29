@@ -9,6 +9,9 @@ package main
 import (
 	"github.com/blackarbiter/go-sac/internal/scan/service"
 	"github.com/blackarbiter/go-sac/pkg/config"
+	"github.com/blackarbiter/go-sac/pkg/domain"
+	"github.com/blackarbiter/go-sac/pkg/logger"
+	"github.com/blackarbiter/go-sac/pkg/metrics"
 	"github.com/blackarbiter/go-sac/pkg/mq/rabbitmq"
 	"github.com/blackarbiter/go-sac/pkg/scanner"
 	"github.com/blackarbiter/go-sac/pkg/scanner/impl"
@@ -20,8 +23,9 @@ import (
 // InitializeApplication 通过Wire自动生成
 func InitializeApplication(cfg *config.Config) (*Application, func(), error) {
 	connectionManager := provideConnectionManager(cfg)
-	scannerFactoryImpl := impl.NewScannerFactory()
-	scanService := service.NewScanService(connectionManager, scannerFactoryImpl)
+	scannerMetrics := provideMetrics()
+	timeoutController := provideTimeoutController(scannerMetrics)
+	scanService := service.NewScanService(connectionManager, timeoutController, scannerMetrics, cfg)
 	application := &Application{
 		ScanService: scanService,
 	}
@@ -38,10 +42,34 @@ type Application struct {
 
 var (
 	// ApplicationSet 是整个应用的依赖集合
-	ApplicationSet = wire.NewSet(wire.Struct(new(Application), "*"), service.ProviderSet, provideConnectionManager, wire.Bind(new(scanner.ScannerFactory), new(*impl.ScannerFactoryImpl)), impl.NewScannerFactory)
+	ApplicationSet = wire.NewSet(wire.Struct(new(Application), "*"), service.ProviderSet, provideConnectionManager,
+		provideMetrics,
+		provideTimeoutController, wire.Bind(new(scanner.ScannerFactory), new(*scanner.ScannerFactoryImpl)), provideScannerFactory,
+	)
 )
 
 // provideConnectionManager 提供 RabbitMQ 连接管理器
 func provideConnectionManager(cfg *config.Config) *rabbitmq.ConnectionManager {
 	return rabbitmq.NewConnectionManager(cfg.GetRabbitMQURL(), 3)
+}
+
+// provideMetrics 提供指标收集器
+func provideMetrics() *metrics.ScannerMetrics {
+	return metrics.NewScannerMetrics()
+}
+
+// provideTimeoutController 提供超时控制器
+func provideTimeoutController(metrics2 *metrics.ScannerMetrics) *scanner.TimeoutController {
+	return scanner.NewTimeoutController(metrics2)
+}
+
+// provideScannerFactory provides a scanner factory with default scanners
+func provideScannerFactory(
+	timeoutCtrl *scanner.TimeoutController, metrics2 *metrics.ScannerMetrics,
+) *scanner.ScannerFactoryImpl {
+	return scanner.NewScannerFactory(
+		func() map[domain.ScanType]scanner.TaskExecutor {
+			return scanner_impl.CreateDefaultScanners(timeoutCtrl, logger.Logger, metrics2, nil)
+		},
+	)
 }

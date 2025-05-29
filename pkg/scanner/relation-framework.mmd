@@ -1,0 +1,11 @@
+graph TD
+    ScanService --> ScannerFactory
+    ScannerFactory --> |SAST/DAST/SCA| ContainerExecutor
+    ScannerFactory --> |Legacy Types| LegacyScanner
+
+    ContainerExecutor --> DockerAPI
+    LegacyScanner --> BaseScanner
+
+    ScannerFactory --> CircuitBreaker
+    ScannerFactory --> TimeoutController
+    ScannerFactory --> MetricsCollector

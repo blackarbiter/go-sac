@@ -4,38 +4,71 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/blackarbiter/go-sac/pkg/service"
-	amqp "github.com/rabbitmq/amqp091-go"
-	"go.uber.org/zap"
 	"net/http"
 	"sync"
 	"time"
 
+	"github.com/blackarbiter/go-sac/pkg/config"
 	"github.com/blackarbiter/go-sac/pkg/domain"
-
 	"github.com/blackarbiter/go-sac/pkg/logger"
+	"github.com/blackarbiter/go-sac/pkg/metrics"
 	"github.com/blackarbiter/go-sac/pkg/mq/rabbitmq"
 	"github.com/blackarbiter/go-sac/pkg/scanner"
+	scanner_impl "github.com/blackarbiter/go-sac/pkg/scanner/impl"
+	"github.com/blackarbiter/go-sac/pkg/service"
 	"github.com/google/wire"
+	amqp "github.com/rabbitmq/amqp091-go"
+	"go.uber.org/zap"
 )
 
 // ScanService 扫描服务
 type ScanService struct {
-	connManager     *rabbitmq.ConnectionManager
-	scannerFactory  scanner.ScannerFactory
-	scanConsumer    *rabbitmq.ScanConsumer
-	resultPublisher *rabbitmq.ResultPublisher
-	wg              sync.WaitGroup
+	connManager       *rabbitmq.ConnectionManager
+	scannerFactory    scanner.ScannerFactory
+	scanConsumer      *rabbitmq.ScanConsumer
+	resultPublisher   *rabbitmq.ResultPublisher
+	timeoutCtrl       *scanner.TimeoutController
+	metrics           *metrics.ScannerMetrics
+	taskStatusUpdater *TaskStatusUpdaterImpl
+	wg                sync.WaitGroup
+	config            *config.Config
 }
 
 // NewScanService 创建扫描服务
 func NewScanService(
 	connManager *rabbitmq.ConnectionManager,
-	scannerFactory scanner.ScannerFactory,
+	timeoutCtrl *scanner.TimeoutController,
+	metrics *metrics.ScannerMetrics,
+	cfg *config.Config,
 ) *ScanService {
+	// 创建任务状态更新器
+	taskStatusUpdater := NewTaskStatusUpdater(cfg.GetTaskApiBaseURL(), cfg.GetAuthToken())
+
+	// 创建扫描器工厂
+	factory := scanner.NewScannerFactory(
+		func() map[domain.ScanType]scanner.TaskExecutor {
+			scanners := scanner_impl.CreateDefaultScanners(timeoutCtrl, logger.Logger, metrics, nil)
+			// 为每个扫描器设置任务状态更新器和结果发布器
+			for _, scanner := range scanners {
+				if baseScanner, ok := scanner.(interface {
+					SetTaskStatusUpdater(scanner_impl.TaskStatusUpdater)
+					SetResultPublisher(scanner_impl.ResultPublisher)
+				}); ok {
+					baseScanner.SetTaskStatusUpdater(taskStatusUpdater)
+					baseScanner.SetResultPublisher(NewResultPublisher(nil)) // 将在Start方法中设置
+				}
+			}
+			return scanners
+		},
+	)
+
 	return &ScanService{
-		connManager:    connManager,
-		scannerFactory: scannerFactory,
+		connManager:       connManager,
+		scannerFactory:    factory,
+		timeoutCtrl:       timeoutCtrl,
+		metrics:           metrics,
+		taskStatusUpdater: taskStatusUpdater,
+		config:            cfg,
 	}
 }
 
@@ -57,6 +90,16 @@ func (s *ScanService) Start(ctx context.Context) error {
 	s.resultPublisher, err = rabbitmq.NewResultPublisher(conn)
 	if err != nil {
 		return err
+	}
+
+	// 更新所有扫描器的结果发布器
+	scanners := s.scannerFactory.GetAllScanners()
+	for _, scanner := range scanners {
+		if baseScanner, ok := scanner.(interface {
+			SetResultPublisher(scanner_impl.ResultPublisher)
+		}); ok {
+			baseScanner.SetResultPublisher(NewResultPublisher(s.resultPublisher))
+		}
 	}
 
 	// 创建带缓冲的通道（大小根据吞吐量配置）
@@ -101,30 +144,23 @@ func (s *ScanService) HandleMessage(ctx context.Context, message []byte) error {
 	// 解析任务
 	var task domain.ScanTaskPayload
 	if err := json.Unmarshal(message, &task); err != nil {
-		return err
+		return fmt.Errorf("failed to unmarshal task: %w", err)
 	}
-	priority, err := GetTaskPriority(task.TaskID, "123")
-	logger.Logger.Info("Consumer task: " + task.TaskID + ", Priority: " + string(rune(priority)))
+
 	// 获取对应的扫描器
-	sne, err := s.scannerFactory.GetScanner(task.ScanType)
+	scanner, err := s.scannerFactory.GetScanner(task.ScanType)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get scanner: %w", err)
 	}
 
-	// 执行扫描
-	result, err := sne.Scan(ctx, &task)
+	// 异步执行扫描任务
+	taskID, err := scanner.AsyncExecute(ctx, &task)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to execute scan task: %w", err)
 	}
 
-	// 发布扫描结果
-	resultBytes, err := json.Marshal(result)
-	if err != nil {
-		return err
-	}
-	//todo：task状态更新
-
-	return s.resultPublisher.PublishScanResult(ctx, resultBytes)
+	logger.Logger.Info("Scan task started", zap.String("taskID", taskID))
+	return nil
 }
 
 // ProviderSet 提供依赖注入集合
