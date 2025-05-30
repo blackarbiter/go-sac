@@ -40,7 +40,7 @@ func NewScannerFactory(createScanners func() map[domain.ScanType]TaskExecutor) *
 	return &ScannerFactoryImpl{
 		scanners:       createScanners(),
 		metrics:        metrics,
-		circuitBreaker: NewCircuitBreaker(5, 30*time.Second),
+		circuitBreaker: NewCircuitBreaker(5, 3, 30*time.Second),
 		logger:         logger.Logger,
 	}
 }

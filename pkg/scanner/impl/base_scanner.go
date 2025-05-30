@@ -8,7 +8,9 @@ import (
 	"os/exec"
 	"os/signal"
 	"runtime"
+	"runtime/debug"
 	"strconv"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -41,6 +43,11 @@ type BaseScanner struct {
 	mu                sync.RWMutex
 	taskStatusUpdater TaskStatusUpdater
 	resultPublisher   ResultPublisher
+	workerPool        chan struct{}           // 协程池控制
+	taskQueue         chan func()             // 任务队列
+	queueSize         int                     // 队列大小
+	maxConcurrency    int                     // 最大并发数
+	circuitBreaker    *scanner.CircuitBreaker // 熔断器
 }
 
 type BaseScannerOption func(*BaseScanner)
@@ -90,18 +97,104 @@ func NewBaseScanner(
 			SupportedTypes:  []domain.ScanType{scanType},
 			ResourceProfile: scanner.ResourceProfile{MinCPU: 1, MaxCPU: 2, MemoryMB: 512},
 		},
+		// 默认配置
+		queueSize:      1000,                                           // 默认队列大小
+		maxConcurrency: 10,                                             // 默认最大并发数
+		circuitBreaker: scanner.NewCircuitBreaker(5, 3, 5*time.Minute), // 默认熔断器配置
 	}
 
 	for _, opt := range opts {
 		opt(bs)
 	}
 
+	// 初始化工作协程池和任务队列
+	bs.workerPool = make(chan struct{}, bs.maxConcurrency)
+	bs.taskQueue = make(chan func(), bs.queueSize)
+
+	// 启动工作协程池
+	go bs.startWorkerPool()
+
 	bs.setupSignalHandling()
 	return bs
 }
 
+// startWorkerPool 启动工作协程池
+func (s *BaseScanner) startWorkerPool() {
+	for task := range s.taskQueue {
+		s.workerPool <- struct{}{} // 获取令牌
+		go func(t func()) {
+			defer func() {
+				<-s.workerPool // 释放令牌
+				if r := recover(); r != nil {
+					s.logger.Error("worker panic recovered",
+						zap.Any("panic", r),
+						zap.String("stack", string(debug.Stack())))
+				}
+			}()
+			t()
+		}(task)
+	}
+}
+
+// WithConcurrency 设置并发控制选项
+func WithConcurrency(maxConcurrency, queueSize int) BaseScannerOption {
+	return func(bs *BaseScanner) {
+		if maxConcurrency > 0 {
+			bs.maxConcurrency = maxConcurrency
+		}
+		if queueSize > 0 {
+			bs.queueSize = queueSize
+		}
+	}
+}
+
+// AsyncExecuteWithResult 异步执行带结果的扫描任务
+func (s *BaseScanner) AsyncExecuteWithResult(ctx context.Context, task *domain.ScanTaskPayload, scanFunc func(context.Context) (*domain.ScanResult, error)) (string, error) {
+	select {
+	case s.taskQueue <- func() {
+		_ = s.ExecuteWithResult(ctx, task, scanFunc)
+	}:
+		return task.TaskID, nil
+	default:
+		return "", fmt.Errorf("task queue is full, taskID: %s", task.TaskID)
+	}
+}
+
+// GetQueueStats 获取队列统计信息
+func (s *BaseScanner) GetQueueStats() (int, int) {
+	return len(s.taskQueue), cap(s.taskQueue)
+}
+
+// GetWorkerStats 获取工作协程统计信息
+func (s *BaseScanner) GetWorkerStats() (int, int) {
+	return len(s.workerPool), cap(s.workerPool)
+}
+
+// classifyError 分类错误类型
+func (s *BaseScanner) classifyError(err error) (string, scanner.ErrorType) {
+	switch {
+	case err == nil:
+		return "success", scanner.TransientError
+	case err == context.DeadlineExceeded:
+		return "timeout", scanner.TransientError
+	case err == context.Canceled:
+		return "canceled", scanner.TransientError
+	case strings.Contains(err.Error(), "permission denied"):
+		return "permission_denied", scanner.CriticalError
+	case strings.Contains(err.Error(), "resource unavailable"):
+		return "resource_unavailable", scanner.CriticalError
+	default:
+		return "runtime", scanner.TransientError
+	}
+}
+
 // ExecuteCommand executes a command with proper process management and resource control
 func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskPayload, cmd *exec.Cmd) error {
+	// 检查熔断器状态
+	if s.circuitBreaker.IsOpen() {
+		return fmt.Errorf("circuit breaker is open, task rejected")
+	}
+
 	// 1. 准备执行环境
 	execID := fmt.Sprintf("%s-%d", task.TaskID, time.Now().UnixNano())
 	s.logger.Info("starting command execution",
@@ -114,7 +207,13 @@ func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskP
 
 	// 3. 注册进程
 	s.processManager.activeProcesses.Store(execID, cmd)
-	defer s.processManager.activeProcesses.Delete(execID)
+	defer func() {
+		s.processManager.activeProcesses.Delete(execID)
+		// 确保进程被清理
+		if cmd.Process != nil {
+			s.KillProcessGroup(cmd, true)
+		}
+	}()
 
 	// 4. 启动进程
 	startTime := time.Now()
@@ -127,6 +226,12 @@ func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskP
 		if err := s.cgroupManager.Apply(cmd.Process.Pid); err != nil {
 			s.logger.Warn("cgroup apply failed", zap.Error(err))
 		}
+		// 确保cgroup资源被清理
+		defer func() {
+			if err := s.cgroupManager.Cleanup(); err != nil {
+				s.logger.Error("cgroup cleanup failed", zap.Error(err))
+			}
+		}()
 	}
 
 	// 6. 创建带超时的上下文
@@ -144,7 +249,15 @@ func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskP
 	select {
 	case err := <-done:
 		execDuration := time.Since(startTime)
+		_, errType := s.classifyError(err)
 		s.recordCommandMetrics(task, cmd, err, execDuration)
+
+		if err != nil {
+			s.circuitBreaker.RecordFailure(errType)
+		} else {
+			s.circuitBreaker.RecordSuccess()
+		}
+
 		return err
 
 	case <-timeoutCtx.Done():
@@ -152,6 +265,8 @@ func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskP
 			zap.String("task_id", task.TaskID),
 			zap.String("exec_id", execID),
 			zap.Duration("timeout", defaultTimeout))
+
+		s.circuitBreaker.RecordFailure(scanner.TransientError)
 
 		// 先尝试优雅停止
 		s.KillProcessGroup(cmd, false)
@@ -178,6 +293,9 @@ func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskP
 		s.logger.Warn("command execution canceled",
 			zap.String("task_id", task.TaskID),
 			zap.String("exec_id", execID))
+
+		s.circuitBreaker.RecordFailure(scanner.TransientError)
+
 		s.KillProcessGroup(cmd, true)
 		return ctx.Err()
 	}
@@ -291,16 +409,18 @@ func (s *BaseScanner) setProcessAttributes(cmd *exec.Cmd) {
 	}
 }
 
+// recordCommandMetrics 记录命令执行指标
 func (s *BaseScanner) recordCommandMetrics(task *domain.ScanTaskPayload, cmd *exec.Cmd, err error, duration time.Duration) {
 	if s.metricsRecorder == nil {
 		return
 	}
 
+	errorType, _ := s.classifyError(err)
 	tags := map[string]string{
 		"scanner_type": s.scanType.String(),
 		"task_id":      task.TaskID,
 		"exit_code":    strconv.Itoa(cmd.ProcessState.ExitCode()),
-		"error_type":   s.classifyError(err),
+		"error_type":   errorType,
 		"asset_type":   string(task.AssetType),
 		"asset_id":     task.AssetID,
 		"command":      cmd.Path,
@@ -323,19 +443,6 @@ func (s *BaseScanner) recordCommandMetrics(task *domain.ScanTaskPayload, cmd *ex
 		// 这里可以添加资源使用指标的记录
 		s.metricsRecorder.Gauge("command_memory_usage_bytes", 0, tags) // 需要实现实际的内存统计
 		s.metricsRecorder.Gauge("command_cpu_usage_percent", 0, tags)  // 需要实现实际的 CPU 统计
-	}
-}
-
-func (s *BaseScanner) classifyError(err error) string {
-	switch {
-	case err == nil:
-		return "success"
-	case err == context.DeadlineExceeded:
-		return "timeout"
-	case err == context.Canceled:
-		return "canceled"
-	default:
-		return "runtime"
 	}
 }
 
@@ -394,6 +501,13 @@ func WithMetricsRecorder(mr MetricsRecorder) BaseScannerOption {
 	}
 }
 
+// WithCircuitBreaker 设置熔断器配置
+func WithCircuitBreaker(threshold, criticalThreshold uint32, resetTimeout time.Duration) BaseScannerOption {
+	return func(bs *BaseScanner) {
+		bs.circuitBreaker = scanner.NewCircuitBreaker(threshold, criticalThreshold, resetTimeout)
+	}
+}
+
 // ExecuteWithTimeout 执行带超时控制的通用任务
 func (s *BaseScanner) ExecuteWithTimeout(ctx context.Context, task *domain.ScanTaskPayload, fn func(context.Context) error) error {
 	// 1. 准备执行环境
@@ -446,10 +560,11 @@ func (s *BaseScanner) recordTaskMetrics(task *domain.ScanTaskPayload, err error,
 		return
 	}
 
+	errorType, _ := s.classifyError(err)
 	tags := map[string]string{
 		"scanner_type": s.scanType.String(),
 		"task_id":      task.TaskID,
-		"error_type":   s.classifyError(err),
+		"error_type":   errorType,
 		"asset_type":   string(task.AssetType),
 		"asset_id":     task.AssetID,
 	}

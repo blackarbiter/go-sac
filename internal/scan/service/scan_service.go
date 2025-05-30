@@ -3,11 +3,12 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"net/http"
 	"sync"
 	"time"
 
+	"github.com/blackarbiter/go-sac/pkg/cache/redis"
 	"github.com/blackarbiter/go-sac/pkg/config"
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/logger"
@@ -30,6 +31,7 @@ type ScanService struct {
 	timeoutCtrl       *scanner.TimeoutController
 	metrics           *metrics.ScannerMetrics
 	taskStatusUpdater *TaskStatusUpdaterImpl
+	redisConnector    *redis.Connector
 	wg                sync.WaitGroup
 	config            *config.Config
 }
@@ -40,7 +42,19 @@ func NewScanService(
 	timeoutCtrl *scanner.TimeoutController,
 	metrics *metrics.ScannerMetrics,
 	cfg *config.Config,
-) *ScanService {
+) (*ScanService, error) {
+	// 创建Redis连接器
+	redisConnector, err := redis.NewConnector(
+		context.Background(),
+		cfg.GetRedisAddr(),
+		cfg.GetRedisPassword(),
+		cfg.GetRedisDB(),
+		cfg.GetRedisPoolSize(),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create redis connector: %w", err)
+	}
+
 	// 创建任务状态更新器
 	taskStatusUpdater := NewTaskStatusUpdater(cfg.GetTaskApiBaseURL(), cfg.GetAuthToken())
 
@@ -68,8 +82,9 @@ func NewScanService(
 		timeoutCtrl:       timeoutCtrl,
 		metrics:           metrics,
 		taskStatusUpdater: taskStatusUpdater,
+		redisConnector:    redisConnector,
 		config:            cfg,
-	}
+	}, nil
 }
 
 // Start 启动扫描服务
@@ -136,6 +151,9 @@ func (s *ScanService) Stop(ctx context.Context) {
 	if s.resultPublisher != nil {
 		s.resultPublisher.Close()
 	}
+	if s.redisConnector != nil {
+		s.redisConnector.Close()
+	}
 	s.wg.Wait()
 }
 
@@ -146,6 +164,21 @@ func (s *ScanService) HandleMessage(ctx context.Context, message []byte) error {
 	if err := json.Unmarshal(message, &task); err != nil {
 		return fmt.Errorf("failed to unmarshal task: %w", err)
 	}
+
+	// 获取分布式锁
+	lockKey := fmt.Sprintf("task_lock:%s", task.TaskID)
+	distLock := redis.NewDistributedLock(ctx, s.redisConnector.GetClient(), lockKey, 10*time.Minute)
+
+	// 尝试获取锁
+	if err := distLock.Acquire(); err != nil {
+		if errors.Is(err, redis.ErrLockNotAcquired) {
+			logger.Logger.Info("Task already being processed by another instance",
+				zap.String("taskID", task.TaskID))
+			return nil // 静默返回，避免消息重试
+		}
+		return fmt.Errorf("failed to acquire lock: %w", err)
+	}
+	defer distLock.Release()
 
 	// 获取对应的扫描器
 	scanner, err := s.scannerFactory.GetScanner(task.ScanType)
@@ -159,7 +192,9 @@ func (s *ScanService) HandleMessage(ctx context.Context, message []byte) error {
 		return fmt.Errorf("failed to execute scan task: %w", err)
 	}
 
-	logger.Logger.Info("Scan task started", zap.String("taskID", taskID))
+	logger.Logger.Info("Scan task started",
+		zap.String("taskID", taskID),
+		zap.String("scanType", string(task.ScanType)))
 	return nil
 }
 
@@ -167,38 +202,3 @@ func (s *ScanService) HandleMessage(ctx context.Context, message []byte) error {
 var ProviderSet = wire.NewSet(
 	NewScanService,
 )
-
-func GetTaskPriority(taskID, authToken string) (int, error) {
-	// 创建HTTP客户端
-	client := &http.Client{Timeout: 10 * time.Second}
-
-	// 构建请求对象
-	url := fmt.Sprintf("http://localhost:8088/api/v1/tasks/%s", taskID)
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return 0, fmt.Errorf("创建请求失败: %w", err)
-	}
-
-	// 设置授权头[7,8](@ref)
-	req.Header.Set("Authorization", "Bearer "+authToken)
-
-	// 发送请求
-	resp, err := client.Do(req)
-	if err != nil {
-		return 0, fmt.Errorf("请求失败: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// 检查状态码
-	if resp.StatusCode != http.StatusOK {
-		return 0, fmt.Errorf("异常状态码: %d", resp.StatusCode)
-	}
-
-	// 解析JSON响应[4,5](@ref)
-	var task domain.Task
-	if err := json.NewDecoder(resp.Body).Decode(&task); err != nil {
-		return 0, fmt.Errorf("JSON解析失败: %w", err)
-	}
-
-	return int(task.Priority), nil
-}

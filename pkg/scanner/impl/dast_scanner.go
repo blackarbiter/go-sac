@@ -28,6 +28,7 @@ func NewDASTScanner(
 			MemoryMB: 2048,
 		}),
 		WithSecurityProfile(1001, 1001, true),
+		WithConcurrency(3, 50), // DAST扫描器默认最大并发3，队列大小50
 	}
 	baseOpts = append(baseOpts, opts...)
 
@@ -70,12 +71,9 @@ func (d *DASTScanner) Scan(ctx context.Context, task *domain.ScanTaskPayload) (*
 
 // AsyncExecute 实现TaskExecutor接口
 func (d *DASTScanner) AsyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (string, error) {
-	go func() {
-		_ = d.BaseScanner.ExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
-			return d.Scan(ctx, task)
-		})
-	}()
-	return task.TaskID, nil
+	return d.BaseScanner.AsyncExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
+		return d.Scan(ctx, task)
+	})
 }
 
 // Cancel 实现TaskExecutor接口

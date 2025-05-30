@@ -198,3 +198,23 @@ func (c *Config) GetTaskApiBaseURL() string {
 func (c *Config) GetAuthToken() string {
 	return "1234567890"
 }
+
+// GetRedisAddr 获取Redis地址
+func (c *Config) GetRedisAddr() string {
+	return fmt.Sprintf("%s:%d", c.Database.Redis.Host, c.Database.Redis.Port)
+}
+
+// GetRedisPassword 获取Redis密码
+func (c *Config) GetRedisPassword() string {
+	return c.Database.Redis.Password
+}
+
+// GetRedisDB 获取Redis数据库编号
+func (c *Config) GetRedisDB() int {
+	return c.Database.Redis.DB
+}
+
+// GetRedisPoolSize 获取Redis连接池大小
+func (c *Config) GetRedisPoolSize() int {
+	return 10 // 默认连接池大小
+}

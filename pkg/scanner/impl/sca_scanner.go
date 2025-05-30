@@ -29,6 +29,7 @@ func NewSCAScanner(
 			MemoryMB: 512,
 		}),
 		WithSecurityProfile(1001, 1001, true),
+		WithConcurrency(10, 200), // SCA扫描器默认最大并发10，队列大小200
 	}
 	baseOpts = append(baseOpts, opts...)
 
@@ -60,12 +61,9 @@ func (s *SCAScanner) Scan(ctx context.Context, task *domain.ScanTaskPayload) (*d
 
 // AsyncExecute 实现TaskExecutor接口
 func (s *SCAScanner) AsyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (string, error) {
-	go func() {
-		_ = s.BaseScanner.ExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
-			return s.Scan(ctx, task)
-		})
-	}()
-	return task.TaskID, nil
+	return s.BaseScanner.AsyncExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
+		return s.Scan(ctx, task)
+	})
 }
 
 // Cancel 实现TaskExecutor接口

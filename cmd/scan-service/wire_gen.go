@@ -25,7 +25,10 @@ func InitializeApplication(cfg *config.Config) (*Application, func(), error) {
 	connectionManager := provideConnectionManager(cfg)
 	scannerMetrics := provideMetrics()
 	timeoutController := provideTimeoutController(scannerMetrics)
-	scanService := service.NewScanService(connectionManager, timeoutController, scannerMetrics, cfg)
+	scanService, err := service.NewScanService(connectionManager, timeoutController, scannerMetrics, cfg)
+	if err != nil {
+		return nil, nil, err
+	}
 	application := &Application{
 		ScanService: scanService,
 	}

@@ -71,7 +71,7 @@ func (tc *TimeoutController) HandleTimeout(event TimeoutEvent) {
 
 	if err := executor.HealthCheck(); err != nil {
 		tc.metrics.RecordExecutorFailure(event.ExecutorType)
-		tc.circuitBreaker.RecordFailure()
+		tc.circuitBreaker.RecordFailure(TransientError)
 		return
 	}
 
@@ -118,7 +118,7 @@ func (tc *TimeoutController) handleCriticalTimeout(event TimeoutEvent) {
 		zap.Duration("elapsed", event.ElapsedTime),
 	)
 
-	tc.circuitBreaker.RecordFailure()
+	tc.circuitBreaker.RecordFailure(CriticalError)
 	tc.metrics.RecordCriticalTimeout(event.Task.ScanType)
 }
 

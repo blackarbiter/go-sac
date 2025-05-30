@@ -6,20 +6,31 @@ import (
 	"time"
 )
 
+// ErrorType 定义错误类型
+type ErrorType int
+
+const (
+	TransientError ErrorType = iota // 临时错误，如网络超时
+	CriticalError                   // 严重错误，如系统错误
+)
+
 // CircuitBreaker implements the circuit breaker pattern
 type CircuitBreaker struct {
-	failures     uint32
-	lastFailure  time.Time
-	threshold    uint32
-	resetTimeout time.Duration
-	mu           sync.RWMutex
+	transientFailures uint32
+	criticalFailures  uint32
+	lastFailure       time.Time
+	threshold         uint32
+	criticalThreshold uint32
+	resetTimeout      time.Duration
+	mu                sync.RWMutex
 }
 
 // NewCircuitBreaker creates a new circuit breaker
-func NewCircuitBreaker(threshold uint32, resetTimeout time.Duration) *CircuitBreaker {
+func NewCircuitBreaker(threshold, criticalThreshold uint32, resetTimeout time.Duration) *CircuitBreaker {
 	return &CircuitBreaker{
-		threshold:    threshold,
-		resetTimeout: resetTimeout,
+		threshold:         threshold,
+		criticalThreshold: criticalThreshold,
+		resetTimeout:      resetTimeout,
 	}
 }
 
@@ -28,8 +39,15 @@ func (cb *CircuitBreaker) IsOpen() bool {
 	cb.mu.RLock()
 	defer cb.mu.RUnlock()
 
-	if atomic.LoadUint32(&cb.failures) >= cb.threshold {
-		// Check if reset timeout has elapsed
+	// 检查严重错误是否超过阈值
+	if atomic.LoadUint32(&cb.criticalFailures) >= cb.criticalThreshold {
+		return true
+	}
+
+	// 检查总错误数是否超过阈值
+	totalFailures := atomic.LoadUint32(&cb.transientFailures) + atomic.LoadUint32(&cb.criticalFailures)
+	if totalFailures >= cb.threshold {
+		// 检查重置超时是否已过
 		if time.Since(cb.lastFailure) > cb.resetTimeout {
 			cb.reset()
 			return false
@@ -40,12 +58,17 @@ func (cb *CircuitBreaker) IsOpen() bool {
 }
 
 // RecordFailure records a failure and potentially opens the circuit
-func (cb *CircuitBreaker) RecordFailure() {
+func (cb *CircuitBreaker) RecordFailure(errType ErrorType) {
 	cb.mu.Lock()
 	defer cb.mu.Unlock()
 
-	atomic.AddUint32(&cb.failures, 1)
-	cb.lastFailure = time.Now()
+	switch errType {
+	case TransientError:
+		atomic.AddUint32(&cb.transientFailures, 1)
+	case CriticalError:
+		atomic.AddUint32(&cb.criticalFailures, 1)
+		cb.lastFailure = time.Now()
+	}
 }
 
 // RecordSuccess records a success and potentially closes the circuit
@@ -53,18 +76,20 @@ func (cb *CircuitBreaker) RecordSuccess() {
 	cb.mu.Lock()
 	defer cb.mu.Unlock()
 
-	atomic.StoreUint32(&cb.failures, 0)
+	atomic.StoreUint32(&cb.transientFailures, 0)
+	atomic.StoreUint32(&cb.criticalFailures, 0)
 }
 
 // reset resets the circuit breaker state
 func (cb *CircuitBreaker) reset() {
-	atomic.StoreUint32(&cb.failures, 0)
+	atomic.StoreUint32(&cb.transientFailures, 0)
+	atomic.StoreUint32(&cb.criticalFailures, 0)
 	cb.lastFailure = time.Time{}
 }
 
-// GetFailureCount returns the current failure count
-func (cb *CircuitBreaker) GetFailureCount() uint32 {
-	return atomic.LoadUint32(&cb.failures)
+// GetFailureCount returns the current failure counts
+func (cb *CircuitBreaker) GetFailureCount() (transient, critical uint32) {
+	return atomic.LoadUint32(&cb.transientFailures), atomic.LoadUint32(&cb.criticalFailures)
 }
 
 // GetLastFailureTime returns the time of the last failure
@@ -79,7 +104,12 @@ func (cb *CircuitBreaker) GetState() CircuitBreakerState {
 	cb.mu.RLock()
 	defer cb.mu.RUnlock()
 
-	if atomic.LoadUint32(&cb.failures) >= cb.threshold {
+	if atomic.LoadUint32(&cb.criticalFailures) >= cb.criticalThreshold {
+		return StateOpen
+	}
+
+	totalFailures := atomic.LoadUint32(&cb.transientFailures) + atomic.LoadUint32(&cb.criticalFailures)
+	if totalFailures >= cb.threshold {
 		if time.Since(cb.lastFailure) > cb.resetTimeout {
 			return StateHalfOpen
 		}
