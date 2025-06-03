@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"time"
 
+	"github.com/blackarbiter/go-sac/pkg/config"
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/scanner"
 	"go.uber.org/zap"
@@ -19,17 +20,19 @@ type SASTScanner struct {
 func NewSASTScanner(
 	timeoutCtrl *scanner.TimeoutController,
 	logger *zap.Logger,
+	config *config.Config,
 	opts ...BaseScannerOption,
 ) scanner.TaskExecutor {
 	s := &SASTScanner{}
+
+	// 从配置获取参数
+	resourceProfile, securityConfig, timeout := config.GetScannerConfig(domain.ScanTypeStaticCodeAnalysis)
+
 	baseOpts := []BaseScannerOption{
-		WithResourceProfile(scanner.ResourceProfile{
-			MinCPU:   1,
-			MaxCPU:   2,
-			MemoryMB: 1024,
-		}),
-		WithSecurityProfile(1001, 1001, true),
-		WithConcurrency(5, 100), // SAST扫描器默认最大并发5，队列大小100
+		WithResourceProfile(resourceProfile),
+		WithSecurityProfile(int(securityConfig.RunAsUser), int(securityConfig.RunAsGroup), !securityConfig.AllowPrivilegeEscalation),
+		WithTimeout(timeout, 30*time.Second),
+		WithCircuitBreaker(config),
 	}
 	baseOpts = append(baseOpts, opts...)
 
@@ -37,6 +40,7 @@ func NewSASTScanner(
 		domain.ScanTypeStaticCodeAnalysis,
 		timeoutCtrl,
 		logger,
+		config,
 		baseOpts...,
 	)
 	return s
@@ -48,12 +52,12 @@ func (s *SASTScanner) Scan(ctx context.Context, task *domain.ScanTaskPayload) (*
 	result := domain.NewScanResult(task.TaskID, domain.ScanTypeStaticCodeAnalysis, task.AssetID, task.AssetType)
 
 	// 执行代码扫描命令
-	cmd := exec.CommandContext(ctx, "ls", "-al", "./")
-	if err := s.ExecuteCommand(ctx, task, cmd); err != nil {
+	s.logger.Info("SAST execute", zap.Duration("within time ", s.defaultTimeout))
+	cmd := exec.CommandContext(ctx, "sleep", "3")
+	if err := s.ExecuteCommand(ctx, task, cmd, ""); err != nil {
 		result.SetFailed(err.Error())
 		return result, err
 	}
-	time.Sleep(5 * time.Second)
 	// 设置成功结果
 	result.SetSuccess(task.Options)
 	return result, nil
@@ -62,6 +66,13 @@ func (s *SASTScanner) Scan(ctx context.Context, task *domain.ScanTaskPayload) (*
 // AsyncExecute 实现TaskExecutor接口
 func (s *SASTScanner) AsyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (string, error) {
 	return s.BaseScanner.AsyncExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
+		return s.Scan(ctx, task)
+	})
+}
+
+// SyncExecute 实现 TaskExecutor 接口
+func (s *SASTScanner) SyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (*domain.ScanResult, error) {
+	return s.BaseScanner.ExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
 		return s.Scan(ctx, task)
 	})
 }

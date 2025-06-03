@@ -5,6 +5,8 @@ import (
 	"os/exec"
 	"time"
 
+	"github.com/blackarbiter/go-sac/pkg/config"
+
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/scanner"
 	"go.uber.org/zap"
@@ -19,17 +21,18 @@ type SCAScanner struct {
 func NewSCAScanner(
 	timeoutCtrl *scanner.TimeoutController,
 	logger *zap.Logger,
+	config *config.Config,
 	opts ...BaseScannerOption,
 ) scanner.TaskExecutor {
 	s := &SCAScanner{}
+
+	// 从配置获取参数
+	resourceProfile, securityConfig, timeout := config.GetScannerConfig(domain.ScanTypeSca)
 	baseOpts := []BaseScannerOption{
-		WithResourceProfile(scanner.ResourceProfile{
-			MinCPU:   1,
-			MaxCPU:   2,
-			MemoryMB: 512,
-		}),
-		WithSecurityProfile(1001, 1001, true),
-		WithConcurrency(10, 200), // SCA扫描器默认最大并发10，队列大小200
+		WithResourceProfile(resourceProfile),
+		WithSecurityProfile(int(securityConfig.RunAsUser), int(securityConfig.RunAsGroup), !securityConfig.AllowPrivilegeEscalation),
+		WithTimeout(timeout, 30*time.Second),
+		WithCircuitBreaker(config),
 	}
 	baseOpts = append(baseOpts, opts...)
 
@@ -37,6 +40,7 @@ func NewSCAScanner(
 		domain.ScanTypeSca,
 		timeoutCtrl,
 		logger,
+		config,
 		baseOpts...,
 	)
 	return s
@@ -48,12 +52,11 @@ func (s *SCAScanner) Scan(ctx context.Context, task *domain.ScanTaskPayload) (*d
 	result := domain.NewScanResult(task.TaskID, domain.ScanTypeSca, task.AssetID, task.AssetType)
 
 	// 执行目录扫描命令
-	cmd := exec.CommandContext(ctx, "ls", "-al", "./")
-	if err := s.ExecuteCommand(ctx, task, cmd); err != nil {
+	cmd := exec.CommandContext(ctx, "sleep", "5")
+	if err := s.ExecuteCommand(ctx, task, cmd, ""); err != nil {
 		result.SetFailed(err.Error())
 		return result, err
 	}
-	time.Sleep(5 * time.Second)
 	// 设置成功结果
 	result.SetSuccess(task.Options)
 	return result, nil
@@ -62,6 +65,13 @@ func (s *SCAScanner) Scan(ctx context.Context, task *domain.ScanTaskPayload) (*d
 // AsyncExecute 实现TaskExecutor接口
 func (s *SCAScanner) AsyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (string, error) {
 	return s.BaseScanner.AsyncExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
+		return s.Scan(ctx, task)
+	})
+}
+
+// SyncExecute 实现 TaskExecutor 接口
+func (s *SCAScanner) SyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (*domain.ScanResult, error) {
+	return s.BaseScanner.ExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
 		return s.Scan(ctx, task)
 	})
 }

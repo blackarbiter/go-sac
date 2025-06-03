@@ -27,6 +27,7 @@ type ResourceProfile struct {
 type TaskExecutor interface {
 	Meta() ExecutorMeta
 	AsyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (resultHandle string, err error)
+	SyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (*domain.ScanResult, error)
 	Cancel(handle string) error
 	GetStatus(handle string) (domain.TaskStatus, error)
 	HealthCheck() error
@@ -51,8 +52,7 @@ type ResourceQuota struct {
 
 type SecurityConfig struct {
 	RunAsUser                int64
-	ReadOnlyRootFs           bool
-	Privileged               bool
+	RunAsGroup               int64
 	AllowPrivilegeEscalation bool
 }
 

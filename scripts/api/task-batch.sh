@@ -7,8 +7,8 @@ for _ in {1..100}; do
         '{
             asset_id: "asset123",
             asset_type: "Domain",
-            scan_type: $st,
-            priority: 0,
+            scan_type: "SAST",
+            priority: 2,
             options: { depth: 3, timeout: 300 }
         }')
 

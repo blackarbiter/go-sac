@@ -2,6 +2,7 @@
 package unit_test
 
 import (
+	"github.com/blackarbiter/go-sac/pkg/domain"
 	"os"
 	"testing"
 
@@ -22,6 +23,12 @@ func TestLoadBaseConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to load config: %v", err) // 提前终止避免空指针
 	}
+	r1, r2, r3 := cfg.GetScannerConfig(domain.ScanTypeSca)
+	t.Logf("%v,%v,%v", r1, r2, r3)
+	g1, g2, g3 := cfg.GetCircuitBreakerConfig()
+	t.Logf("%v,%v,%v", g1, g2, g3)
+	h1, h2 := cfg.GetConcurrencyConfig()
+	t.Logf("%v,%v", h1, h2)
 
 	// 验证结果
 	assert.NoError(t, err)

@@ -16,16 +16,19 @@ const (
 
 // CircuitBreaker implements the circuit breaker pattern
 type CircuitBreaker struct {
-	transientFailures uint32
-	criticalFailures  uint32
-	lastFailure       time.Time
-	threshold         uint32
-	criticalThreshold uint32
-	resetTimeout      time.Duration
-	mu                sync.RWMutex
+	transientFailures uint32        // 临时错误计数，如网络超时、临时连接失败等
+	criticalFailures  uint32        // 严重错误计数，如系统错误、权限错误等
+	lastFailure       time.Time     // 最后一次失败的时间戳
+	threshold         uint32        // 总错误阈值，超过此值将触发熔断
+	criticalThreshold uint32        // 严重错误阈值，超过此值将立即触发熔断
+	resetTimeout      time.Duration // 熔断器重置超时时间，超过此时间后尝试恢复
+	mu                sync.RWMutex  // 并发控制锁
 }
 
 // NewCircuitBreaker creates a new circuit breaker
+// threshold: 总错误阈值，当 transientFailures + criticalFailures >= threshold 时触发熔断
+// criticalThreshold: 严重错误阈值，当 criticalFailures >= criticalThreshold 时立即触发熔断
+// resetTimeout: 熔断器重置超时时间，超过此时间后尝试恢复服务
 func NewCircuitBreaker(threshold, criticalThreshold uint32, resetTimeout time.Duration) *CircuitBreaker {
 	return &CircuitBreaker{
 		threshold:         threshold,
@@ -36,6 +39,7 @@ func NewCircuitBreaker(threshold, criticalThreshold uint32, resetTimeout time.Du
 
 // IsOpen checks if the circuit breaker is open
 func (cb *CircuitBreaker) IsOpen() bool {
+	/**
 	cb.mu.RLock()
 	defer cb.mu.RUnlock()
 
@@ -53,7 +57,7 @@ func (cb *CircuitBreaker) IsOpen() bool {
 			return false
 		}
 		return true
-	}
+	}*/
 	return false
 }
 

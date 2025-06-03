@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/blackarbiter/go-sac/pkg/domain"
+	"github.com/blackarbiter/go-sac/pkg/scanner"
 	"github.com/spf13/viper"
 )
 
@@ -18,6 +20,7 @@ type Config struct {
 	Server   ServerConfig   `yaml:"server"`
 	Logger   LoggerConfig   `yaml:"logger"`
 	Security SecurityConfig `yaml:"security"`
+	Scanner  ScannerConfig  `yaml:"scanner"`
 }
 
 type DatabaseConfig struct {
@@ -82,6 +85,60 @@ type LoggerConfig struct {
 type SecurityConfig struct {
 	JWTSecret string `yaml:"jwt_secret" mapstructure:"jwt_secret"`
 	AESKey    string `yaml:"aes_key" mapstructure:"aes_key"`
+}
+
+type ScannerConfig struct {
+	Concurrency struct {
+		MaxWorkers int `yaml:"max_workers" mapstructure:"max_workers"`
+		QueueSize  int `yaml:"queue_size" mapstructure:"queue_size"`
+	} `yaml:"concurrency" mapstructure:"concurrency"`
+
+	// 统一的熔断器配置
+	CircuitBreaker struct {
+		Threshold         uint32        `yaml:"threshold" mapstructure:"threshold"`                   // 总错误阈值
+		CriticalThreshold uint32        `yaml:"critical_threshold" mapstructure:"critical_threshold"` // 严重错误阈值
+		ResetTimeout      time.Duration `yaml:"reset_timeout" mapstructure:"reset_timeout"`           // 重置超时时间
+	} `yaml:"circuit_breaker" mapstructure:"circuit_breaker"`
+
+	SAST struct {
+		ResourceProfile struct {
+			MinCPU   int `yaml:"min_cpu" mapstructure:"min_cpu"`
+			MaxCPU   int `yaml:"max_cpu" mapstructure:"max_cpu"`
+			MemoryMB int `yaml:"memory_mb" mapstructure:"memory_mb"`
+		} `yaml:"resource_profile" mapstructure:"resource_profile"`
+		SecurityProfile struct {
+			RunAsUser  int  `yaml:"run_as_user" mapstructure:"run_as_user"`
+			RunAsGroup int  `yaml:"run_as_group" mapstructure:"run_as_group"`
+			NoNewPrivs bool `yaml:"no_new_privs" mapstructure:"no_new_privs"`
+		} `yaml:"security_profile" mapstructure:"security_profile"`
+		Timeout time.Duration `yaml:"timeout" mapstructure:"timeout"`
+	} `yaml:"sast" mapstructure:"sast"`
+	DAST struct {
+		ResourceProfile struct {
+			MinCPU   int `yaml:"min_cpu" mapstructure:"min_cpu"`
+			MaxCPU   int `yaml:"max_cpu" mapstructure:"max_cpu"`
+			MemoryMB int `yaml:"memory_mb" mapstructure:"memory_mb"`
+		} `yaml:"resource_profile" mapstructure:"resource_profile"`
+		SecurityProfile struct {
+			RunAsUser  int  `yaml:"run_as_user" mapstructure:"run_as_user"`
+			RunAsGroup int  `yaml:"run_as_group" mapstructure:"run_as_group"`
+			NoNewPrivs bool `yaml:"no_new_privs" mapstructure:"no_new_privs"`
+		} `yaml:"security_profile" mapstructure:"security_profile"`
+		Timeout time.Duration `yaml:"timeout" mapstructure:"timeout"`
+	} `yaml:"dast" mapstructure:"dast"`
+	SCA struct {
+		ResourceProfile struct {
+			MinCPU   int `yaml:"min_cpu" mapstructure:"min_cpu"`
+			MaxCPU   int `yaml:"max_cpu" mapstructure:"max_cpu"`
+			MemoryMB int `yaml:"memory_mb" mapstructure:"memory_mb"`
+		} `yaml:"resource_profile" mapstructure:"resource_profile"`
+		SecurityProfile struct {
+			RunAsUser  int  `yaml:"run_as_user" mapstructure:"run_as_user"`
+			RunAsGroup int  `yaml:"run_as_group" mapstructure:"run_as_group"`
+			NoNewPrivs bool `yaml:"no_new_privs" mapstructure:"no_new_privs"`
+		} `yaml:"security_profile" mapstructure:"security_profile"`
+		Timeout time.Duration `yaml:"timeout" mapstructure:"timeout"`
+	} `yaml:"sca" mapstructure:"sca"`
 }
 
 func validateConfig(cfg *Config) error {
@@ -217,4 +274,62 @@ func (c *Config) GetRedisDB() int {
 // GetRedisPoolSize 获取Redis连接池大小
 func (c *Config) GetRedisPoolSize() int {
 	return 10 // 默认连接池大小
+}
+
+// GetScannerConfig 获取扫描器配置
+func (c *Config) GetScannerConfig(scanType domain.ScanType) (scanner.ResourceProfile, scanner.SecurityConfig, time.Duration) {
+	switch scanType {
+	case domain.ScanTypeStaticCodeAnalysis:
+		return scanner.ResourceProfile{
+				MinCPU:   c.Scanner.SAST.ResourceProfile.MinCPU,
+				MaxCPU:   c.Scanner.SAST.ResourceProfile.MaxCPU,
+				MemoryMB: c.Scanner.SAST.ResourceProfile.MemoryMB,
+			}, scanner.SecurityConfig{
+				RunAsUser:                int64(c.Scanner.SAST.SecurityProfile.RunAsUser),
+				RunAsGroup:               int64(c.Scanner.SAST.SecurityProfile.RunAsGroup),
+				AllowPrivilegeEscalation: !c.Scanner.SAST.SecurityProfile.NoNewPrivs,
+			}, c.Scanner.SAST.Timeout
+	case domain.ScanTypeDast:
+		return scanner.ResourceProfile{
+				MinCPU:   c.Scanner.DAST.ResourceProfile.MinCPU,
+				MaxCPU:   c.Scanner.DAST.ResourceProfile.MaxCPU,
+				MemoryMB: c.Scanner.DAST.ResourceProfile.MemoryMB,
+			}, scanner.SecurityConfig{
+				RunAsUser:                int64(c.Scanner.DAST.SecurityProfile.RunAsUser),
+				RunAsGroup:               int64(c.Scanner.DAST.SecurityProfile.RunAsGroup),
+				AllowPrivilegeEscalation: !c.Scanner.DAST.SecurityProfile.NoNewPrivs,
+			}, c.Scanner.DAST.Timeout
+	case domain.ScanTypeSca:
+		return scanner.ResourceProfile{
+				MinCPU:   c.Scanner.SCA.ResourceProfile.MinCPU,
+				MaxCPU:   c.Scanner.SCA.ResourceProfile.MaxCPU,
+				MemoryMB: c.Scanner.SCA.ResourceProfile.MemoryMB,
+			}, scanner.SecurityConfig{
+				RunAsUser:                int64(c.Scanner.SCA.SecurityProfile.RunAsUser),
+				RunAsGroup:               int64(c.Scanner.SCA.SecurityProfile.RunAsGroup),
+				AllowPrivilegeEscalation: !c.Scanner.SCA.SecurityProfile.NoNewPrivs,
+			}, c.Scanner.SCA.Timeout
+	default:
+		return scanner.ResourceProfile{
+				MinCPU:   2,
+				MaxCPU:   4,
+				MemoryMB: 2048,
+			}, scanner.SecurityConfig{
+				RunAsUser:                int64(1001),
+				RunAsGroup:               int64(1001),
+				AllowPrivilegeEscalation: false,
+			}, 180 * time.Second
+	}
+}
+
+// GetCircuitBreakerConfig 获取熔断器配置
+func (c *Config) GetCircuitBreakerConfig() (uint32, uint32, time.Duration) {
+	return c.Scanner.CircuitBreaker.Threshold,
+		c.Scanner.CircuitBreaker.CriticalThreshold,
+		c.Scanner.CircuitBreaker.ResetTimeout
+}
+
+// GetConcurrencyConfig 获取全局并行配置文件
+func (c *Config) GetConcurrencyConfig() (int, int) {
+	return c.Scanner.Concurrency.MaxWorkers, c.Scanner.Concurrency.QueueSize
 }

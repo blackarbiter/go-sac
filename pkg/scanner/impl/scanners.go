@@ -1,6 +1,7 @@
 package scanner_impl
 
 import (
+	"github.com/blackarbiter/go-sac/pkg/config"
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/scanner"
 	"go.uber.org/zap"
@@ -12,6 +13,7 @@ func CreateDefaultScanners(
 	logger *zap.Logger,
 	metrics MetricsRecorder,
 	cgroup CgroupManager,
+	cfg *config.Config,
 ) map[domain.ScanType]scanner.TaskExecutor {
 	commonOpts := []BaseScannerOption{
 		WithMetricsRecorder(metrics),
@@ -19,8 +21,8 @@ func CreateDefaultScanners(
 	}
 
 	return map[domain.ScanType]scanner.TaskExecutor{
-		domain.ScanTypeStaticCodeAnalysis: NewSASTScanner(timeoutCtrl, logger, commonOpts...),
-		domain.ScanTypeDast:               NewDASTScanner(timeoutCtrl, logger, commonOpts...),
-		domain.ScanTypeSca:                NewSCAScanner(timeoutCtrl, logger, commonOpts...),
+		domain.ScanTypeStaticCodeAnalysis: NewSASTScanner(timeoutCtrl, logger, cfg, commonOpts...),
+		domain.ScanTypeDast:               NewDASTScanner(timeoutCtrl, logger, cfg, commonOpts...),
+		domain.ScanTypeSca:                NewSCAScanner(timeoutCtrl, logger, cfg, commonOpts...),
 	}
 }

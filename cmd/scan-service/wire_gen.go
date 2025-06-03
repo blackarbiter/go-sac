@@ -7,7 +7,9 @@
 package main
 
 import (
+	"context"
 	"github.com/blackarbiter/go-sac/internal/scan/service"
+	"github.com/blackarbiter/go-sac/pkg/cache/redis"
 	"github.com/blackarbiter/go-sac/pkg/config"
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/logger"
@@ -25,7 +27,13 @@ func InitializeApplication(cfg *config.Config) (*Application, func(), error) {
 	connectionManager := provideConnectionManager(cfg)
 	scannerMetrics := provideMetrics()
 	timeoutController := provideTimeoutController(scannerMetrics)
-	scanService, err := service.NewScanService(connectionManager, timeoutController, scannerMetrics, cfg)
+	circuitBreaker := provideCircuitBreaker(cfg)
+	scannerFactoryImpl := provideScannerFactory(timeoutController, scannerMetrics, circuitBreaker, cfg)
+	connector, err := provideRedisConnector(cfg)
+	if err != nil {
+		return nil, nil, err
+	}
+	scanService, err := service.NewScanService(connectionManager, timeoutController, scannerMetrics, cfg, scannerFactoryImpl, connector)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -47,7 +55,9 @@ var (
 	// ApplicationSet 是整个应用的依赖集合
 	ApplicationSet = wire.NewSet(wire.Struct(new(Application), "*"), service.ProviderSet, provideConnectionManager,
 		provideMetrics,
-		provideTimeoutController, wire.Bind(new(scanner.ScannerFactory), new(*scanner.ScannerFactoryImpl)), provideScannerFactory,
+		provideTimeoutController,
+		provideRedisConnector,
+		provideCircuitBreaker, wire.Bind(new(scanner.ScannerFactory), new(*scanner.ScannerFactoryImpl)), provideScannerFactory,
 	)
 )
 
@@ -58,7 +68,10 @@ func provideConnectionManager(cfg *config.Config) *rabbitmq.ConnectionManager {
 
 // provideMetrics 提供指标收集器
 func provideMetrics() *metrics.ScannerMetrics {
-	return metrics.NewScannerMetrics()
+	metrics2 := metrics.NewScannerMetrics()
+	metrics2.
+		Register()
+	return metrics2
 }
 
 // provideTimeoutController 提供超时控制器
@@ -66,13 +79,29 @@ func provideTimeoutController(metrics2 *metrics.ScannerMetrics) *scanner.Timeout
 	return scanner.NewTimeoutController(metrics2)
 }
 
+// provideRedisConnector 提供 Redis 连接器
+func provideRedisConnector(cfg *config.Config) (*redis.Connector, error) {
+	return redis.NewConnector(context.Background(), cfg.GetRedisAddr(),
+		cfg.GetRedisPassword(),
+		cfg.GetRedisDB(),
+		cfg.GetRedisPoolSize(),
+	)
+}
+
+func provideCircuitBreaker(cfg *config.Config) *scanner.CircuitBreaker {
+	threshold, criticalThreshold, resetTimeout := cfg.GetCircuitBreakerConfig()
+	return scanner.NewCircuitBreaker(threshold, criticalThreshold, resetTimeout)
+}
+
 // provideScannerFactory provides a scanner factory with default scanners
 func provideScannerFactory(
 	timeoutCtrl *scanner.TimeoutController, metrics2 *metrics.ScannerMetrics,
+	circuitBreaker *scanner.CircuitBreaker,
+	cfg *config.Config,
 ) *scanner.ScannerFactoryImpl {
 	return scanner.NewScannerFactory(
 		func() map[domain.ScanType]scanner.TaskExecutor {
-			return scanner_impl.CreateDefaultScanners(timeoutCtrl, logger.Logger, metrics2, nil)
-		},
+			return scanner_impl.CreateDefaultScanners(timeoutCtrl, logger.Logger, metrics2, nil, cfg)
+		}, metrics2, circuitBreaker,
 	)
 }

@@ -3,7 +3,6 @@ package scanner
 import (
 	"fmt"
 	"sync"
-	"time"
 
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/logger"
@@ -33,14 +32,11 @@ type ScannerFactoryImpl struct {
 }
 
 // NewScannerFactory creates a new scanner factory
-func NewScannerFactory(createScanners func() map[domain.ScanType]TaskExecutor) *ScannerFactoryImpl {
-	metrics := metrics.NewScannerMetrics()
-	metrics.Register()
-
+func NewScannerFactory(createScanners func() map[domain.ScanType]TaskExecutor, metrics *metrics.ScannerMetrics, circuitBreaker *CircuitBreaker) *ScannerFactoryImpl {
 	return &ScannerFactoryImpl{
 		scanners:       createScanners(),
 		metrics:        metrics,
-		circuitBreaker: NewCircuitBreaker(5, 3, 30*time.Second),
+		circuitBreaker: circuitBreaker,
 		logger:         logger.Logger,
 	}
 }

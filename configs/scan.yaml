@@ -6,3 +6,47 @@ server:
     port: 8089  # scan服务使用8089端口
   grpc:
     port: 50052
+
+scanner:
+  # 全局并行配置
+  concurrency:
+    max_workers: 2
+    queue_size: 3
+  # 统一的熔断器配置
+  circuit_breaker:
+    threshold: 5          # 总错误阈值
+    critical_threshold: 3 # 严重错误阈值
+    reset_timeout: 5m     # 重置超时时间
+
+  sast:
+    resource_profile:
+      min_cpu: 2
+      max_cpu: 4
+      memory_mb: 4096
+    security_profile:
+      run_as_user: 1001
+      run_as_group: 1001
+      no_new_privs: true
+    timeout: 10s
+
+  dast:
+    resource_profile:
+      min_cpu: 2
+      max_cpu: 4
+      memory_mb: 2048
+    security_profile:
+      run_as_user: 1001
+      run_as_group: 1001
+      no_new_privs: true
+    timeout: 600s
+
+  sca:
+    resource_profile:
+      min_cpu: 2
+      max_cpu: 4
+      memory_mb: 2048
+    security_profile:
+      run_as_user: 1001
+      run_as_group: 1001
+      no_new_privs: true
+    timeout: 180s

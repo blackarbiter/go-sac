@@ -3,17 +3,19 @@ package scanner_impl
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
 	"os/signal"
 	"runtime"
-	"runtime/debug"
 	"strconv"
 	"strings"
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/blackarbiter/go-sac/pkg/config"
 
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/scanner"
@@ -32,22 +34,21 @@ type ResultPublisher interface {
 
 // BaseScanner provides common functionality for all scanners
 type BaseScanner struct {
-	scanType          domain.ScanType
-	timeoutCtrl       *scanner.TimeoutController
-	logger            *zap.Logger
-	metricsRecorder   MetricsRecorder
-	cgroupManager     CgroupManager
-	securityProfile   SecurityProfile
-	processManager    processManager
-	meta              scanner.ExecutorMeta
-	mu                sync.RWMutex
-	taskStatusUpdater TaskStatusUpdater
-	resultPublisher   ResultPublisher
-	workerPool        chan struct{}           // 协程池控制
-	taskQueue         chan func()             // 任务队列
-	queueSize         int                     // 队列大小
-	maxConcurrency    int                     // 最大并发数
-	circuitBreaker    *scanner.CircuitBreaker // 熔断器
+	scanType           domain.ScanType
+	timeoutCtrl        *scanner.TimeoutController
+	logger             *zap.Logger
+	metricsRecorder    MetricsRecorder
+	cgroupManager      CgroupManager
+	securityProfile    SecurityProfile
+	processManager     processManager
+	meta               scanner.ExecutorMeta
+	mu                 sync.RWMutex
+	taskStatusUpdater  TaskStatusUpdater
+	resultPublisher    ResultPublisher
+	circuitBreaker     *scanner.CircuitBreaker // 熔断器
+	defaultTimeout     time.Duration           // 默认超时时间
+	gracefulStopPeriod time.Duration           // 优雅停止时间
+	resourceProfile    scanner.ResourceProfile
 }
 
 type BaseScannerOption func(*BaseScanner)
@@ -73,15 +74,11 @@ type CgroupManager interface {
 	Cleanup() error
 }
 
-const (
-	defaultTimeout     = 5 * time.Minute
-	gracefulStopPeriod = 30 * time.Second
-)
-
 func NewBaseScanner(
 	scanType domain.ScanType,
 	timeoutCtrl *scanner.TimeoutController,
 	logger *zap.Logger,
+	config *config.Config,
 	opts ...BaseScannerOption,
 ) *BaseScanner {
 	bs := &BaseScanner{
@@ -97,77 +94,24 @@ func NewBaseScanner(
 			SupportedTypes:  []domain.ScanType{scanType},
 			ResourceProfile: scanner.ResourceProfile{MinCPU: 1, MaxCPU: 2, MemoryMB: 512},
 		},
-		// 默认配置
-		queueSize:      1000,                                           // 默认队列大小
-		maxConcurrency: 10,                                             // 默认最大并发数
-		circuitBreaker: scanner.NewCircuitBreaker(5, 3, 5*time.Minute), // 默认熔断器配置
+		defaultTimeout:     5 * time.Minute,  // 默认超时时间
+		gracefulStopPeriod: 30 * time.Second, // 默认优雅停止时间
 	}
 
 	for _, opt := range opts {
 		opt(bs)
 	}
 
-	// 初始化工作协程池和任务队列
-	bs.workerPool = make(chan struct{}, bs.maxConcurrency)
-	bs.taskQueue = make(chan func(), bs.queueSize)
-
-	// 启动工作协程池
-	go bs.startWorkerPool()
-
 	bs.setupSignalHandling()
 	return bs
 }
 
-// startWorkerPool 启动工作协程池
-func (s *BaseScanner) startWorkerPool() {
-	for task := range s.taskQueue {
-		s.workerPool <- struct{}{} // 获取令牌
-		go func(t func()) {
-			defer func() {
-				<-s.workerPool // 释放令牌
-				if r := recover(); r != nil {
-					s.logger.Error("worker panic recovered",
-						zap.Any("panic", r),
-						zap.String("stack", string(debug.Stack())))
-				}
-			}()
-			t()
-		}(task)
-	}
-}
-
-// WithConcurrency 设置并发控制选项
-func WithConcurrency(maxConcurrency, queueSize int) BaseScannerOption {
-	return func(bs *BaseScanner) {
-		if maxConcurrency > 0 {
-			bs.maxConcurrency = maxConcurrency
-		}
-		if queueSize > 0 {
-			bs.queueSize = queueSize
-		}
-	}
-}
-
 // AsyncExecuteWithResult 异步执行带结果的扫描任务
 func (s *BaseScanner) AsyncExecuteWithResult(ctx context.Context, task *domain.ScanTaskPayload, scanFunc func(context.Context) (*domain.ScanResult, error)) (string, error) {
-	select {
-	case s.taskQueue <- func() {
-		_ = s.ExecuteWithResult(ctx, task, scanFunc)
-	}:
-		return task.TaskID, nil
-	default:
-		return "", fmt.Errorf("task queue is full, taskID: %s", task.TaskID)
-	}
-}
-
-// GetQueueStats 获取队列统计信息
-func (s *BaseScanner) GetQueueStats() (int, int) {
-	return len(s.taskQueue), cap(s.taskQueue)
-}
-
-// GetWorkerStats 获取工作协程统计信息
-func (s *BaseScanner) GetWorkerStats() (int, int) {
-	return len(s.workerPool), cap(s.workerPool)
+	go func() {
+		_, _ = s.ExecuteWithResult(ctx, task, scanFunc)
+	}()
+	return task.TaskID, nil
 }
 
 // classifyError 分类错误类型
@@ -175,9 +119,9 @@ func (s *BaseScanner) classifyError(err error) (string, scanner.ErrorType) {
 	switch {
 	case err == nil:
 		return "success", scanner.TransientError
-	case err == context.DeadlineExceeded:
+	case errors.Is(err, context.DeadlineExceeded):
 		return "timeout", scanner.TransientError
-	case err == context.Canceled:
+	case errors.Is(err, context.Canceled):
 		return "canceled", scanner.TransientError
 	case strings.Contains(err.Error(), "permission denied"):
 		return "permission_denied", scanner.CriticalError
@@ -189,7 +133,7 @@ func (s *BaseScanner) classifyError(err error) (string, scanner.ErrorType) {
 }
 
 // ExecuteCommand executes a command with proper process management and resource control
-func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskPayload, cmd *exec.Cmd) error {
+func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskPayload, cmd *exec.Cmd, tag string) error {
 	// 检查熔断器状态
 	if s.circuitBreaker.IsOpen() {
 		return fmt.Errorf("circuit breaker is open, task rejected")
@@ -197,13 +141,15 @@ func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskP
 
 	// 1. 准备执行环境
 	execID := fmt.Sprintf("%s-%d", task.TaskID, time.Now().UnixNano())
-	s.logger.Info("starting command execution",
-		zap.String("task_id", task.TaskID),
-		zap.String("exec_id", execID),
-		zap.Strings("command", cmd.Args))
+	if !strings.EqualFold("healthCheck", tag) {
+		s.logger.Info("starting command execution",
+			zap.String("task_id", task.TaskID),
+			zap.String("exec_id", execID),
+			zap.Strings("command", cmd.Args))
+	}
 
 	// 2. 设置进程属性
-	s.setProcessAttributes(cmd)
+	//s.setProcessAttributes(cmd)
 
 	// 3. 注册进程
 	s.processManager.activeProcesses.Store(execID, cmd)
@@ -235,7 +181,7 @@ func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskP
 	}
 
 	// 6. 创建带超时的上下文
-	timeoutCtx, cancel := context.WithTimeout(ctx, defaultTimeout)
+	timeoutCtx, cancel := context.WithTimeout(ctx, s.defaultTimeout)
 	defer cancel()
 
 	// 7. 异步等待进程结束
@@ -264,7 +210,7 @@ func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskP
 		s.logger.Warn("command execution timeout",
 			zap.String("task_id", task.TaskID),
 			zap.String("exec_id", execID),
-			zap.Duration("timeout", defaultTimeout))
+			zap.Duration("timeout", s.defaultTimeout))
 
 		s.circuitBreaker.RecordFailure(scanner.TransientError)
 
@@ -272,7 +218,7 @@ func (s *BaseScanner) ExecuteCommand(ctx context.Context, task *domain.ScanTaskP
 		s.KillProcessGroup(cmd, false)
 
 		// 等待进程结束或超时
-		gracefulCtx, cancel := context.WithTimeout(context.Background(), gracefulStopPeriod)
+		gracefulCtx, cancel := context.WithTimeout(context.Background(), s.gracefulStopPeriod)
 		defer cancel()
 
 		select {
@@ -308,6 +254,19 @@ func (s *BaseScanner) KillProcessGroup(cmd *exec.Cmd, force bool) {
 	}
 
 	pid := cmd.Process.Pid
+
+	// 检查进程是否已退出
+	if cmd.ProcessState != nil && cmd.ProcessState.Exited() {
+		s.logger.Debug("process already exited", zap.Int("pid", pid))
+		return
+	}
+
+	// 实时检查进程是否存在
+	if process, err := os.FindProcess(pid); err != nil || process == nil {
+		s.logger.Debug("process not found", zap.Int("pid", pid))
+		return
+	}
+
 	s.logger.Info("terminating process group",
 		zap.Int("pid", pid),
 		zap.Bool("force", force))
@@ -318,19 +277,52 @@ func (s *BaseScanner) KillProcessGroup(cmd *exec.Cmd, force bool) {
 	default:
 		s.killUnixProcess(pid, force)
 	}
+
+	// 确保进程状态更新
+	if cmd.ProcessState == nil {
+		if _, err := cmd.Process.Wait(); err != nil {
+			s.logger.Debug("process wait result",
+				zap.Int("pid", pid),
+				zap.Error(err))
+		}
+	}
 }
 
 func (s *BaseScanner) killUnixProcess(pid int, force bool) {
-	sig := syscall.SIGTERM
-	if force {
-		sig = syscall.SIGKILL
+	// 尝试终止整个进程组
+	if err := syscall.Kill(-pid, 0); err == nil {
+		sig := syscall.SIGTERM
+		if force {
+			sig = syscall.SIGKILL
+		}
+
+		if err := syscall.Kill(-pid, sig); err != nil && !errors.Is(err, syscall.ESRCH) {
+			s.logger.Error("kill process group failed",
+				zap.Int("pid", pid),
+				zap.Error(err))
+		}
+		return
 	}
 
-	// 终止整个进程组
-	if err := syscall.Kill(-pid, sig); err != nil {
-		s.logger.Error("kill process group failed",
-			zap.Int("pid", pid),
-			zap.Error(err))
+	// 进程组不存在，尝试终止单个进程
+	if err := syscall.Kill(pid, 0); err == nil {
+		sig := syscall.SIGTERM
+		if force {
+			sig = syscall.SIGKILL
+		}
+
+		if err := syscall.Kill(pid, sig); err != nil && !errors.Is(err, syscall.ESRCH) {
+			s.logger.Error("kill process failed",
+				zap.Int("pid", pid),
+				zap.Error(err))
+		}
+	} else {
+		s.logger.Debug("process not found", zap.Int("pid", pid))
+	}
+
+	// 处理僵尸进程
+	if _, err := syscall.Wait4(pid, nil, syscall.WNOHANG, nil); err != nil {
+		s.logger.Debug("reaped zombie process", zap.Int("pid", pid))
 	}
 }
 
@@ -367,18 +359,41 @@ func (s *BaseScanner) setupSignalHandling() {
 }
 
 func (s *BaseScanner) cleanupProcesses() {
+	var wg sync.WaitGroup
+	var activeCount int
+
+	// 创建进程快照避免并发修改
 	s.processManager.activeProcesses.Range(func(key, value interface{}) bool {
-		if cmd, ok := value.(*exec.Cmd); ok {
-			s.KillProcessGroup(cmd, true)
+		if cmd, ok := value.(*exec.Cmd); ok && cmd.Process != nil {
+			activeCount++
+			wg.Add(1)
+			go func(c *exec.Cmd) {
+				defer wg.Done()
+				s.KillProcessGroup(c, true)
+			}(cmd)
 		}
 		return true
 	})
 
-	if s.cgroupManager != nil {
-		if err := s.cgroupManager.Cleanup(); err != nil {
-			s.logger.Error("cgroup cleanup failed", zap.Error(err))
-		}
+	s.logger.Info("cleaning up processes",
+		zap.Int("count", activeCount))
+
+	// 等待所有终止操作完成
+	done := make(chan struct{})
+	go func() {
+		wg.Wait()
+		close(done)
+	}()
+
+	select {
+	case <-done:
+		s.logger.Debug("all processes cleaned up")
+	case <-time.After(5 * time.Second):
+		s.logger.Warn("process cleanup timed out")
 	}
+
+	// 清理后重置活动进程表
+	s.processManager.activeProcesses = sync.Map{}
 }
 
 // setProcessAttributes is implemented in platform-specific files
@@ -389,7 +404,9 @@ func (s *BaseScanner) setProcessAttributes(cmd *exec.Cmd) {
 	// Unix系统设置进程组
 	if runtime.GOOS != "windows" {
 		cmd.SysProcAttr.Setpgid = true
-		cmd.SysProcAttr.Pgid = 0
+		// 设置进程组ID为父进程PID
+		// 确保整个进程组能被正确终止
+		cmd.SysProcAttr.Pgid = syscall.Getpid()
 	}
 
 	// 安全相关设置
@@ -462,7 +479,7 @@ func (s *BaseScanner) HealthCheck() error {
 
 	// 检查进程清理能力
 	testCmd := exec.Command("sleep", "0")
-	if err := s.ExecuteCommand(context.Background(), &domain.ScanTaskPayload{}, testCmd); err != nil {
+	if err := s.ExecuteCommand(context.Background(), &domain.ScanTaskPayload{}, testCmd, "healthCheck"); err != nil {
 		return fmt.Errorf("process execution test failed: %w", err)
 	}
 
@@ -473,6 +490,7 @@ func (s *BaseScanner) HealthCheck() error {
 func WithResourceProfile(rp scanner.ResourceProfile) BaseScannerOption {
 	return func(bs *BaseScanner) {
 		bs.meta.ResourceProfile = rp
+		bs.resourceProfile = rp
 	}
 }
 
@@ -502,7 +520,8 @@ func WithMetricsRecorder(mr MetricsRecorder) BaseScannerOption {
 }
 
 // WithCircuitBreaker 设置熔断器配置
-func WithCircuitBreaker(threshold, criticalThreshold uint32, resetTimeout time.Duration) BaseScannerOption {
+func WithCircuitBreaker(config *config.Config) BaseScannerOption {
+	threshold, criticalThreshold, resetTimeout := config.GetCircuitBreakerConfig()
 	return func(bs *BaseScanner) {
 		bs.circuitBreaker = scanner.NewCircuitBreaker(threshold, criticalThreshold, resetTimeout)
 	}
@@ -517,7 +536,7 @@ func (s *BaseScanner) ExecuteWithTimeout(ctx context.Context, task *domain.ScanT
 		zap.String("exec_id", execID))
 
 	// 2. 创建带超时的上下文
-	timeoutCtx, cancel := context.WithTimeout(ctx, defaultTimeout)
+	timeoutCtx, cancel := context.WithTimeout(ctx, s.defaultTimeout)
 	defer cancel()
 
 	// 3. 创建结果通道
@@ -541,7 +560,7 @@ func (s *BaseScanner) ExecuteWithTimeout(ctx context.Context, task *domain.ScanT
 		s.logger.Warn("task execution timeout",
 			zap.String("task_id", task.TaskID),
 			zap.String("exec_id", execID),
-			zap.Duration("timeout", defaultTimeout))
+			zap.Duration("timeout", s.defaultTimeout))
 		s.recordTaskMetrics(task, timeoutCtx.Err(), time.Since(startTime))
 		return timeoutCtx.Err()
 
@@ -588,10 +607,10 @@ func (s *BaseScanner) recordTaskMetrics(task *domain.ScanTaskPayload, err error,
 }
 
 // ExecuteWithResult 执行扫描任务并处理结果
-func (b *BaseScanner) ExecuteWithResult(ctx context.Context, task *domain.ScanTaskPayload, scanFunc func(context.Context) (*domain.ScanResult, error)) error {
+func (b *BaseScanner) ExecuteWithResult(ctx context.Context, task *domain.ScanTaskPayload, scanFunc func(context.Context) (*domain.ScanResult, error)) (*domain.ScanResult, error) {
 	// 更新任务状态为运行中
 	if err := b.UpdateTaskStatus(ctx, task.TaskID, domain.TaskStatusRunning); err != nil {
-		return fmt.Errorf("failed to update task status: %w", err)
+		return nil, fmt.Errorf("failed to update task status: %w", err)
 	}
 
 	// 执行扫描任务
@@ -599,20 +618,20 @@ func (b *BaseScanner) ExecuteWithResult(ctx context.Context, task *domain.ScanTa
 	if err != nil {
 		// 更新任务状态为失败
 		_ = b.UpdateTaskStatus(ctx, task.TaskID, domain.TaskStatusFailed)
-		return fmt.Errorf("scan failed: %w", err)
+		return nil, fmt.Errorf("scan failed: %w", err)
 	}
 
 	// 更新任务状态为完成
 	if err := b.UpdateTaskStatus(ctx, task.TaskID, domain.TaskStatusCompleted); err != nil {
-		return fmt.Errorf("failed to update task status: %w", err)
+		return nil, fmt.Errorf("failed to update task status: %w", err)
 	}
 
 	// 发布扫描结果
 	if err := b.PublishScanResult(ctx, result); err != nil {
-		return fmt.Errorf("failed to publish scan result: %w", err)
+		return nil, fmt.Errorf("failed to publish scan result: %w", err)
 	}
 
-	return nil
+	return result, nil
 }
 
 // UpdateTaskStatus 更新任务状态
@@ -643,4 +662,12 @@ func (b *BaseScanner) SetTaskStatusUpdater(updater TaskStatusUpdater) {
 // SetResultPublisher 设置结果发布器
 func (b *BaseScanner) SetResultPublisher(publisher ResultPublisher) {
 	b.resultPublisher = publisher
+}
+
+// WithTimeout 设置超时选项
+func WithTimeout(defaultTimeout, gracefulStopPeriod time.Duration) BaseScannerOption {
+	return func(bs *BaseScanner) {
+		bs.defaultTimeout = defaultTimeout
+		bs.gracefulStopPeriod = gracefulStopPeriod
+	}
 }

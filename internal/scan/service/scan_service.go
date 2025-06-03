@@ -3,14 +3,17 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"strconv"
 	"sync"
 	"time"
+
+	"errors"
 
 	"github.com/blackarbiter/go-sac/pkg/cache/redis"
 	"github.com/blackarbiter/go-sac/pkg/config"
 	"github.com/blackarbiter/go-sac/pkg/domain"
+	sac_errors "github.com/blackarbiter/go-sac/pkg/errors"
 	"github.com/blackarbiter/go-sac/pkg/logger"
 	"github.com/blackarbiter/go-sac/pkg/metrics"
 	"github.com/blackarbiter/go-sac/pkg/mq/rabbitmq"
@@ -18,7 +21,6 @@ import (
 	scanner_impl "github.com/blackarbiter/go-sac/pkg/scanner/impl"
 	"github.com/blackarbiter/go-sac/pkg/service"
 	"github.com/google/wire"
-	amqp "github.com/rabbitmq/amqp091-go"
 	"go.uber.org/zap"
 )
 
@@ -34,6 +36,11 @@ type ScanService struct {
 	redisConnector    *redis.Connector
 	wg                sync.WaitGroup
 	config            *config.Config
+	globalWorkerPool  chan struct{}        // 全局协程池
+	globalTaskQueue   chan func()          // 全局任务队列
+	maxConcurrency    int                  // 全局最大并发数
+	queueSize         int                  // 全局队列大小
+	state             *service.SystemState // 系统状态管理器
 }
 
 // NewScanService 创建扫描服务
@@ -42,49 +49,67 @@ func NewScanService(
 	timeoutCtrl *scanner.TimeoutController,
 	metrics *metrics.ScannerMetrics,
 	cfg *config.Config,
+	scannerFactory scanner.ScannerFactory,
+	redisConnector *redis.Connector,
 ) (*ScanService, error) {
-	// 创建Redis连接器
-	redisConnector, err := redis.NewConnector(
-		context.Background(),
-		cfg.GetRedisAddr(),
-		cfg.GetRedisPassword(),
-		cfg.GetRedisDB(),
-		cfg.GetRedisPoolSize(),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create redis connector: %w", err)
-	}
-
 	// 创建任务状态更新器
 	taskStatusUpdater := NewTaskStatusUpdater(cfg.GetTaskApiBaseURL(), cfg.GetAuthToken())
 
-	// 创建扫描器工厂
-	factory := scanner.NewScannerFactory(
-		func() map[domain.ScanType]scanner.TaskExecutor {
-			scanners := scanner_impl.CreateDefaultScanners(timeoutCtrl, logger.Logger, metrics, nil)
-			// 为每个扫描器设置任务状态更新器和结果发布器
-			for _, scanner := range scanners {
-				if baseScanner, ok := scanner.(interface {
-					SetTaskStatusUpdater(scanner_impl.TaskStatusUpdater)
-					SetResultPublisher(scanner_impl.ResultPublisher)
-				}); ok {
-					baseScanner.SetTaskStatusUpdater(taskStatusUpdater)
-					baseScanner.SetResultPublisher(NewResultPublisher(nil)) // 将在Start方法中设置
-				}
-			}
-			return scanners
-		},
-	)
+	// 为每个扫描器设置任务状态更新器和结果发布器
+	scanners := scannerFactory.GetAllScanners()
+	for _, scanner := range scanners {
+		if baseScanner, ok := scanner.(interface {
+			SetTaskStatusUpdater(scanner_impl.TaskStatusUpdater)
+			SetResultPublisher(scanner_impl.ResultPublisher)
+		}); ok {
+			baseScanner.SetTaskStatusUpdater(taskStatusUpdater)
+			baseScanner.SetResultPublisher(NewResultPublisher(nil)) // 将在Start方法中设置
+		}
+	}
 
-	return &ScanService{
+	maxWorkers, queueSize := cfg.GetConcurrencyConfig()
+
+	ss := &ScanService{
 		connManager:       connManager,
-		scannerFactory:    factory,
+		scannerFactory:    scannerFactory,
 		timeoutCtrl:       timeoutCtrl,
 		metrics:           metrics,
 		taskStatusUpdater: taskStatusUpdater,
 		redisConnector:    redisConnector,
 		config:            cfg,
-	}, nil
+		maxConcurrency:    maxWorkers,
+		queueSize:         queueSize,
+		globalWorkerPool:  make(chan struct{}, maxWorkers),
+		globalTaskQueue:   make(chan func(), queueSize),
+		state:             service.NewSystemState(),
+	}
+	go ss.startGlobalWorkerPool()
+
+	return ss, nil
+}
+
+// 启动全局工作池
+func (s *ScanService) startGlobalWorkerPool() {
+	for task := range s.globalTaskQueue {
+		// 获取worker槽位
+		s.globalWorkerPool <- struct{}{}
+
+		go func(t func()) {
+			defer func() {
+				// 释放worker槽位
+				<-s.globalWorkerPool
+
+				// 背压解除检查（保守策略）
+				currentLen := len(s.globalTaskQueue)
+				logger.Logger.Info("Current task queue, ", zap.String("length", strconv.Itoa(currentLen)))
+				if currentLen <= s.queueSize/2 {
+					s.state.ReleaseBackpressure()
+				}
+			}()
+
+			t() // 执行任务
+		}(task)
+	}
 }
 
 // Start 启动扫描服务
@@ -92,19 +117,19 @@ func (s *ScanService) Start(ctx context.Context) error {
 	// 获取连接
 	conn, err := s.connManager.GetConnection()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get connection: %w", err)
 	}
 
 	// 创建消费者
 	s.scanConsumer, err = rabbitmq.NewScanConsumer(conn)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to create scan consumer: %w", err)
 	}
 
 	// 创建结果发布者
 	s.resultPublisher, err = rabbitmq.NewResultPublisher(conn)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to create result publisher: %w", err)
 	}
 
 	// 更新所有扫描器的结果发布器
@@ -118,28 +143,25 @@ func (s *ScanService) Start(ctx context.Context) error {
 	}
 
 	// 创建带缓冲的通道（大小根据吞吐量配置）
-	scheduler := &service.PriorityScheduler{
-		HighPriorityChan: make(chan amqp.Delivery, 1000),
-		MedPriorityChan:  make(chan amqp.Delivery, 500),
-		LowPriorityChan:  make(chan amqp.Delivery, 200),
-		StopChan:         make(chan struct{}),
-		Handler:          s,
-	}
+	scheduler := service.NewPriorityScheduler(s, s.state)
+	// 将scheduler传递给消费者
+	s.scanConsumer.SetScheduler(scheduler)
 
-	// 启动统一消费者（替换原有的三个独立消费者）
+	// 启动统一消费者
 	s.wg.Add(1)
 	go func() {
 		defer s.wg.Done()
-		scheduler.Start(ctx) // 核心调度逻辑
+		scheduler.Start(ctx)
 	}()
 
-	// 启动队列监听协程（向调度器填充消息）
+	// 启动队列监听协程
 	go func() {
 		err := s.scanConsumer.ConsumeToScheduler(ctx, scheduler)
 		if err != nil {
-			logger.Logger.Error("consume to scheduler error: ", zap.Error(err))
+			logger.Logger.Error("consume to scheduler error", zap.Error(err))
 		}
 	}()
+
 	return nil
 }
 
@@ -180,22 +202,44 @@ func (s *ScanService) HandleMessage(ctx context.Context, message []byte) error {
 	}
 	defer distLock.Release()
 
-	// 获取对应的扫描器
-	scanner, err := s.scannerFactory.GetScanner(task.ScanType)
-	if err != nil {
-		return fmt.Errorf("failed to get scanner: %w", err)
+	// 背压状态检查
+	if s.state.ShouldStopProcessing() {
+		logger.Logger.Warn("Rejecting task due to system backpressure",
+			zap.String("taskID", task.TaskID))
+		return sac_errors.NewBackpressureError(s.queueSize)
 	}
 
-	// 异步执行扫描任务
-	taskID, err := scanner.AsyncExecute(ctx, &task)
-	if err != nil {
-		return fmt.Errorf("failed to execute scan task: %w", err)
-	}
+	// 提交任务到全局队列
+	select {
+	case s.globalTaskQueue <- func() {
+		// 获取对应的扫描器
+		scanner, err := s.scannerFactory.GetScanner(task.ScanType)
+		if err != nil {
+			logger.Logger.Error("failed to get scanner",
+				zap.Error(err),
+				zap.String("taskID", task.TaskID))
+			return
+		}
 
-	logger.Logger.Info("Scan task started",
-		zap.String("taskID", taskID),
-		zap.String("scanType", string(task.ScanType)))
-	return nil
+		// 执行扫描任务
+		_, err = scanner.SyncExecute(ctx, &task)
+		if err != nil {
+			logger.Logger.Error("failed to execute scan task",
+				zap.Error(err),
+				zap.String("taskID", task.TaskID))
+		}
+	}:
+		logger.Logger.Info("Scan task queued",
+			zap.String("taskID", task.TaskID),
+			zap.String("scanType", task.ScanType.String()))
+		return nil
+	default:
+		// 队列满时触发全链路背压
+		s.state.TriggerBackpressure()
+		logger.Logger.Warn("Global task queue full, triggering full backpressure",
+			zap.String("taskID", task.TaskID))
+		return sac_errors.NewBackpressureError(s.queueSize)
+	}
 }
 
 // ProviderSet 提供依赖注入集合

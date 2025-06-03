@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/blackarbiter/go-sac/pkg/config"
+
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/scanner"
 	"go.uber.org/zap"
@@ -18,17 +20,18 @@ type DASTScanner struct {
 func NewDASTScanner(
 	timeoutCtrl *scanner.TimeoutController,
 	logger *zap.Logger,
+	config *config.Config,
 	opts ...BaseScannerOption,
 ) scanner.TaskExecutor {
 	s := &DASTScanner{}
+
+	// 从配置获取参数
+	resourceProfile, securityConfig, timeout := config.GetScannerConfig(domain.ScanTypeDast)
 	baseOpts := []BaseScannerOption{
-		WithResourceProfile(scanner.ResourceProfile{
-			MinCPU:   2,
-			MaxCPU:   4,
-			MemoryMB: 2048,
-		}),
-		WithSecurityProfile(1001, 1001, true),
-		WithConcurrency(3, 50), // DAST扫描器默认最大并发3，队列大小50
+		WithResourceProfile(resourceProfile),
+		WithSecurityProfile(int(securityConfig.RunAsUser), int(securityConfig.RunAsGroup), !securityConfig.AllowPrivilegeEscalation),
+		WithTimeout(timeout, 30*time.Second),
+		WithCircuitBreaker(config),
 	}
 	baseOpts = append(baseOpts, opts...)
 
@@ -36,6 +39,7 @@ func NewDASTScanner(
 		domain.ScanTypeDast,
 		timeoutCtrl,
 		logger,
+		config,
 		baseOpts...,
 	)
 	return s
@@ -48,6 +52,7 @@ func (d *DASTScanner) Scan(ctx context.Context, task *domain.ScanTaskPayload) (*
 	d.logger.Info("starting DAST scan",
 		zap.String("task_id", task.TaskID),
 		zap.String("scan_type", string(task.ScanType)))
+	time.Sleep(5 * time.Second)
 
 	// 使用超时控制执行扫描
 	err := d.ExecuteWithTimeout(ctx, task, func(ctx context.Context) error {
@@ -72,6 +77,13 @@ func (d *DASTScanner) Scan(ctx context.Context, task *domain.ScanTaskPayload) (*
 // AsyncExecute 实现TaskExecutor接口
 func (d *DASTScanner) AsyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (string, error) {
 	return d.BaseScanner.AsyncExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
+		return d.Scan(ctx, task)
+	})
+}
+
+// SyncExecute 实现 TaskExecutor 接口
+func (d *DASTScanner) SyncExecute(ctx context.Context, task *domain.ScanTaskPayload) (*domain.ScanResult, error) {
+	return d.BaseScanner.ExecuteWithResult(ctx, task, func(ctx context.Context) (*domain.ScanResult, error) {
 		return d.Scan(ctx, task)
 	})
 }

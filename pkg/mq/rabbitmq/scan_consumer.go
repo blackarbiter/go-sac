@@ -2,7 +2,10 @@ package rabbitmq
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
+
 	"github.com/blackarbiter/go-sac/pkg/logger"
 	"github.com/blackarbiter/go-sac/pkg/service"
 
@@ -13,9 +16,10 @@ import (
 
 // ScanConsumer implements a specialized consumer for scan tasks
 type ScanConsumer struct {
-	conn    *amqp.Connection
-	channel *amqp.Channel
-	done    chan struct{}
+	conn      *amqp.Connection
+	channel   *amqp.Channel
+	done      chan struct{}
+	scheduler *service.PriorityScheduler
 }
 
 // NewScanConsumer creates a new instance of ScanConsumer
@@ -123,25 +127,119 @@ func (c *ScanConsumer) consume(ctx context.Context, queueName string, prefetchCo
 	return nil
 }
 
-// 新增方法：将消息投递到调度器通道
+// ConsumeToScheduler 新增方法：将消息投递到调度器通道
 func (c *ScanConsumer) ConsumeToScheduler(ctx context.Context, scheduler *service.PriorityScheduler) error {
-	// 为每个队列创建独立的消费通道
-	highMsgs, _ := c.channel.Consume(ScanHighPriorityQueue, "", false, false, false, false, nil)
-	medMsgs, _ := c.channel.Consume(ScanMediumPriorityQueue, "", false, false, false, false, nil)
-	lowMsgs, _ := c.channel.Consume(ScanLowPriorityQueue, "", false, false, false, false, nil)
+	if c.scheduler == nil {
+		return errors.New("scheduler not set")
+	}
+
+	const backoffInterval = 5 * time.Second
+	backoffTicker := time.NewTicker(backoffInterval)
+	defer backoffTicker.Stop()
+
+	// 创建消费者
+	createConsumer := func(queue string) (<-chan amqp.Delivery, error) {
+		return c.channel.Consume(
+			queue,
+			"",    // consumer tag - auto generated
+			false, // auto-ack
+			false, // exclusive
+			false, // no-local
+			false, // no-wait
+			nil,   // args
+		)
+	}
+
+	// 初始化消费者
+	highMsgs, err := createConsumer(ScanHighPriorityQueue)
+	if err != nil {
+		return fmt.Errorf("failed to consume high queue: %w", err)
+	}
+	medMsgs, err := createConsumer(ScanMediumPriorityQueue)
+	if err != nil {
+		return fmt.Errorf("failed to consume medium queue: %w", err)
+	}
+	lowMsgs, err := createConsumer(ScanLowPriorityQueue)
+	if err != nil {
+		return fmt.Errorf("failed to consume low queue: %w", err)
+	}
 
 	for {
 		select {
-		case msg := <-highMsgs:
-			scheduler.HighPriorityChan <- msg // 高优先进通道
-		case msg := <-medMsgs:
-			scheduler.MedPriorityChan <- msg
-		case msg := <-lowMsgs:
-			scheduler.LowPriorityChan <- msg
 		case <-ctx.Done():
 			return nil
+
+		default:
+			// 全系统背压检查
+			if scheduler.State.ShouldStopConsuming() {
+				// 背压状态下：仅当优先级通道未满时才消费
+				delivered := false
+				// 尝试填充高优先级通道（非阻塞）
+				if len(scheduler.HighPriorityChan) < cap(scheduler.HighPriorityChan) {
+					select {
+					case delivery := <-highMsgs:
+						scheduler.HighPriorityChan <- delivery
+						delivered = true
+					default:
+					}
+				}
+
+				// 尝试填充中优先级通道（非阻塞）
+				if !delivered && len(scheduler.MedPriorityChan) < cap(scheduler.MedPriorityChan) {
+					select {
+					case delivery := <-medMsgs:
+						scheduler.MedPriorityChan <- delivery
+						delivered = true
+					default:
+					}
+				}
+
+				// 尝试填充低优先级通道（非阻塞）
+				if !delivered && len(scheduler.LowPriorityChan) < cap(scheduler.LowPriorityChan) {
+					select {
+					case delivery := <-lowMsgs:
+						scheduler.LowPriorityChan <- delivery
+						delivered = true
+					default:
+					}
+				}
+
+				// 如果所有通道都满或没有消息，则进入背压等待
+				if !delivered {
+					select {
+					case <-backoffTicker.C:
+						logger.Logger.Warn("System in backpressure, suspending consumption")
+					case <-ctx.Done():
+						return nil
+					}
+				}
+			} else {
+				// 正常状态：非阻塞消费逻辑
+				delivered := false
+				select {
+				case delivery := <-highMsgs:
+					scheduler.HighPriorityChan <- delivery
+					delivered = true
+				case delivery := <-medMsgs:
+					scheduler.MedPriorityChan <- delivery
+					delivered = true
+				case delivery := <-lowMsgs:
+					scheduler.LowPriorityChan <- delivery
+					delivered = true
+				default:
+				}
+
+				// 降低空转CPU消耗
+				if !delivered {
+					time.Sleep(300 * time.Millisecond)
+				}
+			}
 		}
 	}
+}
+
+func (c *ScanConsumer) SetScheduler(scheduler *service.PriorityScheduler) {
+	c.scheduler = scheduler
 }
 
 // Close closes the consumer

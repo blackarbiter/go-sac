@@ -1,0 +1,1003 @@
+{"level":"info","ts":"2025-06-03T13:42:48.942+0800","caller":"scan-service/main.go:44","msg":"scan service started"}
+{"level":"info","ts":"2025-06-03T13:42:58.014+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"900d5a3c-e8b2-46af-ba38-5d86bf6b5848","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:42:58.018+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"900d5a3c-e8b2-46af-ba38-5d86bf6b5848","status":"running"}
+{"level":"info","ts":"2025-06-03T13:42:58.018+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"900d5a3c-e8b2-46af-ba38-5d86bf6b5848","exec_id":"900d5a3c-e8b2-46af-ba38-5d86bf6b5848-1748929378018275000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:42:58.018+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67113,"force":true}
+{"level":"error","ts":"2025-06-03T13:42:58.019+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67113,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:42:58.019+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:42:58.317+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"9813659f-6c95-437b-8407-49f924458599","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:42:58.319+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9813659f-6c95-437b-8407-49f924458599","status":"running"}
+{"level":"info","ts":"2025-06-03T13:42:58.320+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"9813659f-6c95-437b-8407-49f924458599","exec_id":"9813659f-6c95-437b-8407-49f924458599-1748929378320014000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:42:58.320+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67157,"force":true}
+{"level":"error","ts":"2025-06-03T13:42:58.320+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67157,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:42:58.320+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:42:58.619+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"fb3fdf25-c719-46b9-8348-54be1371188a","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:42:58.621+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"fb3fdf25-c719-46b9-8348-54be1371188a","status":"running"}
+{"level":"info","ts":"2025-06-03T13:42:58.622+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"fb3fdf25-c719-46b9-8348-54be1371188a","exec_id":"fb3fdf25-c719-46b9-8348-54be1371188a-1748929378622045000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:42:58.622+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67191,"force":true}
+{"level":"error","ts":"2025-06-03T13:42:58.622+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67191,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:42:58.622+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:42:58.920+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"8301d119-e2fd-4444-a8aa-f5c753b027bc","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:42:58.922+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8301d119-e2fd-4444-a8aa-f5c753b027bc","status":"running"}
+{"level":"info","ts":"2025-06-03T13:42:58.923+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"8301d119-e2fd-4444-a8aa-f5c753b027bc","exec_id":"8301d119-e2fd-4444-a8aa-f5c753b027bc-1748929378923088000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:42:58.923+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67225,"force":true}
+{"level":"error","ts":"2025-06-03T13:42:58.923+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67225,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:42:58.923+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:42:59.222+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"d4fd0048-551e-422b-80be-5d221db46f76","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:42:59.224+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d4fd0048-551e-422b-80be-5d221db46f76","status":"running"}
+{"level":"info","ts":"2025-06-03T13:42:59.225+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"d4fd0048-551e-422b-80be-5d221db46f76","exec_id":"d4fd0048-551e-422b-80be-5d221db46f76-1748929379225032000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:42:59.225+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67258,"force":true}
+{"level":"error","ts":"2025-06-03T13:42:59.225+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67258,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:42:59.225+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:42:59.524+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"5ef9cd18-9e45-4f9d-9e6b-93d50bc8e0d5","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:42:59.527+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"5ef9cd18-9e45-4f9d-9e6b-93d50bc8e0d5","status":"running"}
+{"level":"info","ts":"2025-06-03T13:42:59.527+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"5ef9cd18-9e45-4f9d-9e6b-93d50bc8e0d5","exec_id":"5ef9cd18-9e45-4f9d-9e6b-93d50bc8e0d5-1748929379527661000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:42:59.528+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67291,"force":true}
+{"level":"error","ts":"2025-06-03T13:42:59.528+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67291,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:42:59.528+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:42:59.827+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"787368ff-c985-4245-b7ff-19da18adddf9","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:42:59.833+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"787368ff-c985-4245-b7ff-19da18adddf9","status":"running"}
+{"level":"info","ts":"2025-06-03T13:42:59.833+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"787368ff-c985-4245-b7ff-19da18adddf9","exec_id":"787368ff-c985-4245-b7ff-19da18adddf9-1748929379833823000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:42:59.834+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67315,"force":true}
+{"level":"error","ts":"2025-06-03T13:42:59.834+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67315,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:42:59.834+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:00.130+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"8a5dc539-327b-48b9-b7b1-9cc80872b0f8","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:00.135+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8a5dc539-327b-48b9-b7b1-9cc80872b0f8","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:00.135+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67319,"force":true}
+{"level":"info","ts":"2025-06-03T13:43:00.135+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"8a5dc539-327b-48b9-b7b1-9cc80872b0f8","exec_id":"8a5dc539-327b-48b9-b7b1-9cc80872b0f8-1748929380135835000","command":["sleep","5"]}
+{"level":"error","ts":"2025-06-03T13:43:00.135+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67319,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:00.136+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:00.434+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"ecf2c33c-88b2-4e17-8842-930b6f9e8268","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:00.440+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ecf2c33c-88b2-4e17-8842-930b6f9e8268","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:00.440+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"ecf2c33c-88b2-4e17-8842-930b6f9e8268","exec_id":"ecf2c33c-88b2-4e17-8842-930b6f9e8268-1748929380440461000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:00.440+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67321,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:00.441+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67321,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:00.441+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:00.739+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"6eb75729-1305-4f0d-9dcb-e7e01782417c","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:00.746+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"6eb75729-1305-4f0d-9dcb-e7e01782417c","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:00.746+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"6eb75729-1305-4f0d-9dcb-e7e01782417c","exec_id":"6eb75729-1305-4f0d-9dcb-e7e01782417c-1748929380746695000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:00.747+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67332,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:00.747+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67332,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:00.747+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:01.044+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"1cbfc24d-1367-4799-a9a6-bb1f9aec536e","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:01.049+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"1cbfc24d-1367-4799-a9a6-bb1f9aec536e","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:01.050+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"1cbfc24d-1367-4799-a9a6-bb1f9aec536e","exec_id":"1cbfc24d-1367-4799-a9a6-bb1f9aec536e-1748929381050099000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:01.051+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67339,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:01.051+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67339,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:01.051+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:01.347+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"412ab12b-c9e8-4244-8488-2a53e3d613ed","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:01.352+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"412ab12b-c9e8-4244-8488-2a53e3d613ed","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:01.353+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"412ab12b-c9e8-4244-8488-2a53e3d613ed","exec_id":"412ab12b-c9e8-4244-8488-2a53e3d613ed-1748929381353167000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:01.353+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67343,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:01.354+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67343,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:01.354+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:01.650+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"adcc4485-b487-4b8a-9267-969790e511a1","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:01.654+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"adcc4485-b487-4b8a-9267-969790e511a1","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:01.655+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"adcc4485-b487-4b8a-9267-969790e511a1","exec_id":"adcc4485-b487-4b8a-9267-969790e511a1-1748929381655099000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:01.655+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67346,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:01.655+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67346,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:01.655+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:01.953+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"9aed791e-1259-4d5a-a83e-da26e3a73ab7","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:01.958+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9aed791e-1259-4d5a-a83e-da26e3a73ab7","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:01.958+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"9aed791e-1259-4d5a-a83e-da26e3a73ab7","exec_id":"9aed791e-1259-4d5a-a83e-da26e3a73ab7-1748929381958668000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:01.958+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67348,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:01.959+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67348,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:01.959+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:02.255+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"10d5dc15-f9da-4ff1-a114-62c473f2f660","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:02.261+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"10d5dc15-f9da-4ff1-a114-62c473f2f660","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:02.261+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"10d5dc15-f9da-4ff1-a114-62c473f2f660","exec_id":"10d5dc15-f9da-4ff1-a114-62c473f2f660-1748929382261827000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:02.262+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67353,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:02.262+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67353,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:02.262+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:02.559+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"6fb9fecf-46d3-494f-bb38-044f471a48e8","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:02.565+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"6fb9fecf-46d3-494f-bb38-044f471a48e8","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:02.565+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"6fb9fecf-46d3-494f-bb38-044f471a48e8","exec_id":"6fb9fecf-46d3-494f-bb38-044f471a48e8-1748929382565389000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:02.566+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67355,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:02.566+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67355,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:02.566+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:02.862+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"33445108-f80f-447f-915c-d4d0d65f89ce","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:02.868+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"33445108-f80f-447f-915c-d4d0d65f89ce","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:02.869+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"33445108-f80f-447f-915c-d4d0d65f89ce","exec_id":"33445108-f80f-447f-915c-d4d0d65f89ce-1748929382869092000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:02.870+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67367,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:02.871+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67367,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:02.871+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:03.024+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67114,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:03.025+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67114,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:03.028+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"900d5a3c-e8b2-46af-ba38-5d86bf6b5848","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:03.031+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:03.165+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"ef325a67-80f6-45af-ac02-3d56cdc8f176","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:03.168+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ef325a67-80f6-45af-ac02-3d56cdc8f176","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:03.168+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"ef325a67-80f6-45af-ac02-3d56cdc8f176","exec_id":"ef325a67-80f6-45af-ac02-3d56cdc8f176-1748929383168721000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:03.169+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67369,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:03.169+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67369,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:03.169+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:03.327+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67158,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:03.327+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67158,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:03.330+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9813659f-6c95-437b-8407-49f924458599","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:03.332+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:03.468+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"63654c17-0a8c-4070-ade9-0c0ce6a28a6b","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:03.475+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"63654c17-0a8c-4070-ade9-0c0ce6a28a6b","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:03.476+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"63654c17-0a8c-4070-ade9-0c0ce6a28a6b","exec_id":"63654c17-0a8c-4070-ade9-0c0ce6a28a6b-1748929383476254000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:03.477+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67373,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:03.477+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67373,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:03.477+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:03.627+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67192,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:03.628+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67192,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:03.633+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"fb3fdf25-c719-46b9-8348-54be1371188a","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:03.635+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:03.772+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"e28c3c10-ffb1-4567-9488-817d4cb110ec","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:03.779+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e28c3c10-ffb1-4567-9488-817d4cb110ec","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:03.780+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"e28c3c10-ffb1-4567-9488-817d4cb110ec","exec_id":"e28c3c10-ffb1-4567-9488-817d4cb110ec-1748929383780198000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:03.781+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67375,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:03.781+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67375,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:03.781+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:03.930+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67226,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:03.930+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67226,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:03.934+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8301d119-e2fd-4444-a8aa-f5c753b027bc","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:03.936+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:04.075+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"67814546-692e-46d1-801f-a4cbb2c4d0de","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:04.078+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"67814546-692e-46d1-801f-a4cbb2c4d0de","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:04.079+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"67814546-692e-46d1-801f-a4cbb2c4d0de","exec_id":"67814546-692e-46d1-801f-a4cbb2c4d0de-1748929384079328000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:04.079+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67378,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:04.079+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67378,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:04.079+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:04.233+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67260,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:04.233+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67260,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:04.236+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d4fd0048-551e-422b-80be-5d221db46f76","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:04.238+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:04.378+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"5cb608c0-04fe-457e-af8d-31eddc481c7a","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:04.385+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"5cb608c0-04fe-457e-af8d-31eddc481c7a","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:04.385+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67382,"force":true}
+{"level":"info","ts":"2025-06-03T13:43:04.385+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"5cb608c0-04fe-457e-af8d-31eddc481c7a","exec_id":"5cb608c0-04fe-457e-af8d-31eddc481c7a-1748929384385803000","command":["sleep","5"]}
+{"level":"error","ts":"2025-06-03T13:43:04.385+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67382,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:04.385+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:04.533+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67292,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:04.533+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67292,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:04.537+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"5ef9cd18-9e45-4f9d-9e6b-93d50bc8e0d5","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:04.539+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:04.684+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"d1dba5af-a2d4-4a1d-ac96-157e0d57a1aa","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:04.688+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"0282693b-aed2-409a-a783-65b39186a872","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:04.692+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67384,"force":true}
+{"level":"info","ts":"2025-06-03T13:43:04.692+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d1dba5af-a2d4-4a1d-ac96-157e0d57a1aa","status":"running"}
+{"level":"error","ts":"2025-06-03T13:43:04.692+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67384,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:04.692+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:04.692+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"d1dba5af-a2d4-4a1d-ac96-157e0d57a1aa","exec_id":"d1dba5af-a2d4-4a1d-ac96-157e0d57a1aa-1748929384692896000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:04.693+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0282693b-aed2-409a-a783-65b39186a872","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:04.694+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"0282693b-aed2-409a-a783-65b39186a872","exec_id":"0282693b-aed2-409a-a783-65b39186a872-1748929384694133000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:04.694+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67385,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:04.694+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67385,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:04.694+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:04.844+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67316,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:04.845+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67316,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:04.848+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"787368ff-c985-4245-b7ff-19da18adddf9","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:04.849+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:04.993+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"ac0cae36-efc6-4f84-9402-c186861fabde","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:04.998+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ac0cae36-efc6-4f84-9402-c186861fabde","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:04.999+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"ac0cae36-efc6-4f84-9402-c186861fabde","exec_id":"ac0cae36-efc6-4f84-9402-c186861fabde-1748929384999331000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:05.000+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67397,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:05.000+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67397,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:05.000+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:05.144+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67320,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:05.145+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67320,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:05.149+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8a5dc539-327b-48b9-b7b1-9cc80872b0f8","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:05.151+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:05.195+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"f1002b8b-bf10-45f5-b822-8699921f1ece","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:05.202+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f1002b8b-bf10-45f5-b822-8699921f1ece","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:05.202+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"f1002b8b-bf10-45f5-b822-8699921f1ece","exec_id":"f1002b8b-bf10-45f5-b822-8699921f1ece-1748929385202671000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:05.204+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67399,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:05.204+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67399,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:05.204+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:05.449+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67325,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:05.450+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67325,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:05.455+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ecf2c33c-88b2-4e17-8842-930b6f9e8268","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:05.457+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:05.497+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"f678bb0a-4816-42d5-a187-ab9af38cbedd","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:05.502+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f678bb0a-4816-42d5-a187-ab9af38cbedd","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:05.503+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"f678bb0a-4816-42d5-a187-ab9af38cbedd","exec_id":"f678bb0a-4816-42d5-a187-ab9af38cbedd-1748929385503276000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:05.504+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67403,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:05.505+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67403,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:05.505+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:05.756+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67333,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:05.756+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67333,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:05.759+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"6eb75729-1305-4f0d-9dcb-e7e01782417c","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:05.761+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:05.800+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"d34bc22a-eb30-4078-834d-871db373749a","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:05.805+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d34bc22a-eb30-4078-834d-871db373749a","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:05.805+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"d34bc22a-eb30-4078-834d-871db373749a","exec_id":"d34bc22a-eb30-4078-834d-871db373749a-1748929385805726000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:05.807+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67405,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:05.807+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67405,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:05.807+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:06.058+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67340,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:06.058+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67340,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:06.062+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"1cbfc24d-1367-4799-a9a6-bb1f9aec536e","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:06.063+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:06.103+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"ed0aaaa0-60f7-4ae2-abe1-08c05e8eeeae","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:06.110+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ed0aaaa0-60f7-4ae2-abe1-08c05e8eeeae","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:06.110+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"ed0aaaa0-60f7-4ae2-abe1-08c05e8eeeae","exec_id":"ed0aaaa0-60f7-4ae2-abe1-08c05e8eeeae-1748929386110692000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:06.112+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67411,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:06.112+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67411,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:06.112+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:06.362+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67344,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:06.362+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67344,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:06.366+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"412ab12b-c9e8-4244-8488-2a53e3d613ed","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:06.367+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:06.407+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"9400ed76-42a6-4fa0-bd98-33b3544c5988","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:06.410+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9400ed76-42a6-4fa0-bd98-33b3544c5988","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:06.411+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"9400ed76-42a6-4fa0-bd98-33b3544c5988","exec_id":"9400ed76-42a6-4fa0-bd98-33b3544c5988-1748929386411297000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:06.412+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67416,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:06.412+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67416,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:06.412+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:06.662+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67347,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:06.662+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67347,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:06.665+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"adcc4485-b487-4b8a-9267-969790e511a1","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:06.666+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:06.710+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"8de80d12-6a45-450f-a45d-f497c5029525","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:06.714+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8de80d12-6a45-450f-a45d-f497c5029525","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:06.714+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"8de80d12-6a45-450f-a45d-f497c5029525","exec_id":"8de80d12-6a45-450f-a45d-f497c5029525-1748929386714355000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:06.715+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67422,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:06.715+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67422,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:06.715+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:06.967+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67349,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:06.967+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67349,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:06.970+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9aed791e-1259-4d5a-a83e-da26e3a73ab7","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:06.971+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:07.013+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"c87f58df-29bd-4831-bf7c-625dcf5b3ef0","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:07.016+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"c87f58df-29bd-4831-bf7c-625dcf5b3ef0","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:07.017+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"c87f58df-29bd-4831-bf7c-625dcf5b3ef0","exec_id":"c87f58df-29bd-4831-bf7c-625dcf5b3ef0-1748929387017159000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:07.017+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67433,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:07.018+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67433,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:07.018+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:07.270+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67354,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:07.270+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67354,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:07.272+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"10d5dc15-f9da-4ff1-a114-62c473f2f660","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:07.274+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:07.316+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"487cb87a-1a33-407e-9951-34b2f49095fa","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:07.319+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"487cb87a-1a33-407e-9951-34b2f49095fa","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:07.319+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"487cb87a-1a33-407e-9951-34b2f49095fa","exec_id":"487cb87a-1a33-407e-9951-34b2f49095fa-1748929387319535000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:07.320+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67439,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:07.320+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67439,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:07.320+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:07.570+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67356,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:07.570+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67356,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:07.573+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"6fb9fecf-46d3-494f-bb38-044f471a48e8","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:07.574+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:07.619+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"73f8a77c-cec3-45be-95a7-c035ef07d09f","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:07.622+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"73f8a77c-cec3-45be-95a7-c035ef07d09f","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:07.622+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"73f8a77c-cec3-45be-95a7-c035ef07d09f","exec_id":"73f8a77c-cec3-45be-95a7-c035ef07d09f-1748929387622285000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:07.623+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67443,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:07.623+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67443,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:07.623+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:07.879+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67368,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:07.879+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67368,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:07.881+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"33445108-f80f-447f-915c-d4d0d65f89ce","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:07.882+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:07.922+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"82d4f888-27ec-45e8-a4ee-a0e1fbdace5d","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:07.925+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"82d4f888-27ec-45e8-a4ee-a0e1fbdace5d","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:07.926+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"82d4f888-27ec-45e8-a4ee-a0e1fbdace5d","exec_id":"82d4f888-27ec-45e8-a4ee-a0e1fbdace5d-1748929387926073000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:07.927+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67445,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:07.928+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67445,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:07.928+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:08.176+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67370,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:08.176+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67370,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:08.179+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ef325a67-80f6-45af-ac02-3d56cdc8f176","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:08.180+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:08.225+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"89ab2e59-6761-4e4b-89a2-368cfa9e0cd0","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:08.229+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"89ab2e59-6761-4e4b-89a2-368cfa9e0cd0","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:08.229+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"89ab2e59-6761-4e4b-89a2-368cfa9e0cd0","exec_id":"89ab2e59-6761-4e4b-89a2-368cfa9e0cd0-1748929388229610000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:08.230+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67448,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:08.230+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67448,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:08.230+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:08.481+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67374,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:08.481+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67374,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:08.484+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"63654c17-0a8c-4070-ade9-0c0ce6a28a6b","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:08.485+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:08.529+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"d36cb4bc-4fef-410d-9dbe-1b2249a12779","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:08.532+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d36cb4bc-4fef-410d-9dbe-1b2249a12779","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:08.532+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"d36cb4bc-4fef-410d-9dbe-1b2249a12779","exec_id":"d36cb4bc-4fef-410d-9dbe-1b2249a12779-1748929388532358000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:08.533+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67452,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:08.533+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67452,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:08.533+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:08.789+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67376,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:08.789+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67376,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:08.792+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e28c3c10-ffb1-4567-9488-817d4cb110ec","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:08.793+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:08.830+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"1b320dd2-696d-4947-9def-8d55e201945d","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:08.833+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"1b320dd2-696d-4947-9def-8d55e201945d","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:08.834+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"1b320dd2-696d-4947-9def-8d55e201945d","exec_id":"1b320dd2-696d-4947-9def-8d55e201945d-1748929388834133000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:08.834+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67456,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:08.835+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67456,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:08.835+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:09.086+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67379,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:09.086+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67379,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:09.089+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"67814546-692e-46d1-801f-a4cbb2c4d0de","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:09.091+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:09.134+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"25cc4015-c7a3-4e8e-bb7b-ee139923e8e3","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:09.137+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"25cc4015-c7a3-4e8e-bb7b-ee139923e8e3","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:09.137+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"25cc4015-c7a3-4e8e-bb7b-ee139923e8e3","exec_id":"25cc4015-c7a3-4e8e-bb7b-ee139923e8e3-1748929389137667000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:09.138+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67467,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:09.138+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67467,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:09.138+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:09.391+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67383,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:09.391+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67383,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:09.395+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"5cb608c0-04fe-457e-af8d-31eddc481c7a","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:09.397+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:09.436+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"b20c4f7d-a1d6-40b6-827f-bb503d3d5dd5","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:09.441+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"b20c4f7d-a1d6-40b6-827f-bb503d3d5dd5","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:09.442+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"b20c4f7d-a1d6-40b6-827f-bb503d3d5dd5","exec_id":"b20c4f7d-a1d6-40b6-827f-bb503d3d5dd5-1748929389442187000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:09.443+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67471,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:09.443+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67471,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:09.443+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:09.697+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67386,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:09.697+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67386,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:09.698+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67387,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:09.698+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67387,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:09.701+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d1dba5af-a2d4-4a1d-ac96-157e0d57a1aa","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:09.701+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0282693b-aed2-409a-a783-65b39186a872","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:09.703+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:09.703+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:09.740+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"9b2a9f56-626e-4c9f-bab3-3f2f90559ec6","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:09.745+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9b2a9f56-626e-4c9f-bab3-3f2f90559ec6","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:09.746+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"9b2a9f56-626e-4c9f-bab3-3f2f90559ec6","exec_id":"9b2a9f56-626e-4c9f-bab3-3f2f90559ec6-1748929389746210000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:09.747+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67473,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:09.747+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67473,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:09.747+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:10.009+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67398,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:10.009+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67398,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:10.014+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ac0cae36-efc6-4f84-9402-c186861fabde","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:10.015+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:10.043+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"87e81ec2-1ec1-4856-84fe-7a541242925c","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:10.047+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"87e81ec2-1ec1-4856-84fe-7a541242925c","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:10.047+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"87e81ec2-1ec1-4856-84fe-7a541242925c","exec_id":"87e81ec2-1ec1-4856-84fe-7a541242925c-1748929390047499000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:10.048+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67475,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:10.048+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67475,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:10.048+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:10.212+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67400,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:10.212+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67400,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:10.217+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f1002b8b-bf10-45f5-b822-8699921f1ece","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:10.219+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:10.347+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"ae42a792-68d2-4ae6-95e2-f20c00ad1020","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:10.353+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ae42a792-68d2-4ae6-95e2-f20c00ad1020","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:10.353+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"ae42a792-68d2-4ae6-95e2-f20c00ad1020","exec_id":"ae42a792-68d2-4ae6-95e2-f20c00ad1020-1748929390353977000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:10.354+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67477,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:10.355+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67477,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:10.355+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:10.513+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67404,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:10.514+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67404,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:10.518+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f678bb0a-4816-42d5-a187-ab9af38cbedd","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:10.520+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:10.651+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"be9ab062-964a-4347-88ba-c9044500311b","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:10.658+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67481,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:10.658+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67481,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:10.658+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:10.658+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"be9ab062-964a-4347-88ba-c9044500311b","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:10.659+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"be9ab062-964a-4347-88ba-c9044500311b","exec_id":"be9ab062-964a-4347-88ba-c9044500311b-1748929390659243000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:10.815+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67406,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:10.815+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67406,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:10.819+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d34bc22a-eb30-4078-834d-871db373749a","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:10.821+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:10.954+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"63fa2dca-bdcd-4cea-a30e-9b9a94827f44","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:10.960+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"63fa2dca-bdcd-4cea-a30e-9b9a94827f44","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:10.961+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"63fa2dca-bdcd-4cea-a30e-9b9a94827f44","exec_id":"63fa2dca-bdcd-4cea-a30e-9b9a94827f44-1748929390961078000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:10.962+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67483,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:10.962+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67483,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:10.962+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:11.119+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67412,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:11.119+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67412,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:11.121+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ed0aaaa0-60f7-4ae2-abe1-08c05e8eeeae","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:11.122+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:11.258+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"2a3409b4-6c53-488e-89b5-e478b2be52e5","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:11.265+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"2a3409b4-6c53-488e-89b5-e478b2be52e5","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:11.265+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"2a3409b4-6c53-488e-89b5-e478b2be52e5","exec_id":"2a3409b4-6c53-488e-89b5-e478b2be52e5-1748929391265831000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:11.266+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67498,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:11.266+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67498,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:11.266+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:11.419+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67417,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:11.420+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67417,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:11.424+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9400ed76-42a6-4fa0-bd98-33b3544c5988","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:11.426+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:11.563+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"e6625c41-7964-427c-bd99-0ec5a47f521e","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:11.568+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e6625c41-7964-427c-bd99-0ec5a47f521e","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:11.568+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"e6625c41-7964-427c-bd99-0ec5a47f521e","exec_id":"e6625c41-7964-427c-bd99-0ec5a47f521e-1748929391568590000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:11.569+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67502,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:11.569+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67502,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:11.569+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:11.721+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67423,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:11.721+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67423,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:11.726+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8de80d12-6a45-450f-a45d-f497c5029525","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:11.729+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:11.865+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"96c47f06-a875-4934-a81f-f5767499995a","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:11.868+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"96c47f06-a875-4934-a81f-f5767499995a","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:11.868+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"96c47f06-a875-4934-a81f-f5767499995a","exec_id":"96c47f06-a875-4934-a81f-f5767499995a-1748929391868652000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:11.869+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67504,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:11.869+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67504,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:11.869+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:12.022+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67434,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:12.023+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67434,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:12.027+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"c87f58df-29bd-4831-bf7c-625dcf5b3ef0","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:12.029+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:12.169+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"fa6aeb41-6cc3-4dd7-b0a4-141a25d8d571","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:12.174+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"fa6aeb41-6cc3-4dd7-b0a4-141a25d8d571","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:12.174+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"fa6aeb41-6cc3-4dd7-b0a4-141a25d8d571","exec_id":"fa6aeb41-6cc3-4dd7-b0a4-141a25d8d571-1748929392174650000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:12.175+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67507,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:12.175+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67507,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:12.175+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:12.325+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67440,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:12.326+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67440,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:12.329+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"487cb87a-1a33-407e-9951-34b2f49095fa","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:12.331+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:12.472+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"07da05f4-f1d0-408c-9c21-d41b88d8538a","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:12.480+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"07da05f4-f1d0-408c-9c21-d41b88d8538a","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:12.481+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"07da05f4-f1d0-408c-9c21-d41b88d8538a","exec_id":"07da05f4-f1d0-408c-9c21-d41b88d8538a-1748929392481119000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:12.482+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67509,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:12.482+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67509,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:12.482+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:12.630+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67444,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:12.631+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67444,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:12.636+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"73f8a77c-cec3-45be-95a7-c035ef07d09f","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:12.639+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:12.776+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"a716e02e-173d-435c-a566-cce4d0f7f519","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:12.783+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"a716e02e-173d-435c-a566-cce4d0f7f519","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:12.784+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"a716e02e-173d-435c-a566-cce4d0f7f519","exec_id":"a716e02e-173d-435c-a566-cce4d0f7f519-1748929392784353000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:12.785+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67513,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:12.785+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67513,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:12.785+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:12.935+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67446,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:12.935+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67446,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:12.940+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"82d4f888-27ec-45e8-a4ee-a0e1fbdace5d","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:12.943+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:13.080+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"90d9d357-8625-4e11-ab87-808612415f91","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:13.087+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"90d9d357-8625-4e11-ab87-808612415f91","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:13.088+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"90d9d357-8625-4e11-ab87-808612415f91","exec_id":"90d9d357-8625-4e11-ab87-808612415f91-1748929393088309000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:13.088+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67515,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:13.089+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67515,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:13.089+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:13.235+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67449,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:13.235+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67449,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:13.238+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"89ab2e59-6761-4e4b-89a2-368cfa9e0cd0","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:13.240+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:13.385+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"2e19e0b7-0539-4e6b-a57c-2721df0dc338","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:13.392+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"2e19e0b7-0539-4e6b-a57c-2721df0dc338","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:13.392+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"2e19e0b7-0539-4e6b-a57c-2721df0dc338","exec_id":"2e19e0b7-0539-4e6b-a57c-2721df0dc338-1748929393392414000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:13.393+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67526,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:13.394+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67526,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:13.394+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:13.540+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67453,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:13.540+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67453,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:13.546+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d36cb4bc-4fef-410d-9dbe-1b2249a12779","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:13.548+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:13.688+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"8f4bc162-a97d-4e0c-b890-84477e801261","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:13.696+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8f4bc162-a97d-4e0c-b890-84477e801261","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:13.696+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67530,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:13.697+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67530,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:13.697+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"8f4bc162-a97d-4e0c-b890-84477e801261","exec_id":"8f4bc162-a97d-4e0c-b890-84477e801261-1748929393696992000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:13.697+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:13.841+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67457,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:13.841+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67457,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:13.846+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"1b320dd2-696d-4947-9def-8d55e201945d","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:13.848+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:13.991+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"094ab909-0574-44cc-9845-18666451f916","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:13.997+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"094ab909-0574-44cc-9845-18666451f916","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:13.997+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"094ab909-0574-44cc-9845-18666451f916","exec_id":"094ab909-0574-44cc-9845-18666451f916-1748929393997612000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:13.998+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67532,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:13.998+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67532,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:13.998+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:14.145+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67468,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:14.145+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67468,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:14.149+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"25cc4015-c7a3-4e8e-bb7b-ee139923e8e3","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:14.151+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:14.296+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"3159a757-0faa-4261-abfe-f5ac5ca4442e","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:14.302+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"3159a757-0faa-4261-abfe-f5ac5ca4442e","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:14.302+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"3159a757-0faa-4261-abfe-f5ac5ca4442e","exec_id":"3159a757-0faa-4261-abfe-f5ac5ca4442e-1748929394302728000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:14.303+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67534,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:14.303+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67534,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:14.304+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:14.451+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67472,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:14.451+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67472,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:14.455+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"b20c4f7d-a1d6-40b6-827f-bb503d3d5dd5","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:14.457+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:14.598+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"9a2f5e5a-5d9f-4793-a42d-d30e5b5de059","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:14.604+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9a2f5e5a-5d9f-4793-a42d-d30e5b5de059","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:14.604+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"9a2f5e5a-5d9f-4793-a42d-d30e5b5de059","exec_id":"9a2f5e5a-5d9f-4793-a42d-d30e5b5de059-1748929394604934000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:14.605+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67538,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:14.605+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67538,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:14.606+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:14.752+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67474,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:14.752+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67474,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:14.757+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9b2a9f56-626e-4c9f-bab3-3f2f90559ec6","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:14.759+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:14.903+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"7c3c3db2-15f9-4026-8c5a-e12a62b4dcf8","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:14.909+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"7c3c3db2-15f9-4026-8c5a-e12a62b4dcf8","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:14.909+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"7c3c3db2-15f9-4026-8c5a-e12a62b4dcf8","exec_id":"7c3c3db2-15f9-4026-8c5a-e12a62b4dcf8-1748929394909502000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:14.910+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67541,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:14.910+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67541,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:14.911+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:15.055+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67476,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:15.056+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67476,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:15.060+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"87e81ec2-1ec1-4856-84fe-7a541242925c","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:15.062+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:15.208+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"e7e0380b-7a64-4864-b403-3f15e5660352","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:15.216+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e7e0380b-7a64-4864-b403-3f15e5660352","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:15.216+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"e7e0380b-7a64-4864-b403-3f15e5660352","exec_id":"e7e0380b-7a64-4864-b403-3f15e5660352-1748929395216756000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:15.218+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67543,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:15.218+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67543,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:15.218+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:15.361+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67478,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:15.361+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67478,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:15.363+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ae42a792-68d2-4ae6-95e2-f20c00ad1020","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:15.365+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:15.512+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"af2816a1-a8e4-4b4e-ade6-ec8b847a4e87","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:15.520+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67554,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:15.520+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67554,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:15.521+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:15.523+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"af2816a1-a8e4-4b4e-ade6-ec8b847a4e87","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:15.523+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"af2816a1-a8e4-4b4e-ade6-ec8b847a4e87","exec_id":"af2816a1-a8e4-4b4e-ade6-ec8b847a4e87-1748929395523784000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:15.684+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67482,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:15.685+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67482,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:15.695+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"be9ab062-964a-4347-88ba-c9044500311b","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:15.708+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:15.816+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"2715a910-031b-4512-b515-ad90771fa7a3","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:15.821+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"2715a910-031b-4512-b515-ad90771fa7a3","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:15.822+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"2715a910-031b-4512-b515-ad90771fa7a3","exec_id":"2715a910-031b-4512-b515-ad90771fa7a3-1748929395822289000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:15.823+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67558,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:15.823+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67558,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:15.823+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:15.969+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67484,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:15.969+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67484,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:15.973+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"63fa2dca-bdcd-4cea-a30e-9b9a94827f44","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:15.975+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:16.120+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"e2b01840-eee5-4e89-affb-967997d7693c","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:16.123+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e2b01840-eee5-4e89-affb-967997d7693c","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:16.124+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"e2b01840-eee5-4e89-affb-967997d7693c","exec_id":"e2b01840-eee5-4e89-affb-967997d7693c-1748929396124365000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:16.125+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67560,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:16.125+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67560,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:16.125+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:16.271+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67499,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:16.271+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67499,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:16.273+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"2a3409b4-6c53-488e-89b5-e478b2be52e5","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:16.274+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:16.322+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"0c496885-32f6-424a-a85b-2e8d5b38453f","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:16.325+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0c496885-32f6-424a-a85b-2e8d5b38453f","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:16.325+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"0c496885-32f6-424a-a85b-2e8d5b38453f","exec_id":"0c496885-32f6-424a-a85b-2e8d5b38453f-1748929396325836000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:16.326+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67566,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:16.327+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67566,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:16.327+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:16.574+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67503,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:16.574+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67503,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:16.577+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e6625c41-7964-427c-bd99-0ec5a47f521e","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:16.578+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:16.624+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"2d9c91a1-5ae1-4fa9-9e99-3c9ace7945f8","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:16.628+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"2d9c91a1-5ae1-4fa9-9e99-3c9ace7945f8","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:16.628+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"2d9c91a1-5ae1-4fa9-9e99-3c9ace7945f8","exec_id":"2d9c91a1-5ae1-4fa9-9e99-3c9ace7945f8-1748929396628854000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:16.629+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67568,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:16.630+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67568,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:16.630+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:16.873+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67505,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:16.873+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67505,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:16.875+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"96c47f06-a875-4934-a81f-f5767499995a","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:16.876+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:16.927+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"e2927054-c7e3-4b47-8d34-25f122a52388","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:16.931+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e2927054-c7e3-4b47-8d34-25f122a52388","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:16.932+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"e2927054-c7e3-4b47-8d34-25f122a52388","exec_id":"e2927054-c7e3-4b47-8d34-25f122a52388-1748929396932185000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:16.932+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67572,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:16.933+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67572,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:16.933+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:17.184+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67508,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:17.184+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67508,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:17.187+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"fa6aeb41-6cc3-4dd7-b0a4-141a25d8d571","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:17.188+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:17.230+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"d68b0d27-12cb-4431-9425-0de01e252956","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:17.235+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d68b0d27-12cb-4431-9425-0de01e252956","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:17.235+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"d68b0d27-12cb-4431-9425-0de01e252956","exec_id":"d68b0d27-12cb-4431-9425-0de01e252956-1748929397235863000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:17.236+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67574,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:17.237+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67574,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:17.237+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:17.487+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67510,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:17.487+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67510,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:17.492+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"07da05f4-f1d0-408c-9c21-d41b88d8538a","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:17.494+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:17.534+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"0ee163fc-6bbc-4b23-b9e9-bfd9fb007fdf","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:17.539+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0ee163fc-6bbc-4b23-b9e9-bfd9fb007fdf","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:17.539+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"0ee163fc-6bbc-4b23-b9e9-bfd9fb007fdf","exec_id":"0ee163fc-6bbc-4b23-b9e9-bfd9fb007fdf-1748929397539620000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:17.540+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67585,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:17.540+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67585,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:17.540+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:17.791+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67514,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:17.791+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67514,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:17.795+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"a716e02e-173d-435c-a566-cce4d0f7f519","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:17.796+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:17.836+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"8f1cb813-567f-41b7-acb8-209ddab033df","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:17.841+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8f1cb813-567f-41b7-acb8-209ddab033df","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:17.841+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"8f1cb813-567f-41b7-acb8-209ddab033df","exec_id":"8f1cb813-567f-41b7-acb8-209ddab033df-1748929397841611000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:17.843+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67589,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:17.844+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67589,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:17.844+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:18.097+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67516,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:18.097+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67516,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:18.101+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"90d9d357-8625-4e11-ab87-808612415f91","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:18.103+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:18.140+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"b16157b0-ea82-4df6-b4df-565cb876157b","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:18.144+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"b16157b0-ea82-4df6-b4df-565cb876157b","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:18.144+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"b16157b0-ea82-4df6-b4df-565cb876157b","exec_id":"b16157b0-ea82-4df6-b4df-565cb876157b-1748929398144381000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:18.145+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67591,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:18.145+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67591,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:18.145+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:18.402+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67527,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:18.402+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67527,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:18.407+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"2e19e0b7-0539-4e6b-a57c-2721df0dc338","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:18.410+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:18.443+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"0c2f4894-dbea-4fe3-ac40-d5223b0dba8d","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:18.449+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0c2f4894-dbea-4fe3-ac40-d5223b0dba8d","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:18.449+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"0c2f4894-dbea-4fe3-ac40-d5223b0dba8d","exec_id":"0c2f4894-dbea-4fe3-ac40-d5223b0dba8d-1748929398449712000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:18.450+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67593,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:18.451+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67593,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:18.451+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:18.706+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67531,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:18.707+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67531,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:18.711+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8f4bc162-a97d-4e0c-b890-84477e801261","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:18.714+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:18.748+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"00fd1e42-fbf9-4564-8e5d-421472c62683","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:18.753+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"00fd1e42-fbf9-4564-8e5d-421472c62683","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:18.753+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"00fd1e42-fbf9-4564-8e5d-421472c62683","exec_id":"00fd1e42-fbf9-4564-8e5d-421472c62683-1748929398753913000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:18.754+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67595,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:18.755+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67595,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:18.755+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:19.004+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67533,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:19.004+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67533,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:19.008+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"094ab909-0574-44cc-9845-18666451f916","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:19.010+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:19.052+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"f6c401bf-0e8d-402a-abf9-6b3ea7dc4f93","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:19.059+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f6c401bf-0e8d-402a-abf9-6b3ea7dc4f93","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:19.059+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"f6c401bf-0e8d-402a-abf9-6b3ea7dc4f93","exec_id":"f6c401bf-0e8d-402a-abf9-6b3ea7dc4f93-1748929399059714000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:19.060+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67599,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:19.061+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67599,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:19.061+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:19.309+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67535,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:19.309+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67535,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:19.315+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"3159a757-0faa-4261-abfe-f5ac5ca4442e","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:19.318+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:19.357+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"08dc010c-ae80-4fe6-a63b-9f47ef3879db","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:19.362+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"08dc010c-ae80-4fe6-a63b-9f47ef3879db","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:19.363+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"08dc010c-ae80-4fe6-a63b-9f47ef3879db","exec_id":"08dc010c-ae80-4fe6-a63b-9f47ef3879db-1748929399363008000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:19.364+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67601,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:19.364+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67601,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:19.364+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:19.612+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67539,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:19.612+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67539,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:19.616+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"9a2f5e5a-5d9f-4793-a42d-d30e5b5de059","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:19.618+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:19.660+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"055f641a-c94a-4f92-a298-a81435c02248","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:19.666+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"055f641a-c94a-4f92-a298-a81435c02248","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:19.666+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"055f641a-c94a-4f92-a298-a81435c02248","exec_id":"055f641a-c94a-4f92-a298-a81435c02248-1748929399666662000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:19.666+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67612,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:19.666+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67612,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:19.666+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:19.918+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67542,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:19.919+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67542,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:19.922+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"7c3c3db2-15f9-4026-8c5a-e12a62b4dcf8","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:19.923+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:19.963+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"eca99c1d-677b-4aa1-99d4-b06dbd01fe4c","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:19.968+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"eca99c1d-677b-4aa1-99d4-b06dbd01fe4c","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:19.968+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"eca99c1d-677b-4aa1-99d4-b06dbd01fe4c","exec_id":"eca99c1d-677b-4aa1-99d4-b06dbd01fe4c-1748929399968496000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:19.969+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67616,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:19.969+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67616,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:19.969+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:20.222+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67544,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:20.222+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67544,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:20.224+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e7e0380b-7a64-4864-b403-3f15e5660352","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:20.225+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:20.267+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"bb74b1cf-614f-4735-8e61-925aa4ce3666","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:20.272+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"bb74b1cf-614f-4735-8e61-925aa4ce3666","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:20.272+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"bb74b1cf-614f-4735-8e61-925aa4ce3666","exec_id":"bb74b1cf-614f-4735-8e61-925aa4ce3666-1748929400272962000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:20.273+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67618,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:20.274+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67618,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:20.274+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:20.528+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67555,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:20.528+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67555,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:20.531+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"af2816a1-a8e4-4b4e-ade6-ec8b847a4e87","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:20.533+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:20.569+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"96823775-1e7a-44bf-9ecd-87c8caaa48ed","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:20.572+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"ed35bf45-2dc0-43e1-b2f4-d0ab2c335258","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:20.575+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"96823775-1e7a-44bf-9ecd-87c8caaa48ed","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:20.577+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67620,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:20.577+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67620,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:20.577+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"96823775-1e7a-44bf-9ecd-87c8caaa48ed","exec_id":"96823775-1e7a-44bf-9ecd-87c8caaa48ed-1748929400577258000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:20.577+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:20.579+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ed35bf45-2dc0-43e1-b2f4-d0ab2c335258","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:20.580+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67621,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:20.580+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67621,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:20.580+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:20.580+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"ed35bf45-2dc0-43e1-b2f4-d0ab2c335258","exec_id":"ed35bf45-2dc0-43e1-b2f4-d0ab2c335258-1748929400580534000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:20.828+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67559,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:20.828+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67559,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:20.834+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"2715a910-031b-4512-b515-ad90771fa7a3","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:20.836+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:20.876+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"42790e24-0d8c-439b-8601-5669e6f75747","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:20.881+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"42790e24-0d8c-439b-8601-5669e6f75747","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:20.882+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"42790e24-0d8c-439b-8601-5669e6f75747","exec_id":"42790e24-0d8c-439b-8601-5669e6f75747-1748929400882041000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:20.883+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67624,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:20.883+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67624,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:20.883+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:21.128+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67561,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:21.129+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67561,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:21.132+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e2b01840-eee5-4e89-affb-967997d7693c","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:21.133+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:21.180+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"75679e6e-c511-4ce3-93fb-c8797927c585","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:21.185+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"75679e6e-c511-4ce3-93fb-c8797927c585","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:21.186+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"75679e6e-c511-4ce3-93fb-c8797927c585","exec_id":"75679e6e-c511-4ce3-93fb-c8797927c585-1748929401186011000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:21.186+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67628,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:21.186+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67628,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:21.186+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:21.334+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67567,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:21.334+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67567,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:21.337+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0c496885-32f6-424a-a85b-2e8d5b38453f","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:21.337+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:21.482+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"3aac4b00-5969-46a6-8e7d-fc5ccc5c0cc7","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:21.488+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"3aac4b00-5969-46a6-8e7d-fc5ccc5c0cc7","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:21.488+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67634,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:21.488+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67634,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:21.488+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:21.488+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"3aac4b00-5969-46a6-8e7d-fc5ccc5c0cc7","exec_id":"3aac4b00-5969-46a6-8e7d-fc5ccc5c0cc7-1748929401488745000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:21.637+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67569,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:21.637+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67569,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:21.642+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"2d9c91a1-5ae1-4fa9-9e99-3c9ace7945f8","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:21.643+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:21.785+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"efc2c6d2-d2d1-41ad-afaa-707f57a3d0e3","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:21.789+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"efc2c6d2-d2d1-41ad-afaa-707f57a3d0e3","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:21.789+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"efc2c6d2-d2d1-41ad-afaa-707f57a3d0e3","exec_id":"efc2c6d2-d2d1-41ad-afaa-707f57a3d0e3-1748929401789628000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:21.790+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67645,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:21.790+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67645,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:21.790+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:21.940+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67573,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:21.940+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67573,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:21.943+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"e2927054-c7e3-4b47-8d34-25f122a52388","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:21.945+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:22.088+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"f759be5e-95c3-42fc-9e3d-e35f1c6ed02f","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:22.094+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f759be5e-95c3-42fc-9e3d-e35f1c6ed02f","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:22.094+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67649,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:22.094+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67649,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:22.094+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:22.094+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"f759be5e-95c3-42fc-9e3d-e35f1c6ed02f","exec_id":"f759be5e-95c3-42fc-9e3d-e35f1c6ed02f-1748929402094885000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:22.243+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67575,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:22.243+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67575,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:22.248+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"d68b0d27-12cb-4431-9425-0de01e252956","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:22.251+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:22.392+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"06141409-85ac-43a5-8319-50b85e98cd15","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:22.398+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"06141409-85ac-43a5-8319-50b85e98cd15","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:22.398+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"06141409-85ac-43a5-8319-50b85e98cd15","exec_id":"06141409-85ac-43a5-8319-50b85e98cd15-1748929402398468000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:22.399+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67661,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:22.399+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67661,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:22.399+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:22.548+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67586,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:22.548+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67586,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:22.552+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0ee163fc-6bbc-4b23-b9e9-bfd9fb007fdf","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:22.554+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:22.696+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"c5e7fbed-1fc6-4bce-8278-18531ad3aec2","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:22.703+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"c5e7fbed-1fc6-4bce-8278-18531ad3aec2","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:22.703+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"c5e7fbed-1fc6-4bce-8278-18531ad3aec2","exec_id":"c5e7fbed-1fc6-4bce-8278-18531ad3aec2-1748929402703772000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:22.705+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67663,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:22.705+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67663,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:22.705+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:22.851+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67590,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:22.851+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67590,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:22.856+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8f1cb813-567f-41b7-acb8-209ddab033df","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:22.858+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:23.000+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"0be50991-92d4-420d-b161-f8dd74e26edb","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:23.006+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0be50991-92d4-420d-b161-f8dd74e26edb","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:23.006+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"0be50991-92d4-420d-b161-f8dd74e26edb","exec_id":"0be50991-92d4-420d-b161-f8dd74e26edb-1748929403006339000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:23.007+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67666,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:23.007+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67666,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:23.007+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:23.151+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67592,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:23.151+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67592,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:23.156+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"b16157b0-ea82-4df6-b4df-565cb876157b","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:23.159+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:23.304+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"a65a400e-8632-4ce3-84af-4ccc2a776789","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:23.311+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"a65a400e-8632-4ce3-84af-4ccc2a776789","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:23.312+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67669,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:23.312+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67669,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:23.312+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:23.312+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"a65a400e-8632-4ce3-84af-4ccc2a776789","exec_id":"a65a400e-8632-4ce3-84af-4ccc2a776789-1748929403312408000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:23.458+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67594,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:23.459+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67594,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:23.462+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0c2f4894-dbea-4fe3-ac40-d5223b0dba8d","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:23.464+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:23.608+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"5d7ead40-15ad-42fe-b95f-d510d33b30e3","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:23.615+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"5d7ead40-15ad-42fe-b95f-d510d33b30e3","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:23.615+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"5d7ead40-15ad-42fe-b95f-d510d33b30e3","exec_id":"5d7ead40-15ad-42fe-b95f-d510d33b30e3-1748929403615850000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:23.617+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67671,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:23.617+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67671,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:23.617+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:23.760+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67596,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:23.760+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67596,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:23.764+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"00fd1e42-fbf9-4564-8e5d-421472c62683","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:23.766+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:23.913+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"034693c3-bde9-463f-b1eb-6f1e24e288fd","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:23.917+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"034693c3-bde9-463f-b1eb-6f1e24e288fd","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:23.917+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"034693c3-bde9-463f-b1eb-6f1e24e288fd","exec_id":"034693c3-bde9-463f-b1eb-6f1e24e288fd-1748929403917742000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:23.918+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67682,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:23.918+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67682,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:23.918+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:24.066+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67600,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:24.066+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67600,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:24.069+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f6c401bf-0e8d-402a-abf9-6b3ea7dc4f93","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:24.070+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:24.217+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"3888ba41-b217-414b-bc55-0cc0f298475d","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:24.222+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"3888ba41-b217-414b-bc55-0cc0f298475d","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:24.222+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67686,"force":true}
+{"level":"info","ts":"2025-06-03T13:43:24.222+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"3888ba41-b217-414b-bc55-0cc0f298475d","exec_id":"3888ba41-b217-414b-bc55-0cc0f298475d-1748929404222362000","command":["sleep","5"]}
+{"level":"error","ts":"2025-06-03T13:43:24.222+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67686,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:24.222+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:24.371+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67602,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:24.371+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67602,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:24.375+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"08dc010c-ae80-4fe6-a63b-9f47ef3879db","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:24.376+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:24.520+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"990fd912-6848-41b6-9acf-dc3f8c766192","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:24.526+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"990fd912-6848-41b6-9acf-dc3f8c766192","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:24.526+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"990fd912-6848-41b6-9acf-dc3f8c766192","exec_id":"990fd912-6848-41b6-9acf-dc3f8c766192-1748929404526868000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:24.527+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67688,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:24.528+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67688,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:24.528+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:24.675+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67613,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:24.676+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67613,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:24.680+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"055f641a-c94a-4f92-a298-a81435c02248","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:24.681+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:24.824+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"47c516b8-6b09-44f7-a6f3-04f2fe7d935f","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:24.830+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"47c516b8-6b09-44f7-a6f3-04f2fe7d935f","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:24.830+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"47c516b8-6b09-44f7-a6f3-04f2fe7d935f","exec_id":"47c516b8-6b09-44f7-a6f3-04f2fe7d935f-1748929404830502000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:24.831+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67690,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:24.831+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67690,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:24.831+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:24.973+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67617,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:24.973+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67617,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:24.977+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"eca99c1d-677b-4aa1-99d4-b06dbd01fe4c","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:24.978+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:25.128+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"99b74646-a19a-44d3-af5b-787ca466f74e","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:25.133+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"99b74646-a19a-44d3-af5b-787ca466f74e","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:25.134+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"99b74646-a19a-44d3-af5b-787ca466f74e","exec_id":"99b74646-a19a-44d3-af5b-787ca466f74e-1748929405134348000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:25.135+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67694,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:25.135+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67694,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:25.135+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:25.278+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67619,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:25.278+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67619,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:25.284+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"bb74b1cf-614f-4735-8e61-925aa4ce3666","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:25.287+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:25.432+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"65d299f0-21ef-4e5c-b2f3-9b08a35c4849","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:25.437+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"65d299f0-21ef-4e5c-b2f3-9b08a35c4849","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:25.438+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"65d299f0-21ef-4e5c-b2f3-9b08a35c4849","exec_id":"65d299f0-21ef-4e5c-b2f3-9b08a35c4849-1748929405438032000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:25.438+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67696,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:25.439+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67696,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:25.439+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:25.587+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67622,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:25.587+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67622,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:25.589+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67623,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:25.589+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67623,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:25.590+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"96823775-1e7a-44bf-9ecd-87c8caaa48ed","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:25.591+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"ed35bf45-2dc0-43e1-b2f4-d0ab2c335258","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:25.592+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:25.594+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:25.736+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"f847637d-a6a1-4a09-8387-0337863a5a47","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:25.740+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f847637d-a6a1-4a09-8387-0337863a5a47","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:25.740+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"f847637d-a6a1-4a09-8387-0337863a5a47","exec_id":"f847637d-a6a1-4a09-8387-0337863a5a47-1748929405740921000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:25.741+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67698,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:25.742+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67698,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:25.742+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:25.889+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67625,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:25.889+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67625,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:25.892+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"42790e24-0d8c-439b-8601-5669e6f75747","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:25.894+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:25.938+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"41f52ae8-4076-43cd-bdac-cc83125e2036","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:25.943+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"41f52ae8-4076-43cd-bdac-cc83125e2036","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:25.943+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"41f52ae8-4076-43cd-bdac-cc83125e2036","exec_id":"41f52ae8-4076-43cd-bdac-cc83125e2036-1748929405943639000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:25.944+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67700,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:25.944+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67700,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:25.945+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:26.193+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67629,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:26.193+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67629,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:26.197+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"75679e6e-c511-4ce3-93fb-c8797927c585","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:26.198+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:26.241+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"56f77de1-c9d2-485b-885b-057915d27888","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:26.247+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"56f77de1-c9d2-485b-885b-057915d27888","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:26.247+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"56f77de1-c9d2-485b-885b-057915d27888","exec_id":"56f77de1-c9d2-485b-885b-057915d27888-1748929406247507000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:26.248+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67713,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:26.248+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67713,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:26.248+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:26.497+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67635,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:26.497+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67635,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:26.501+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"3aac4b00-5969-46a6-8e7d-fc5ccc5c0cc7","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:26.502+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:26.544+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"8fd8e204-7a74-458b-be97-757bad2bae73","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:26.548+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8fd8e204-7a74-458b-be97-757bad2bae73","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:26.549+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"8fd8e204-7a74-458b-be97-757bad2bae73","exec_id":"8fd8e204-7a74-458b-be97-757bad2bae73-1748929406549211000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:26.550+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67719,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:26.550+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67719,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:26.550+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:26.794+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67646,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:26.794+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67646,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:26.798+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"efc2c6d2-d2d1-41ad-afaa-707f57a3d0e3","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:26.799+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:26.848+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"6920aef6-bb74-4071-b196-b575232f2418","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:26.851+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67721,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:26.851+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67721,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:26.851+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:26.851+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"6920aef6-bb74-4071-b196-b575232f2418","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:26.851+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"6920aef6-bb74-4071-b196-b575232f2418","exec_id":"6920aef6-bb74-4071-b196-b575232f2418-1748929406851939000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:27.100+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67650,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:27.100+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67650,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:27.104+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f759be5e-95c3-42fc-9e3d-e35f1c6ed02f","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:27.106+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:27.150+0800","caller":"service/scan_service.go:232","msg":"Scan task queued","taskID":"0c713e57-398b-4f9b-8b19-670e4d8f49f3","scanType":"SAST"}
+{"level":"info","ts":"2025-06-03T13:43:27.155+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67725,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:27.166+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67725,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:27.166+0800","caller":"service/scan_service.go:104","msg":"Current task queue, ","length":"0"}
+{"level":"info","ts":"2025-06-03T13:43:27.167+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0c713e57-398b-4f9b-8b19-670e4d8f49f3","status":"running"}
+{"level":"info","ts":"2025-06-03T13:43:27.168+0800","caller":"impl/base_scanner.go:145","msg":"starting command execution","scanner":"SAST","task_id":"0c713e57-398b-4f9b-8b19-670e4d8f49f3","exec_id":"0c713e57-398b-4f9b-8b19-670e4d8f49f3-1748929407168707000","command":["sleep","5"]}
+{"level":"info","ts":"2025-06-03T13:43:27.404+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67662,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:27.405+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67662,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:27.408+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"06141409-85ac-43a5-8319-50b85e98cd15","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:27.409+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:27.713+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67664,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:27.713+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67664,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:27.717+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"c5e7fbed-1fc6-4bce-8278-18531ad3aec2","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:27.718+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:28.014+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67667,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:28.014+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67667,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:28.019+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0be50991-92d4-420d-b161-f8dd74e26edb","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:28.022+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:28.321+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67670,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:28.321+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67670,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:28.325+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"a65a400e-8632-4ce3-84af-4ccc2a776789","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:28.327+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:28.622+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67672,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:28.622+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67672,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:28.626+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"5d7ead40-15ad-42fe-b95f-d510d33b30e3","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:28.627+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:28.926+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67683,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:28.926+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67683,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:28.929+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"034693c3-bde9-463f-b1eb-6f1e24e288fd","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:28.931+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:29.229+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67687,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:29.229+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67687,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:29.233+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"3888ba41-b217-414b-bc55-0cc0f298475d","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:29.235+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:29.531+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67689,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:29.531+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67689,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:29.535+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"990fd912-6848-41b6-9acf-dc3f8c766192","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:29.537+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:29.838+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67691,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:29.838+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67691,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:29.841+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"47c516b8-6b09-44f7-a6f3-04f2fe7d935f","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:29.842+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:30.143+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67695,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:30.143+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67695,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:30.147+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"99b74646-a19a-44d3-af5b-787ca466f74e","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:30.148+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:30.447+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67697,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:30.447+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67697,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:30.452+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"65d299f0-21ef-4e5c-b2f3-9b08a35c4849","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:30.454+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:30.749+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67699,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:30.749+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67699,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:30.753+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"f847637d-a6a1-4a09-8387-0337863a5a47","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:30.755+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:30.953+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67701,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:30.953+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67701,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:30.958+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"41f52ae8-4076-43cd-bdac-cc83125e2036","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:30.960+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:31.255+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67714,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:31.255+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67714,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:31.261+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"56f77de1-c9d2-485b-885b-057915d27888","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:31.263+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:31.557+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67720,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:31.557+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67720,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:31.559+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"8fd8e204-7a74-458b-be97-757bad2bae73","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:31.560+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:31.854+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67722,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:31.855+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67722,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:31.856+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"6920aef6-bb74-4071-b196-b575232f2418","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:31.857+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+{"level":"info","ts":"2025-06-03T13:43:32.177+0800","caller":"impl/base_scanner.go:257","msg":"terminating process group","scanner":"SAST","pid":67726,"force":true}
+{"level":"error","ts":"2025-06-03T13:43:32.178+0800","caller":"impl/base_scanner.go:277","msg":"kill process group failed","scanner":"SAST","pid":67726,"error":"no such process"}
+{"level":"info","ts":"2025-06-03T13:43:32.183+0800","caller":"service/task_status_updater.go:71","msg":"Task status updated","taskID":"0c713e57-398b-4f9b-8b19-670e4d8f49f3","status":"completed"}
+{"level":"info","ts":"2025-06-03T13:43:32.185+0800","caller":"service/result_publisher.go:31","msg":"Scan result published successfully"}
+
+
