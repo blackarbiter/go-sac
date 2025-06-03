@@ -100,6 +100,20 @@ type ScannerConfig struct {
 		ResetTimeout      time.Duration `yaml:"reset_timeout" mapstructure:"reset_timeout"`           // 重置超时时间
 	} `yaml:"circuit_breaker" mapstructure:"circuit_breaker"`
 
+	// 优先级调度器配置
+	PriorityScheduler struct {
+		ChannelCapacity struct {
+			High   int `yaml:"high" mapstructure:"high"`
+			Medium int `yaml:"medium" mapstructure:"medium"`
+			Low    int `yaml:"low" mapstructure:"low"`
+		} `yaml:"channel_capacity" mapstructure:"channel_capacity"`
+		PriorityWeights struct {
+			High   float64 `yaml:"high" mapstructure:"high"`
+			Medium float64 `yaml:"medium" mapstructure:"medium"`
+			Low    float64 `yaml:"low" mapstructure:"low"`
+		} `yaml:"priority_weights" mapstructure:"priority_weights"`
+	} `yaml:"priority_scheduler" mapstructure:"priority_scheduler"`
+
 	SAST struct {
 		ResourceProfile struct {
 			MinCPU   int `yaml:"min_cpu" mapstructure:"min_cpu"`
@@ -332,4 +346,21 @@ func (c *Config) GetCircuitBreakerConfig() (uint32, uint32, time.Duration) {
 // GetConcurrencyConfig 获取全局并行配置文件
 func (c *Config) GetConcurrencyConfig() (int, int) {
 	return c.Scanner.Concurrency.MaxWorkers, c.Scanner.Concurrency.QueueSize
+}
+
+// GetPrioritySchedulerConfig 获取优先级调度器配置
+func (c *Config) GetPrioritySchedulerConfig() (map[string]int, map[string]float64) {
+	channelCapacity := map[string]int{
+		"high":   c.Scanner.PriorityScheduler.ChannelCapacity.High,
+		"medium": c.Scanner.PriorityScheduler.ChannelCapacity.Medium,
+		"low":    c.Scanner.PriorityScheduler.ChannelCapacity.Low,
+	}
+
+	priorityWeights := map[string]float64{
+		"high":   c.Scanner.PriorityScheduler.PriorityWeights.High,
+		"medium": c.Scanner.PriorityScheduler.PriorityWeights.Medium,
+		"low":    c.Scanner.PriorityScheduler.PriorityWeights.Low,
+	}
+
+	return channelCapacity, priorityWeights
 }

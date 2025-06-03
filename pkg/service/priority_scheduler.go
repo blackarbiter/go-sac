@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/blackarbiter/go-sac/pkg/config"
 	"github.com/blackarbiter/go-sac/pkg/errors"
 	"github.com/blackarbiter/go-sac/pkg/logger"
 	"github.com/blackarbiter/go-sac/pkg/mq"
@@ -22,16 +23,20 @@ type PriorityScheduler struct {
 	Handler          mq.MessageHandler
 	Mu               sync.Mutex   // 状态锁
 	State            *SystemState // 系统状态管理器
+	priorityWeights  map[string]float64
 }
 
 // NewPriorityScheduler creates a new PriorityScheduler instance
-func NewPriorityScheduler(handler mq.MessageHandler, state *SystemState) *PriorityScheduler {
+func NewPriorityScheduler(handler mq.MessageHandler, state *SystemState, cfg *config.Config) *PriorityScheduler {
+	channelCapacity, priorityWeights := cfg.GetPrioritySchedulerConfig()
+
 	return &PriorityScheduler{
-		HighPriorityChan: make(chan amqp.Delivery, 3),
-		MedPriorityChan:  make(chan amqp.Delivery, 3),
-		LowPriorityChan:  make(chan amqp.Delivery, 3),
+		HighPriorityChan: make(chan amqp.Delivery, channelCapacity["high"]),
+		MedPriorityChan:  make(chan amqp.Delivery, channelCapacity["medium"]),
+		LowPriorityChan:  make(chan amqp.Delivery, channelCapacity["low"]),
 		Handler:          handler,
 		State:            state,
+		priorityWeights:  priorityWeights,
 	}
 }
 
@@ -59,13 +64,13 @@ func (s *PriorityScheduler) Start(ctx context.Context) {
 
 			totalWeight := 0
 			if highCount > 0 {
-				totalWeight += 60
+				totalWeight += int(s.priorityWeights["high"] * 100)
 			}
 			if medCount > 0 {
-				totalWeight += 30
+				totalWeight += int(s.priorityWeights["medium"] * 100)
 			}
 			if lowCount > 0 {
-				totalWeight += 10
+				totalWeight += int(s.priorityWeights["low"] * 100)
 			}
 
 			if totalWeight == 0 {
@@ -84,15 +89,18 @@ func (s *PriorityScheduler) Start(ctx context.Context) {
 			var msg amqp.Delivery
 
 			// 根据权重选择通道并尝试非阻塞读取
+			highWeight := int(s.priorityWeights["high"] * 100)
+			medWeight := int(s.priorityWeights["medium"] * 100)
+
 			switch {
-			case highCount > 0 && r < 60:
+			case highCount > 0 && r < highWeight:
 				select {
 				case msg = <-s.HighPriorityChan:
 					s.processWithPriority(ctx, msg, "high")
 				default:
 					time.Sleep(normalSleep)
 				}
-			case medCount > 0 && r < 90:
+			case medCount > 0 && r < (highWeight+medWeight):
 				select {
 				case msg = <-s.MedPriorityChan:
 					s.processWithPriority(ctx, msg, "medium")

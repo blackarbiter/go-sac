@@ -18,6 +18,17 @@ scanner:
     critical_threshold: 3 # 严重错误阈值
     reset_timeout: 5m     # 重置超时时间
 
+  # 优先级调度器配置
+  priority_scheduler:
+    channel_capacity:
+      high: 3
+      medium: 3
+      low: 3
+    priority_weights:
+      high: 0.6
+      medium: 0.3
+      low: 0.1
+
   sast:
     resource_profile:
       min_cpu: 2

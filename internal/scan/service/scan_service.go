@@ -143,7 +143,7 @@ func (s *ScanService) Start(ctx context.Context) error {
 	}
 
 	// 创建带缓冲的通道（大小根据吞吐量配置）
-	scheduler := service.NewPriorityScheduler(s, s.state)
+	scheduler := service.NewPriorityScheduler(s, s.state, s.config)
 	// 将scheduler传递给消费者
 	s.scanConsumer.SetScheduler(scheduler)
 
