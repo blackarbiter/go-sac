@@ -25,13 +25,8 @@ go.work.sum
 # env file
 .env
 
-logs
-docs
-cmd/asset-service/logs
-cmd/file-service/logs
-cmd/message-service/logs
-cmd/scan-service/logs
-cmd/task-service/logs
-mq_usage
-examples/mq_usage/mq_usage
+**/docs
+**/logs
+**/*.log
+**/wire_gen.go
 
