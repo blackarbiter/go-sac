@@ -70,8 +70,65 @@ func (c *AssetConsumer) Consume(ctx context.Context, queueName string, handler m
 					return
 				}
 
-				// 处理消息
+				// 使用传入的handler处理消息
 				err := handler.HandleMessage(ctx, delivery.Body)
+				if err != nil {
+					log.Printf("Error processing message: %v", err)
+					// 不再重新入队，直接拒绝消息，消息将进入死信队列
+					err := delivery.Nack(false, false)
+					if err != nil {
+						log.Printf("Delivery to dead letter error...")
+						return
+					}
+				} else {
+					// 成功处理消息后确认
+					err := delivery.Ack(false)
+					if err != nil {
+						return
+					}
+				}
+			}
+		}
+	}()
+
+	return nil
+}
+
+// ConsumeWithRouter 开始消费资产任务
+func (c *AssetConsumer) ConsumeWithRouter(ctx context.Context, queueName string, router *MessageRouter) error {
+	// 设置QoS
+	if err := c.channel.Qos(1, 0, false); err != nil {
+		return fmt.Errorf("failed to set QoS: %w", err)
+	}
+
+	deliveries, err := c.channel.Consume(
+		queueName,
+		"",    // consumer tag - auto generated
+		false, // auto-ack
+		false, // exclusive
+		false, // no-local
+		false, // no-wait
+		nil,   // args
+	)
+	if err != nil {
+		return fmt.Errorf("failed to register consumer: %w", err)
+	}
+
+	go func() {
+		for {
+			select {
+			case <-c.done:
+				return
+			case <-ctx.Done():
+				return
+			case delivery, ok := <-deliveries:
+				if !ok {
+					log.Printf("Consumer channel closed")
+					return
+				}
+
+				// 使用传入的handler处理消息
+				err := router.RouteMessage(ctx, delivery)
 				if err != nil {
 					log.Printf("Error processing message: %v", err)
 					// 不再重新入队，直接拒绝消息，消息将进入死信队列

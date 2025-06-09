@@ -2,60 +2,74 @@ package http
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/blackarbiter/go-sac/internal/asset/service"
 	"github.com/blackarbiter/go-sac/pkg/config"
-	"github.com/blackarbiter/go-sac/pkg/logger"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
-// Server 表示HTTP服务器
+// Server 实现HTTP服务器
 type Server struct {
-	router *gin.Engine
-	server *http.Server
-	cfg    *config.Config
+	config  *config.Config
+	binder  *AssetBinder
+	factory service.AssetProcessorFactory
+	engine  *gin.Engine
+	server  *http.Server
 }
 
-// NewServer 创建一个新的HTTP服务器
-func NewServer(cfg *config.Config, assetService service.AssetService) *Server {
-	// 设置资产服务
-	SetAssetService(assetService)
+// NewServer 创建HTTP服务器实例
+func NewServer(cfg *config.Config, binder *AssetBinder, factory service.AssetProcessorFactory) *Server {
+	// 创建Gin引擎
+	engine := gin.Default()
 
-	// 创建路由
-	router := NewRouter()
-
-	return &Server{
-		router: router,
-		cfg:    cfg,
+	// 创建服务器实例
+	server := &Server{
+		config:  cfg,
+		binder:  binder,
+		factory: factory,
+		engine:  engine,
 		server: &http.Server{
 			Addr:    fmt.Sprintf(":%d", cfg.Server.HTTP.Port),
-			Handler: router,
+			Handler: engine,
 		},
 	}
+
+	// 注册路由
+	handler := NewHandler(binder, factory)
+	handler.RegisterRoutes(engine)
+
+	return server
 }
 
 // Start 启动HTTP服务器
 func (s *Server) Start(ctx context.Context) error {
-	logger.Logger.Info("starting HTTP server", zap.Int("port", s.cfg.Server.HTTP.Port))
+	// 启动服务器
+	go func() {
+		if err := s.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			panic(err)
+		}
+	}()
 
-	if err := s.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-		return err
-	}
+	// 等待上下文取消
+	<-ctx.Done()
 
-	return nil
+	// 创建关闭上下文
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// 优雅关闭服务器
+	return s.server.Shutdown(shutdownCtx)
 }
 
 // Stop 停止HTTP服务器
-func (s *Server) Stop(ctx context.Context) {
-	logger.Logger.Info("stopping HTTP server")
+func (s *Server) Stop(ctx context.Context) error {
+	// 创建关闭上下文
+	shutdownCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
 
-	if err := s.server.Shutdown(ctx); err != nil {
-		logger.Logger.Error("server shutdown error", zap.Error(err))
-	}
-
-	logger.Logger.Info("HTTP server stopped")
+	// 优雅关闭服务器
+	return s.server.Shutdown(shutdownCtx)
 }

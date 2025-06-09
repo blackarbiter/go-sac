@@ -1,8 +1,7 @@
 package repository
 
 import (
-	"github.com/blackarbiter/go-sac/internal/asset/dto"
-	"github.com/blackarbiter/go-sac/pkg/config"
+	"github.com/blackarbiter/go-sac/internal/asset/repository/migration"
 	mysqlStorage "github.com/blackarbiter/go-sac/pkg/storage/mysql"
 	"github.com/google/wire"
 	"gorm.io/gorm"
@@ -10,16 +9,16 @@ import (
 
 // ProviderSet 是资产仓库提供者集合
 var ProviderSet = wire.NewSet(
-	ProvideAssetRepository,
 	mysqlStorage.ProviderSet,
+	ProvideRepository,
 )
 
-// ProvideAssetRepository 提供资产仓库实例
-func ProvideAssetRepository(db *gorm.DB, cfg *config.Config) AssetRepository {
-	// 自动迁移表结构
-	if err := db.AutoMigrate(&dto.Asset{}); err != nil {
+// ProvideRepository 提供资产仓库实例
+func ProvideRepository(db *gorm.DB) Repository {
+	// 执行数据库迁移
+	if err := migration.AutoMigrate(db); err != nil {
 		panic(err) // 在启动时如果迁移失败，应该直接panic
 	}
 
-	return NewAssetRepository(db)
+	return NewGormRepository(db)
 }

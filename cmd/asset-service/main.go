@@ -2,11 +2,15 @@ package main
 
 import (
 	"context"
+	"github.com/blackarbiter/go-sac/pkg/mq/rabbitmq"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/blackarbiter/go-sac/internal/asset/repository"
+	"github.com/blackarbiter/go-sac/internal/asset/service"
 	"github.com/blackarbiter/go-sac/pkg/config"
+	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/logger"
 	"go.uber.org/zap"
 )
@@ -34,6 +38,9 @@ func main() {
 	}
 	defer cleanup()
 
+	// 注册所有资产处理器
+	registerAssetProcessors(app)
+
 	// 启动HTTP服务
 	go func() {
 		if err := app.HTTPServer.Start(ctx); err != nil {
@@ -43,6 +50,20 @@ func main() {
 
 	logger.Logger.Info("asset service started")
 
+	// 创建消息路由器
+	messageRouter := rabbitmq.NewMessageRouter()
+
+	// 注册资产消息处理器
+	messageRouter.RegisterHandler("asset_operation", app.AssetHandler.HandleMessage)
+
+	// 启动MQ消费者
+	go func() {
+		logger.Logger.Info("starting RabbitMQ consumer")
+		if err := app.MQConsumer.ConsumeWithRouter(context.Background(), rabbitmq.AssetTaskQueue, messageRouter); err != nil {
+			logger.Logger.Error("MQ consumer failed", zap.Error(err))
+		}
+	}()
+
 	// 优雅停机处理
 	<-ctx.Done()
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -50,4 +71,34 @@ func main() {
 
 	app.HTTPServer.Stop(shutdownCtx)
 	logger.Logger.Info("service stopped gracefully")
+
+	// 停止MQ消费者
+	if err := app.MQConsumer.Close(); err != nil {
+		logger.Logger.Error("MQ consumer close error", zap.Error(err))
+	}
+
+	logger.Logger.Info("service stopped gracefully")
+}
+
+// registerAssetProcessors 注册所有资产处理器
+func registerAssetProcessors(app *Application) {
+	// 创建仓储实例
+	repo := repository.NewGormRepository(app.DB)
+
+	// 创建处理器工厂
+	factory := service.NewProcessorFactory()
+
+	// 注册所有处理器
+	factory.RegisterDefaultProcessors(repo)
+
+	logger.Logger.Info("all asset processors registered",
+		zap.Strings("processors", []string{
+			domain.AssetTypeRequirement.String(),
+			domain.AssetTypeDesignDocument.String(),
+			domain.AssetTypeRepository.String(),
+			domain.AssetTypeUploadedFile.String(),
+			domain.AssetTypeImage.String(),
+			domain.AssetTypeDomain.String(),
+			domain.AssetTypeIP.String(),
+		}))
 }

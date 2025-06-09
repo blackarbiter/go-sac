@@ -1,8 +1,16 @@
-imports:
-  - base.yaml
-
+# 资产服务特定配置
 server:
   http:
     port: 8092  # asset服务使用8092端口
   grpc:
     port: 50055
+
+logger:
+  level: info
+  encoding: json
+  output_paths:
+    - stdout
+    - logs/asset-service.log
+  error_output_paths:
+    - stderr
+    - logs/asset-service.error.log
