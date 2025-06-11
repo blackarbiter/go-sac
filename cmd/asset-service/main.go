@@ -50,16 +50,10 @@ func main() {
 
 	logger.Logger.Info("asset service started")
 
-	// 创建消息路由器
-	messageRouter := rabbitmq.NewMessageRouter()
-
-	// 注册资产消息处理器
-	messageRouter.RegisterHandler("asset_operation", app.AssetHandler.HandleMessage)
-
 	// 启动MQ消费者
 	go func() {
 		logger.Logger.Info("starting RabbitMQ consumer")
-		if err := app.MQConsumer.ConsumeWithRouter(context.Background(), rabbitmq.AssetTaskQueue, messageRouter); err != nil {
+		if err := app.MQConsumer.Consume(context.Background(), rabbitmq.AssetTaskQueue, app.AssetHandler); err != nil {
 			logger.Logger.Error("MQ consumer failed", zap.Error(err))
 		}
 	}()

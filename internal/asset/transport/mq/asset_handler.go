@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/blackarbiter/go-sac/pkg/domain"
+	"github.com/blackarbiter/go-sac/pkg/utils/type_parse"
 
 	"github.com/blackarbiter/go-sac/internal/asset/dto"
 	"github.com/blackarbiter/go-sac/internal/asset/service"
@@ -26,45 +28,32 @@ func NewAssetMessageHandler(binder *http.AssetBinder, factory service.AssetProce
 
 // HandleMessage 处理消息
 func (h *AssetMessageHandler) HandleMessage(ctx context.Context, body []byte) error {
-	// 解析消息头
-	var msgHeader struct {
-		Type   string `json:"type"`
-		Action string `json:"action"`
-	}
-	if err := json.Unmarshal(body, &msgHeader); err != nil {
+	// 解析task消息
+	var assetTaskPayload domain.AssetTaskPayload
+	if err := json.Unmarshal(body, &assetTaskPayload); err != nil {
 		return fmt.Errorf("failed to unmarshal message header: %w", err)
 	}
 
-	// 只处理资产操作消息
-	if msgHeader.Type != "asset_operation" {
-		return nil
-	}
-
-	// 解析资产操作消息
-	var assetMsg struct {
-		AssetType string          `json:"asset_type"`
-		Payload   json.RawMessage `json:"payload"`
-	}
-	if err := json.Unmarshal(body, &assetMsg); err != nil {
-		return fmt.Errorf("failed to unmarshal asset operation: %w", err)
-	}
-
 	// 获取处理器
-	processor, err := h.factory.GetProcessor(assetMsg.AssetType)
+	processor, err := h.factory.GetProcessor(assetTaskPayload.AssetType.String())
 	if err != nil {
 		return fmt.Errorf("unsupported asset type: %w", err)
 	}
+	data, err := type_parse.MapToRawMessage(assetTaskPayload.Data)
+	if err != nil {
+		return fmt.Errorf("failed to parse to json.RawMessage: %w", err)
+	}
 
 	// 处理不同操作
-	switch msgHeader.Action {
+	switch assetTaskPayload.Operation {
 	case "create":
-		return h.handleCreate(ctx, processor, assetMsg.AssetType, assetMsg.Payload)
+		return h.handleCreate(ctx, processor, assetTaskPayload.AssetType.String(), *data)
 	case "update":
-		return h.handleUpdate(ctx, processor, assetMsg.AssetType, assetMsg.Payload)
+		return h.handleUpdate(ctx, processor, assetTaskPayload.AssetType.String(), *data)
 	case "delete":
-		return h.handleDelete(ctx, processor, assetMsg.Payload)
+		return h.handleDelete(ctx, processor, *data)
 	default:
-		return fmt.Errorf("unsupported action: %s", msgHeader.Action)
+		return fmt.Errorf("unsupported action: %s", assetTaskPayload.Operation)
 	}
 }
 
