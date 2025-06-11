@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/blackarbiter/go-sac/internal/asset/dto"
 	"github.com/blackarbiter/go-sac/internal/asset/repository"
 	"github.com/blackarbiter/go-sac/internal/asset/repository/model"
 )
@@ -24,22 +25,21 @@ func NewUploadedFileProcessor(repo repository.Repository) *UploadedFileProcessor
 
 // Create 创建上传文件资产
 func (p *UploadedFileProcessor) Create(ctx context.Context, base *model.BaseAsset, extension interface{}) (*AssetResponse, error) {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return nil, err
-	}
-
-	// 类型断言
-	file, ok := extension.(*model.UploadedFileAsset)
-	if !ok {
+	var req *model.UploadedFileAsset
+	switch v := extension.(type) {
+	case *model.UploadedFileAsset:
+		req = v
+	case *dto.CreateUploadedFileRequest:
+		req = dto.ToModelUploadedFileAsset(v)
+	default:
 		return nil, fmt.Errorf("invalid uploaded file asset type")
 	}
-
-	// 创建上传文件资产
-	if err := p.repo.CreateUploadedFile(ctx, base, file); err != nil {
+	if err := p.Validate(base, req); err != nil {
 		return nil, err
 	}
-
+	if err := p.repo.CreateUploadedFile(ctx, base, req); err != nil {
+		return nil, err
+	}
 	return &AssetResponse{
 		ID:        base.ID,
 		Name:      base.Name,
@@ -50,19 +50,19 @@ func (p *UploadedFileProcessor) Create(ctx context.Context, base *model.BaseAsse
 
 // Update 更新上传文件资产
 func (p *UploadedFileProcessor) Update(ctx context.Context, id uint, base *model.BaseAsset, extension interface{}) error {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return err
-	}
-
-	// 类型断言
-	file, ok := extension.(*model.UploadedFileAsset)
-	if !ok {
+	var req *model.UploadedFileAsset
+	switch v := extension.(type) {
+	case *model.UploadedFileAsset:
+		req = v
+	case *dto.CreateUploadedFileRequest:
+		req = dto.ToModelUploadedFileAsset(v)
+	default:
 		return fmt.Errorf("invalid uploaded file asset type")
 	}
-
-	// 更新上传文件资产
-	return p.repo.UpdateUploadedFile(ctx, base, file)
+	if err := p.Validate(base, req); err != nil {
+		return err
+	}
+	return p.repo.UpdateUploadedFile(ctx, base, req)
 }
 
 // Get 获取上传文件资产
@@ -76,37 +76,21 @@ func (p *UploadedFileProcessor) Get(ctx context.Context, id uint) (*model.BaseAs
 
 // Validate 验证上传文件资产数据
 func (p *UploadedFileProcessor) Validate(base *model.BaseAsset, extension interface{}) error {
-	// 验证基础资产数据
 	if err := p.BaseProcessor.Validate(base, nil); err != nil {
 		return err
 	}
-
-	// 验证上传文件资产数据
-	file, ok := extension.(*model.UploadedFileAsset)
-	if !ok {
+	var req *model.UploadedFileAsset
+	switch v := extension.(type) {
+	case *model.UploadedFileAsset:
+		req = v
+	case *dto.CreateUploadedFileRequest:
+		req = dto.ToModelUploadedFileAsset(v)
+	default:
 		return fmt.Errorf("invalid uploaded file asset type")
 	}
-
-	// 验证文件路径
-	if file.FilePath == "" {
+	if req.FilePath == "" {
 		return fmt.Errorf("file path is required")
 	}
-
-	// 验证文件大小
-	if file.FileSize <= 0 {
-		return fmt.Errorf("file size must be greater than 0")
-	}
-
-	// 验证文件类型
-	if file.FileType == "" {
-		return fmt.Errorf("file type is required")
-	}
-
-	// 验证校验和
-	if file.Checksum == "" {
-		return fmt.Errorf("checksum is required")
-	}
-
 	return nil
 }
 

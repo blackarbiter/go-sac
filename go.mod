@@ -11,7 +11,6 @@ require (
 	github.com/golang-migrate/migrate/v4 v4.18.3
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.6.0
-	github.com/lib/pq v1.10.9
 	github.com/microcosm-cc/bluemonday v1.0.27
 	github.com/minio/minio-go/v7 v7.0.91
 	github.com/natefinch/lumberjack/v3 v3.0.0-alpha

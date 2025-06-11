@@ -11,7 +11,7 @@ type DesignDocumentAsset struct {
 	Components      datatypes.JSON `gorm:"type:jsonb;not null"`
 	Diagrams        datatypes.JSON `gorm:"type:jsonb"`
 	Dependencies    datatypes.JSON `gorm:"type:jsonb"`
-	TechnologyStack []string       `gorm:"type:json"`
+	TechnologyStack string         `gorm:"type:TEXT"`
 }
 
 // TableName 指定表名

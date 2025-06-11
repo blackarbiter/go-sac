@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/blackarbiter/go-sac/internal/asset/repository/model"
@@ -15,6 +16,14 @@ type BaseRequest struct {
 	Tags           []string `json:"tags"`
 	CreatedBy      string   `json:"created_by" binding:"required"`
 	UpdatedBy      string   `json:"updated_by" binding:"required"`
+}
+
+// BaseRequestGetter 用于获取 BaseRequest 字段
+//go:generate mockgen -source=request.go -destination=mock_request.go -package=dto
+// 方便单元测试
+
+type BaseRequestGetter interface {
+	GetBaseRequest() BaseRequest
 }
 
 // CreateRequirementRequest 创建需求文档请求
@@ -93,14 +102,43 @@ type CreateIPRequest struct {
 
 // ToBaseAsset 将请求转换为基础资产模型
 func (r *BaseRequest) ToBaseAsset(assetType string) *model.BaseAsset {
+	tagsBytes, _ := json.Marshal(r.Tags)
 	return &model.BaseAsset{
 		AssetType:      assetType,
 		Name:           r.Name,
 		Status:         r.Status,
 		ProjectID:      r.ProjectID,
 		OrganizationID: r.OrganizationID,
-		Tags:           r.Tags,
+		Tags:           string(tagsBytes),
 		CreatedBy:      r.CreatedBy,
 		UpdatedBy:      r.UpdatedBy,
 	}
+}
+
+func (r *CreateRequirementRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
+}
+
+func (r *CreateDesignDocumentRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
+}
+
+func (r *CreateRepositoryRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
+}
+
+func (r *CreateUploadedFileRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
+}
+
+func (r *CreateImageRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
+}
+
+func (r *CreateDomainRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
+}
+
+func (r *CreateIPRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
 }

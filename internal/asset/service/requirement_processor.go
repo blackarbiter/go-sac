@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/blackarbiter/go-sac/internal/asset/dto"
 	"github.com/blackarbiter/go-sac/internal/asset/repository"
 	"github.com/blackarbiter/go-sac/internal/asset/repository/model"
 )
@@ -24,15 +25,20 @@ func NewRequirementProcessor(repo repository.Repository) *RequirementProcessor {
 
 // Create 创建需求文档资产
 func (p *RequirementProcessor) Create(ctx context.Context, base *model.BaseAsset, extension interface{}) (*AssetResponse, error) {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return nil, err
+	// 支持 DTO 自动转换
+	var req *model.RequirementAsset
+	switch v := extension.(type) {
+	case *model.RequirementAsset:
+		req = v
+	case *dto.CreateRequirementRequest:
+		req = dto.ToModelRequirementAsset(v)
+	default:
+		return nil, fmt.Errorf("invalid requirement asset type")
 	}
 
-	// 类型断言
-	req, ok := extension.(*model.RequirementAsset)
-	if !ok {
-		return nil, fmt.Errorf("invalid requirement asset type")
+	// 验证数据
+	if err := p.Validate(base, req); err != nil {
+		return nil, err
 	}
 
 	// 创建需求文档资产
@@ -50,15 +56,20 @@ func (p *RequirementProcessor) Create(ctx context.Context, base *model.BaseAsset
 
 // Update 更新需求文档资产
 func (p *RequirementProcessor) Update(ctx context.Context, id uint, base *model.BaseAsset, extension interface{}) error {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return err
+	// 支持 DTO 自动转换
+	var req *model.RequirementAsset
+	switch v := extension.(type) {
+	case *model.RequirementAsset:
+		req = v
+	case *dto.CreateRequirementRequest:
+		req = dto.ToModelRequirementAsset(v)
+	default:
+		return fmt.Errorf("invalid requirement asset type")
 	}
 
-	// 类型断言
-	req, ok := extension.(*model.RequirementAsset)
-	if !ok {
-		return fmt.Errorf("invalid requirement asset type")
+	// 验证数据
+	if err := p.Validate(base, req); err != nil {
+		return err
 	}
 
 	// 更新需求文档资产
@@ -81,9 +92,14 @@ func (p *RequirementProcessor) Validate(base *model.BaseAsset, extension interfa
 		return err
 	}
 
-	// 验证需求文档资产数据
-	req, ok := extension.(*model.RequirementAsset)
-	if !ok {
+	// 支持 DTO 自动转换
+	var req *model.RequirementAsset
+	switch v := extension.(type) {
+	case *model.RequirementAsset:
+		req = v
+	case *dto.CreateRequirementRequest:
+		req = dto.ToModelRequirementAsset(v)
+	default:
 		return fmt.Errorf("invalid requirement asset type")
 	}
 

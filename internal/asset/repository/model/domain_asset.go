@@ -10,7 +10,7 @@ type DomainAsset struct {
 	DomainName    string    `gorm:"size:255;not null;index"`
 	Registrar     string    `gorm:"size:100"`
 	ExpiryDate    time.Time `gorm:"not null;index"`
-	DNSServers    []string  `gorm:"type:json"`
+	DNSServers    string    `gorm:"type:TEXT"`
 	SSLExpiryDate time.Time
 }
 

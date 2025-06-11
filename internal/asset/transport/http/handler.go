@@ -71,11 +71,12 @@ func (h *Handler) CreateAsset(c *gin.Context) {
 	}
 
 	// 3. 转换请求为基础资产和扩展资产
-	baseReq, ok := req.(dto.BaseRequest)
+	getter, ok := req.(dto.BaseRequestGetter)
 	if !ok {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request format"})
 		return
 	}
+	baseReq := getter.GetBaseRequest()
 
 	baseAsset := baseReq.ToBaseAsset(assetType)
 
@@ -120,11 +121,12 @@ func (h *Handler) UpdateAsset(c *gin.Context) {
 	}
 
 	// 3. 转换请求为基础资产和扩展资产
-	baseReq, ok := req.(dto.BaseRequest)
+	getter, ok := req.(dto.BaseRequestGetter)
 	if !ok {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request format"})
 		return
 	}
+	baseReq := getter.GetBaseRequest()
 
 	baseAsset := baseReq.ToBaseAsset(assetType)
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/blackarbiter/go-sac/internal/asset/dto"
 	"github.com/blackarbiter/go-sac/internal/asset/repository"
 	"github.com/blackarbiter/go-sac/internal/asset/repository/model"
 )
@@ -24,22 +25,21 @@ func NewImageProcessor(repo repository.Repository) *ImageProcessor {
 
 // Create 创建容器镜像资产
 func (p *ImageProcessor) Create(ctx context.Context, base *model.BaseAsset, extension interface{}) (*AssetResponse, error) {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return nil, err
-	}
-
-	// 类型断言
-	image, ok := extension.(*model.ImageAsset)
-	if !ok {
+	var req *model.ImageAsset
+	switch v := extension.(type) {
+	case *model.ImageAsset:
+		req = v
+	case *dto.CreateImageRequest:
+		req = dto.ToModelImageAsset(v)
+	default:
 		return nil, fmt.Errorf("invalid image asset type")
 	}
-
-	// 创建容器镜像资产
-	if err := p.repo.CreateImage(ctx, base, image); err != nil {
+	if err := p.Validate(base, req); err != nil {
 		return nil, err
 	}
-
+	if err := p.repo.CreateImage(ctx, base, req); err != nil {
+		return nil, err
+	}
 	return &AssetResponse{
 		ID:        base.ID,
 		Name:      base.Name,
@@ -50,19 +50,19 @@ func (p *ImageProcessor) Create(ctx context.Context, base *model.BaseAsset, exte
 
 // Update 更新容器镜像资产
 func (p *ImageProcessor) Update(ctx context.Context, id uint, base *model.BaseAsset, extension interface{}) error {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return err
-	}
-
-	// 类型断言
-	image, ok := extension.(*model.ImageAsset)
-	if !ok {
+	var req *model.ImageAsset
+	switch v := extension.(type) {
+	case *model.ImageAsset:
+		req = v
+	case *dto.CreateImageRequest:
+		req = dto.ToModelImageAsset(v)
+	default:
 		return fmt.Errorf("invalid image asset type")
 	}
-
-	// 更新容器镜像资产
-	return p.repo.UpdateImage(ctx, base, image)
+	if err := p.Validate(base, req); err != nil {
+		return err
+	}
+	return p.repo.UpdateImage(ctx, base, req)
 }
 
 // Get 获取容器镜像资产
@@ -76,32 +76,21 @@ func (p *ImageProcessor) Get(ctx context.Context, id uint) (*model.BaseAsset, in
 
 // Validate 验证容器镜像资产数据
 func (p *ImageProcessor) Validate(base *model.BaseAsset, extension interface{}) error {
-	// 验证基础资产数据
 	if err := p.BaseProcessor.Validate(base, nil); err != nil {
 		return err
 	}
-
-	// 验证容器镜像资产数据
-	image, ok := extension.(*model.ImageAsset)
-	if !ok {
+	var req *model.ImageAsset
+	switch v := extension.(type) {
+	case *model.ImageAsset:
+		req = v
+	case *dto.CreateImageRequest:
+		req = dto.ToModelImageAsset(v)
+	default:
 		return fmt.Errorf("invalid image asset type")
 	}
-
-	// 验证镜像名称
-	if image.ImageName == "" {
+	if req.ImageName == "" {
 		return fmt.Errorf("image name is required")
 	}
-
-	// 验证镜像标签
-	if image.Tag == "" {
-		return fmt.Errorf("image tag is required")
-	}
-
-	// 验证镜像仓库
-	if image.RegistryURL == "" {
-		return fmt.Errorf("image registry is required")
-	}
-
 	return nil
 }
 

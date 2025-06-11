@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/blackarbiter/go-sac/internal/asset/dto"
 	"github.com/blackarbiter/go-sac/internal/asset/repository"
 	"github.com/blackarbiter/go-sac/internal/asset/repository/model"
 )
@@ -24,22 +25,21 @@ func NewRepositoryProcessor(repo repository.Repository) *RepositoryProcessor {
 
 // Create 创建代码仓库资产
 func (p *RepositoryProcessor) Create(ctx context.Context, base *model.BaseAsset, extension interface{}) (*AssetResponse, error) {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return nil, err
-	}
-
-	// 类型断言
-	repo, ok := extension.(*model.RepositoryAsset)
-	if !ok {
+	var req *model.RepositoryAsset
+	switch v := extension.(type) {
+	case *model.RepositoryAsset:
+		req = v
+	case *dto.CreateRepositoryRequest:
+		req = dto.ToModelRepositoryAsset(v)
+	default:
 		return nil, fmt.Errorf("invalid repository asset type")
 	}
-
-	// 创建代码仓库资产
-	if err := p.repo.CreateRepository(ctx, base, repo); err != nil {
+	if err := p.Validate(base, req); err != nil {
 		return nil, err
 	}
-
+	if err := p.repo.CreateRepository(ctx, base, req); err != nil {
+		return nil, err
+	}
 	return &AssetResponse{
 		ID:        base.ID,
 		Name:      base.Name,
@@ -50,19 +50,19 @@ func (p *RepositoryProcessor) Create(ctx context.Context, base *model.BaseAsset,
 
 // Update 更新代码仓库资产
 func (p *RepositoryProcessor) Update(ctx context.Context, id uint, base *model.BaseAsset, extension interface{}) error {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return err
-	}
-
-	// 类型断言
-	repo, ok := extension.(*model.RepositoryAsset)
-	if !ok {
+	var req *model.RepositoryAsset
+	switch v := extension.(type) {
+	case *model.RepositoryAsset:
+		req = v
+	case *dto.CreateRepositoryRequest:
+		req = dto.ToModelRepositoryAsset(v)
+	default:
 		return fmt.Errorf("invalid repository asset type")
 	}
-
-	// 更新代码仓库资产
-	return p.repo.UpdateRepository(ctx, base, repo)
+	if err := p.Validate(base, req); err != nil {
+		return err
+	}
+	return p.repo.UpdateRepository(ctx, base, req)
 }
 
 // Get 获取代码仓库资产
@@ -76,26 +76,20 @@ func (p *RepositoryProcessor) Get(ctx context.Context, id uint) (*model.BaseAsse
 
 // Validate 验证代码仓库资产数据
 func (p *RepositoryProcessor) Validate(base *model.BaseAsset, extension interface{}) error {
-	// 验证基础资产数据
 	if err := p.BaseProcessor.Validate(base, nil); err != nil {
 		return err
 	}
-
-	// 验证代码仓库资产数据
-	repo, ok := extension.(*model.RepositoryAsset)
-	if !ok {
+	var req *model.RepositoryAsset
+	switch v := extension.(type) {
+	case *model.RepositoryAsset:
+		req = v
+	case *dto.CreateRepositoryRequest:
+		req = dto.ToModelRepositoryAsset(v)
+	default:
 		return fmt.Errorf("invalid repository asset type")
 	}
-
-	// 验证仓库URL
-	if repo.RepoURL == "" {
-		return fmt.Errorf("repository URL is required")
+	if req.RepoURL == "" {
+		return fmt.Errorf("repo url is required")
 	}
-
-	// 验证编程语言
-	if repo.Language == "" {
-		return fmt.Errorf("programming language is required")
-	}
-
 	return nil
 }

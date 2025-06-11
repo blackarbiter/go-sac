@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/utils/type_parse"
 
@@ -70,11 +71,12 @@ func (h *AssetMessageHandler) handleCreate(
 		return fmt.Errorf("failed to bind request: %w", err)
 	}
 
-	// 类型断言
-	baseReq, ok := req.(dto.BaseRequest)
+	// 类型断言为 BaseRequestGetter 接口
+	getter, ok := req.(dto.BaseRequestGetter)
 	if !ok {
 		return fmt.Errorf("invalid request format for create")
 	}
+	baseReq := getter.GetBaseRequest()
 
 	// 创建资产
 	baseAsset := baseReq.ToBaseAsset(assetType)
@@ -104,11 +106,12 @@ func (h *AssetMessageHandler) handleUpdate(
 		return fmt.Errorf("failed to bind request: %w", err)
 	}
 
-	// 类型断言
-	baseReq, ok := req.(dto.BaseRequest)
+	// 类型断言为 BaseRequestGetter 接口
+	getter, ok := req.(dto.BaseRequestGetter)
 	if !ok {
 		return fmt.Errorf("invalid request format for update")
 	}
+	baseReq := getter.GetBaseRequest()
 
 	// 更新资产
 	baseAsset := baseReq.ToBaseAsset(assetType)

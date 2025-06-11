@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/blackarbiter/go-sac/internal/asset/dto"
 	"github.com/blackarbiter/go-sac/internal/asset/repository"
 	"github.com/blackarbiter/go-sac/internal/asset/repository/model"
 )
@@ -25,22 +26,21 @@ func NewDesignDocumentProcessor(repo repository.Repository) *DesignDocumentProce
 
 // Create 创建设计文档资产
 func (p *DesignDocumentProcessor) Create(ctx context.Context, base *model.BaseAsset, extension interface{}) (*AssetResponse, error) {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return nil, err
-	}
-
-	// 类型断言
-	doc, ok := extension.(*model.DesignDocumentAsset)
-	if !ok {
+	var req *model.DesignDocumentAsset
+	switch v := extension.(type) {
+	case *model.DesignDocumentAsset:
+		req = v
+	case *dto.CreateDesignDocumentRequest:
+		req = dto.ToModelDesignDocumentAsset(v)
+	default:
 		return nil, fmt.Errorf("invalid design document asset type")
 	}
-
-	// 创建设计文档资产
-	if err := p.repo.CreateDesignDocument(ctx, base, doc); err != nil {
+	if err := p.Validate(base, req); err != nil {
 		return nil, err
 	}
-
+	if err := p.repo.CreateDesignDocument(ctx, base, req); err != nil {
+		return nil, err
+	}
 	return &AssetResponse{
 		ID:        base.ID,
 		Name:      base.Name,
@@ -51,19 +51,19 @@ func (p *DesignDocumentProcessor) Create(ctx context.Context, base *model.BaseAs
 
 // Update 更新设计文档资产
 func (p *DesignDocumentProcessor) Update(ctx context.Context, id uint, base *model.BaseAsset, extension interface{}) error {
-	// 验证数据
-	if err := p.Validate(base, extension); err != nil {
-		return err
-	}
-
-	// 类型断言
-	doc, ok := extension.(*model.DesignDocumentAsset)
-	if !ok {
+	var req *model.DesignDocumentAsset
+	switch v := extension.(type) {
+	case *model.DesignDocumentAsset:
+		req = v
+	case *dto.CreateDesignDocumentRequest:
+		req = dto.ToModelDesignDocumentAsset(v)
+	default:
 		return fmt.Errorf("invalid design document asset type")
 	}
-
-	// 更新设计文档资产
-	return p.repo.UpdateDesignDocument(ctx, base, doc)
+	if err := p.Validate(base, req); err != nil {
+		return err
+	}
+	return p.repo.UpdateDesignDocument(ctx, base, req)
 }
 
 // Get 获取设计文档资产
@@ -77,27 +77,21 @@ func (p *DesignDocumentProcessor) Get(ctx context.Context, id uint) (*model.Base
 
 // Validate 验证设计文档资产数据
 func (p *DesignDocumentProcessor) Validate(base *model.BaseAsset, extension interface{}) error {
-	// 验证基础资产数据
 	if err := p.BaseProcessor.Validate(base, nil); err != nil {
 		return err
 	}
-
-	// 验证设计文档资产数据
-	doc, ok := extension.(*model.DesignDocumentAsset)
-	if !ok {
+	var req *model.DesignDocumentAsset
+	switch v := extension.(type) {
+	case *model.DesignDocumentAsset:
+		req = v
+	case *dto.CreateDesignDocumentRequest:
+		req = dto.ToModelDesignDocumentAsset(v)
+	default:
 		return fmt.Errorf("invalid design document asset type")
 	}
-
-	// 验证设计类型
-	if doc.DesignType == "" {
+	if req.DesignType == "" {
 		return fmt.Errorf("design type is required")
 	}
-
-	// 验证组件
-	if doc.Components == nil {
-		return fmt.Errorf("components are required")
-	}
-
 	return nil
 }
 

@@ -18,7 +18,7 @@ type BaseAsset struct {
 	UpdatedBy      string    `gorm:"size:100;not null"`
 	ProjectID      uint      `gorm:"index"`
 	OrganizationID uint      `gorm:"not null;index"`
-	Tags           []string  `gorm:"type:json"`
+	Tags           string    `gorm:"type:TEXT"`
 }
 
 // TableName 指定表名

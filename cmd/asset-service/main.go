@@ -7,7 +7,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/blackarbiter/go-sac/internal/asset/service"
 	"github.com/blackarbiter/go-sac/pkg/config"
 	"github.com/blackarbiter/go-sac/pkg/domain"
 	"github.com/blackarbiter/go-sac/pkg/logger"
@@ -75,11 +74,7 @@ func main() {
 
 // registerAssetProcessors 注册所有资产处理器
 func registerAssetProcessors(app *Application) {
-	// 创建处理器工厂
-	factory := service.NewProcessorFactory()
-
-	// 注册所有处理器
-	factory.RegisterDefaultProcessors(app.Repository)
+	app.Factory.RegisterDefaultProcessors(app.Repository)
 
 	logger.Logger.Info("all asset processors registered",
 		zap.Strings("processors", []string{
