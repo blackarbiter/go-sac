@@ -10,7 +10,7 @@ import (
 type RequirementAsset struct {
 	ID                 uint           `gorm:"primaryKey"`
 	BusinessValue      string         `gorm:"type:text"`
-	Stakeholders       datatypes.JSON `gorm:"type:jsonb;not null;default:'[]'"`
+	Stakeholders       datatypes.JSON `gorm:"type:jsonb;not null"`
 	Priority           int            `gorm:"not null;default:0;index"`
 	AcceptanceCriteria datatypes.JSON `gorm:"type:jsonb"`
 	RelatedDocuments   datatypes.JSON `gorm:"type:jsonb"`

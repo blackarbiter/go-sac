@@ -3,23 +3,22 @@ package model
 import (
 	"time"
 
-	"github.com/lib/pq"
 	"gorm.io/gorm"
 )
 
 // BaseAsset 资产基表模型
 type BaseAsset struct {
-	ID             uint           `gorm:"primaryKey"`
-	AssetType      string         `gorm:"size:50;not null;index"`
-	Name           string         `gorm:"size:255;not null"`
-	Status         string         `gorm:"size:50;not null;default:'active'"`
-	CreatedAt      time.Time      `gorm:"autoCreateTime"`
-	UpdatedAt      time.Time      `gorm:"autoUpdateTime"`
-	CreatedBy      string         `gorm:"size:100;not null"`
-	UpdatedBy      string         `gorm:"size:100;not null"`
-	ProjectID      uint           `gorm:"index"`
-	OrganizationID uint           `gorm:"not null;index"`
-	Tags           pq.StringArray `gorm:"type:varchar(100)[];default:'{}'"`
+	ID             uint      `gorm:"primaryKey"`
+	AssetType      string    `gorm:"size:50;not null;index"`
+	Name           string    `gorm:"size:255;not null"`
+	Status         string    `gorm:"size:50;not null;default:'active'"`
+	CreatedAt      time.Time `gorm:"autoCreateTime"`
+	UpdatedAt      time.Time `gorm:"autoUpdateTime"`
+	CreatedBy      string    `gorm:"size:100;not null"`
+	UpdatedBy      string    `gorm:"size:100;not null"`
+	ProjectID      uint      `gorm:"index"`
+	OrganizationID uint      `gorm:"not null;index"`
+	Tags           []string  `gorm:"type:json"`
 }
 
 // TableName 指定表名

@@ -1,7 +1,6 @@
 package model
 
 import (
-	"github.com/lib/pq"
 	"gorm.io/datatypes"
 )
 
@@ -9,10 +8,10 @@ import (
 type DesignDocumentAsset struct {
 	ID              uint           `gorm:"primaryKey"`
 	DesignType      string         `gorm:"size:50;not null;index"`
-	Components      datatypes.JSON `gorm:"type:jsonb;not null;default:'[]'"`
+	Components      datatypes.JSON `gorm:"type:jsonb;not null"`
 	Diagrams        datatypes.JSON `gorm:"type:jsonb"`
 	Dependencies    datatypes.JSON `gorm:"type:jsonb"`
-	TechnologyStack pq.StringArray `gorm:"type:varchar(100)[]"`
+	TechnologyStack []string       `gorm:"type:json"`
 }
 
 // TableName 指定表名

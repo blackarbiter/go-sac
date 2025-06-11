@@ -2,8 +2,8 @@ package migration
 
 import (
 	"fmt"
-
 	"github.com/blackarbiter/go-sac/internal/asset/repository/model"
+	"github.com/blackarbiter/go-sac/pkg/logger"
 	"gorm.io/gorm"
 )
 
@@ -21,6 +21,7 @@ func AutoMigrate(db *gorm.DB) error {
 		&model.IPAsset{},
 	}
 
+	logger.Logger.Info("auto migrate start...")
 	// 执行迁移
 	for _, m := range models {
 		if err := db.AutoMigrate(m); err != nil {

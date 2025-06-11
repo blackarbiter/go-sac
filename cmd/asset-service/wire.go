@@ -21,6 +21,7 @@ type Application struct {
 	HTTPServer   *http.Server
 	DB           *gorm.DB
 	Factory      *service.ProcessorFactory
+	Repository   repository.Repository
 	MQConsumer   *rabbitmq.AssetConsumer // 新增
 	AssetBinder  *http.AssetBinder       // 新增
 	AssetHandler *mq.AssetMessageHandler // 新增

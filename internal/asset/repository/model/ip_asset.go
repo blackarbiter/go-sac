@@ -3,7 +3,7 @@ package model
 // IPAsset IP地址资产扩展表
 type IPAsset struct {
 	ID          uint   `gorm:"primaryKey"`
-	IPAddress   string `gorm:"type:inet;not null;index"`
+	IPAddress   string `gorm:"type:VARCHAR(45);not null;index"`
 	SubnetMask  string `gorm:"size:100"`
 	Gateway     string `gorm:"size:100"`
 	DHCPEnabled bool   `gorm:"default:false"`
