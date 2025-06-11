@@ -1,7 +1,10 @@
 // pkg/domain/lifecycle.go
 package domain
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // LifecyclePhase 定义DevSecOps生命周期阶段
 type LifecyclePhase uint8
@@ -55,34 +58,37 @@ func (p LifecyclePhase) String() string {
 	}
 }
 
-// ParseLifecyclePhase 从字符串解析阶段
 func ParseLifecyclePhase(s string) (LifecyclePhase, error) {
-	switch s {
-	case "Planning":
+	// 统一转换为小写进行匹配（保留原始错误信息）
+	lowerInput := strings.ToLower(s)
+
+	switch lowerInput {
+	case "planning":
 		return LifecyclePhasePlanning, nil
-	case "Development":
+	case "development":
 		return LifecyclePhaseDevelopment, nil
-	case "Building":
+	case "building":
 		return LifecyclePhaseBuilding, nil
-	case "Testing":
+	case "testing":
 		return LifecyclePhaseTesting, nil
-	case "Release":
+	case "release":
 		return LifecyclePhaseRelease, nil
-	case "Delivery":
+	case "delivery":
 		return LifecyclePhaseDelivery, nil
-	case "Deployment":
+	case "deployment":
 		return LifecyclePhaseDeployment, nil
-	case "Operation":
+	case "operation":
 		return LifecyclePhaseOperation, nil
-	case "Monitoring":
+	case "monitoring":
 		return LifecyclePhaseMonitoring, nil
-	case "Feedback":
+	case "feedback":
 		return LifecyclePhaseFeedback, nil
-	case "SecurityHardening":
+	case "securityhardening":
 		return LifecyclePhaseSecurityHardening, nil
-	case "ComplianceAudit":
+	case "complianceaudit":
 		return LifecyclePhaseComplianceAudit, nil
 	default:
+		// 错误信息保留原始输入值
 		return 0, fmt.Errorf("invalid lifecycle phase: %s", s)
 	}
 }

@@ -1,6 +1,9 @@
 package domain
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // AssetType 定义资产分类标准
 type AssetType uint8
@@ -38,22 +41,24 @@ func (t AssetType) String() string {
 	}
 }
 
-// ParseAssetType 从字符串解析资产类型
 func ParseAssetType(s string) (AssetType, error) {
-	switch s {
-	case "Requirement":
+	// 统一转换为小写进行匹配
+	lowerInput := strings.ToLower(s)
+
+	switch lowerInput {
+	case "requirement":
 		return AssetTypeRequirement, nil
-	case "DesignDocument":
+	case "designdocument":
 		return AssetTypeDesignDocument, nil
-	case "Repository":
+	case "repository":
 		return AssetTypeRepository, nil
-	case "UploadedFile":
+	case "uploadedfile":
 		return AssetTypeUploadedFile, nil
-	case "Image":
+	case "image":
 		return AssetTypeImage, nil
-	case "Domain":
+	case "domain":
 		return AssetTypeDomain, nil
-	case "IP":
+	case "ip":
 		return AssetTypeIP, nil
 	default:
 		return AssetTypeUnknown, fmt.Errorf("unknown asset type: %s", s)

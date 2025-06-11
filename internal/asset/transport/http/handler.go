@@ -1,6 +1,7 @@
 package http
 
 import (
+	"github.com/blackarbiter/go-sac/pkg/domain"
 	"net/http"
 	"strconv"
 
@@ -62,7 +63,8 @@ func (h *Handler) CreateAsset(c *gin.Context) {
 	}
 
 	// 2. 获取处理器
-	processor, err := h.factory.GetProcessor(assetType)
+	parseAssetType, _ := domain.ParseAssetType(assetType)
+	processor, err := h.factory.GetProcessor(parseAssetType.String())
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "unsupported asset type"})
 		return
@@ -110,7 +112,8 @@ func (h *Handler) UpdateAsset(c *gin.Context) {
 	}
 
 	// 2. 获取处理器
-	processor, err := h.factory.GetProcessor(assetType)
+	parseAssetType, _ := domain.ParseAssetType(assetType)
+	processor, err := h.factory.GetProcessor(parseAssetType.String())
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "unsupported asset type"})
 		return
@@ -144,7 +147,12 @@ func (h *Handler) GetAsset(c *gin.Context) {
 	}
 
 	// 1. 获取处理器
-	processor, err := h.factory.GetProcessor(assetType)
+	parseAssetType, err := domain.ParseAssetType(assetType)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid asset type"})
+		return
+	}
+	processor, err := h.factory.GetProcessor(parseAssetType.String())
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "unsupported asset type"})
 		return
@@ -173,7 +181,12 @@ func (h *Handler) DeleteAsset(c *gin.Context) {
 	}
 
 	// 1. 获取处理器
-	processor, err := h.factory.GetProcessor(assetType)
+	parseAssetType, err := domain.ParseAssetType(assetType)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid asset type"})
+		return
+	}
+	processor, err := h.factory.GetProcessor(parseAssetType.String())
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "unsupported asset type"})
 		return
@@ -193,7 +206,12 @@ func (h *Handler) ListAssets(c *gin.Context) {
 	assetType := c.Param("type")
 
 	// 1. 获取处理器
-	processor, err := h.factory.GetProcessor(assetType)
+	parseAssetType, err := domain.ParseAssetType(assetType)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid asset type"})
+		return
+	}
+	processor, err := h.factory.GetProcessor(parseAssetType.String())
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "unsupported asset type"})
 		return

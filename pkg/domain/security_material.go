@@ -1,7 +1,10 @@
 // pkg/domain/security_material.go
 package domain
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // SecurityMaterialType 定义安全物料分类
 type SecurityMaterialType uint8
@@ -39,24 +42,27 @@ func (t SecurityMaterialType) String() string {
 	}
 }
 
-// ParseSecurityMaterialType 从字符串解析物料类型
 func ParseSecurityMaterialType(s string) (SecurityMaterialType, error) {
-	switch s {
-	case "SensitiveWords":
+	// 统一转换为小写进行匹配（不改变原始错误提示）
+	lowerInput := strings.ToLower(s)
+
+	switch lowerInput {
+	case "sensitivewords":
 		return SecurityMaterialTypeSensitiveWords, nil
-	case "ThreatModel":
+	case "threatmodel":
 		return SecurityMaterialTypeThreatModel, nil
-	case "SecuritySpec":
+	case "securityspec":
 		return SecurityMaterialTypeSecuritySpec, nil
-	case "Toolkit":
+	case "toolkit":
 		return SecurityMaterialTypeToolkit, nil
-	case "ScanRule":
+	case "scanrule":
 		return SecurityMaterialTypeScanRule, nil
-	case "SecurityStandard":
+	case "securitystandard":
 		return SecurityMaterialTypeSecurityStandard, nil
-	case "ComplianceDoc":
+	case "compliancedoc":
 		return SecurityMaterialTypeComplianceDoc, nil
 	default:
+		// 错误信息保留原始输入（便于定位问题）
 		return SecurityMaterialTypeUnknown, fmt.Errorf("unknown security material type: %s", s)
 	}
 }

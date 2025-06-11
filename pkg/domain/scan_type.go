@@ -1,7 +1,10 @@
 // pkg/domain/scan_type.go
 package domain
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // ScanType 定义安全扫描类型
 type ScanType uint8
@@ -54,34 +57,37 @@ func (t ScanType) String() string {
 	}
 }
 
-// ParseScanType 从字符串解析扫描类型
 func ParseScanType(s string) (ScanType, error) {
-	switch s {
-	case "RequirementAnalysis":
+	// 统一转换为小写进行匹配（保留原始错误信息）
+	lowerInput := strings.ToLower(s)
+
+	switch lowerInput {
+	case "requirementanalysis":
 		return ScanTypeRequirementAnalysis, nil
-	case "ThreatModeling":
+	case "threatmodeling":
 		return ScanTypeThreatModeling, nil
-	case "SecuritySpecCheck":
+	case "securityspeccheck":
 		return ScanTypeSecuritySpecCheck, nil
-	case "SAST":
+	case "sast":
 		return ScanTypeStaticCodeAnalysis, nil
-	case "ContainerImageScan":
+	case "containerimagescan":
 		return ScanTypeContainerImageScan, nil
-	case "HostSecurityCheck":
+	case "hostsecuritycheck":
 		return ScanTypeHostSecurityCheck, nil
-	case "BlackBoxTesting":
+	case "blackboxtesting":
 		return ScanTypeBlackBoxTesting, nil
-	case "PortScanning":
+	case "portscanning":
 		return ScanTypePortScanning, nil
-	case "DAST":
+	case "dast":
 		return ScanTypeDast, nil
-	case "SCA":
+	case "sca":
 		return ScanTypeSca, nil
-	case "SecretsDetection":
+	case "secretsdetection":
 		return ScanTypeSecretsDetection, nil
-	case "ComplianceAudit":
+	case "complianceaudit":
 		return ScanTypeComplianceAudit, nil
 	default:
+		// 错误信息保留原始输入（便于调试）
 		return ScanTypeUnknown, fmt.Errorf("unknown scan type: %s", s)
 	}
 }
