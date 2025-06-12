@@ -24,14 +24,14 @@ func NewIPProcessor(repo repository.Repository) *IPProcessor {
 	}
 }
 
-// Create 创建IP地址资产
+// Create 创建IP资产
 func (p *IPProcessor) Create(ctx context.Context, base *model.BaseAsset, extension interface{}) (*AssetResponse, error) {
 	var req *model.IPAsset
 	switch v := extension.(type) {
 	case *model.IPAsset:
 		req = v
 	case *dto.CreateIPRequest:
-		req = dto.ToModelIPAsset(v)
+		req = v.ToIPAsset()
 	default:
 		return nil, fmt.Errorf("invalid ip asset type")
 	}
@@ -49,14 +49,14 @@ func (p *IPProcessor) Create(ctx context.Context, base *model.BaseAsset, extensi
 	}, nil
 }
 
-// Update 更新IP地址资产
+// Update 更新IP资产
 func (p *IPProcessor) Update(ctx context.Context, id uint, base *model.BaseAsset, extension interface{}) error {
 	var req *model.IPAsset
 	switch v := extension.(type) {
 	case *model.IPAsset:
 		req = v
 	case *dto.CreateIPRequest:
-		req = dto.ToModelIPAsset(v)
+		req = v.ToIPAsset()
 	default:
 		return fmt.Errorf("invalid ip asset type")
 	}
@@ -75,7 +75,7 @@ func (p *IPProcessor) Get(ctx context.Context, id uint) (*model.BaseAsset, inter
 	return base, ip, nil
 }
 
-// Validate 验证IP地址资产数据
+// Validate 验证IP资产数据
 func (p *IPProcessor) Validate(base *model.BaseAsset, extension interface{}) error {
 	if err := p.BaseProcessor.Validate(base, nil); err != nil {
 		return err
@@ -85,7 +85,7 @@ func (p *IPProcessor) Validate(base *model.BaseAsset, extension interface{}) err
 	case *model.IPAsset:
 		req = v
 	case *dto.CreateIPRequest:
-		req = dto.ToModelIPAsset(v)
+		req = v.ToIPAsset()
 	default:
 		return fmt.Errorf("invalid ip asset type")
 	}

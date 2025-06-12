@@ -30,7 +30,7 @@ func (p *DomainProcessor) Create(ctx context.Context, base *model.BaseAsset, ext
 	case *model.DomainAsset:
 		req = v
 	case *dto.CreateDomainRequest:
-		req = dto.ToModelDomainAsset(v)
+		req = v.ToDomainAsset()
 	default:
 		return nil, fmt.Errorf("invalid domain asset type")
 	}
@@ -55,7 +55,7 @@ func (p *DomainProcessor) Update(ctx context.Context, id uint, base *model.BaseA
 	case *model.DomainAsset:
 		req = v
 	case *dto.CreateDomainRequest:
-		req = dto.ToModelDomainAsset(v)
+		req = v.ToDomainAsset()
 	default:
 		return fmt.Errorf("invalid domain asset type")
 	}
@@ -84,7 +84,7 @@ func (p *DomainProcessor) Validate(base *model.BaseAsset, extension interface{})
 	case *model.DomainAsset:
 		req = v
 	case *dto.CreateDomainRequest:
-		req = dto.ToModelDomainAsset(v)
+		req = v.ToDomainAsset()
 	default:
 		return fmt.Errorf("invalid domain asset type")
 	}

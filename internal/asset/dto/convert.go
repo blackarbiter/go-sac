@@ -6,29 +6,44 @@ import (
 	"github.com/blackarbiter/go-sac/internal/asset/repository/model"
 )
 
-// ToModelRequirementAsset 将 CreateRequirementRequest 转为 RequirementAsset
-func ToModelRequirementAsset(req *CreateRequirementRequest) *model.RequirementAsset {
-	stakeholders, _ := json.Marshal(req.Stakeholders)
-	acceptanceCriteria, _ := json.Marshal(req.AcceptanceCriteria)
-	relatedDocuments, _ := json.Marshal(req.RelatedDocuments)
-	return &model.RequirementAsset{
-		BusinessValue:      req.BusinessValue,
-		Stakeholders:       stakeholders,
-		Priority:           req.Priority,
-		AcceptanceCriteria: acceptanceCriteria,
-		RelatedDocuments:   relatedDocuments,
-		Version:            req.Version,
+// ToBaseAsset 将请求转换为基础资产模型
+func (r *BaseRequest) ToBaseAsset(assetType string) *model.BaseAsset {
+	tagsBytes, _ := json.Marshal(r.Tags)
+	return &model.BaseAsset{
+		AssetType:      assetType,
+		Name:           r.Name,
+		Status:         r.Status,
+		ProjectID:      r.ProjectID,
+		OrganizationID: r.OrganizationID,
+		Tags:           string(tagsBytes),
+		CreatedBy:      r.CreatedBy,
+		UpdatedBy:      r.UpdatedBy,
 	}
 }
 
-// ToModelDesignDocumentAsset 将 CreateDesignDocumentRequest 转为 DesignDocumentAsset
-func ToModelDesignDocumentAsset(req *CreateDesignDocumentRequest) *model.DesignDocumentAsset {
-	components, _ := json.Marshal(req.Components)
-	diagrams, _ := json.Marshal(req.Diagrams)
-	dependencies, _ := json.Marshal(req.Dependencies)
-	techStack, _ := json.Marshal(req.TechnologyStack)
+// ToRequirementAsset 将 CreateRequirementRequest 转为 RequirementAsset
+func (r *CreateRequirementRequest) ToRequirementAsset() *model.RequirementAsset {
+	stakeholders, _ := json.Marshal(r.Stakeholders)
+	acceptanceCriteria, _ := json.Marshal(r.AcceptanceCriteria)
+	relatedDocuments, _ := json.Marshal(r.RelatedDocuments)
+	return &model.RequirementAsset{
+		BusinessValue:      r.BusinessValue,
+		Stakeholders:       stakeholders,
+		Priority:           r.Priority,
+		AcceptanceCriteria: acceptanceCriteria,
+		RelatedDocuments:   relatedDocuments,
+		Version:            r.Version,
+	}
+}
+
+// ToDesignDocumentAsset 将 CreateDesignDocumentRequest 转为 DesignDocumentAsset
+func (r *CreateDesignDocumentRequest) ToDesignDocumentAsset() *model.DesignDocumentAsset {
+	components, _ := json.Marshal(r.Components)
+	diagrams, _ := json.Marshal(r.Diagrams)
+	dependencies, _ := json.Marshal(r.Dependencies)
+	techStack, _ := json.Marshal(r.TechnologyStack)
 	return &model.DesignDocumentAsset{
-		DesignType:      req.DesignType,
+		DesignType:      r.DesignType,
 		Components:      components,
 		Diagrams:        diagrams,
 		Dependencies:    dependencies,
@@ -36,63 +51,63 @@ func ToModelDesignDocumentAsset(req *CreateDesignDocumentRequest) *model.DesignD
 	}
 }
 
-// ToModelRepositoryAsset 将 CreateRepositoryRequest 转为 RepositoryAsset
-func ToModelRepositoryAsset(req *CreateRepositoryRequest) *model.RepositoryAsset {
-	cicdConfig, _ := json.Marshal(req.CICDConfig)
+// ToRepositoryAsset 将 CreateRepositoryRequest 转为 RepositoryAsset
+func (r *CreateRepositoryRequest) ToRepositoryAsset() *model.RepositoryAsset {
+	cicdConfig, _ := json.Marshal(r.CICDConfig)
 	return &model.RepositoryAsset{
-		RepoURL:        req.RepoURL,
-		Branch:         req.Branch,
-		LastCommitHash: req.LastCommitHash,
-		LastCommitTime: req.LastCommitTime,
-		Language:       req.Language,
+		RepoURL:        r.RepoURL,
+		Branch:         r.Branch,
+		LastCommitHash: r.LastCommitHash,
+		LastCommitTime: r.LastCommitTime,
+		Language:       r.Language,
 		CICDConfig:     cicdConfig,
 	}
 }
 
-// ToModelUploadedFileAsset 将 CreateUploadedFileRequest 转为 UploadedFileAsset
-func ToModelUploadedFileAsset(req *CreateUploadedFileRequest) *model.UploadedFileAsset {
+// ToUploadedFileAsset 将 CreateUploadedFileRequest 转为 UploadedFileAsset
+func (r *CreateUploadedFileRequest) ToUploadedFileAsset() *model.UploadedFileAsset {
 	return &model.UploadedFileAsset{
-		FilePath:   req.FilePath,
-		FileSize:   req.FileSize,
-		FileType:   req.FileType,
-		Checksum:   req.Checksum,
-		PreviewURL: req.PreviewURL,
+		FilePath:   r.FilePath,
+		FileSize:   r.FileSize,
+		FileType:   r.FileType,
+		Checksum:   r.Checksum,
+		PreviewURL: r.PreviewURL,
 	}
 }
 
-// ToModelImageAsset 将 CreateImageRequest 转为 ImageAsset
-func ToModelImageAsset(req *CreateImageRequest) *model.ImageAsset {
-	vulnerabilities, _ := json.Marshal(req.Vulnerabilities)
+// ToImageAsset 将 CreateImageRequest 转为 ImageAsset
+func (r *CreateImageRequest) ToImageAsset() *model.ImageAsset {
+	vulnerabilities, _ := json.Marshal(r.Vulnerabilities)
 	return &model.ImageAsset{
-		RegistryURL:     req.RegistryURL,
-		ImageName:       req.ImageName,
-		Tag:             req.Tag,
-		Digest:          req.Digest,
-		Size:            req.Size,
+		RegistryURL:     r.RegistryURL,
+		ImageName:       r.ImageName,
+		Tag:             r.Tag,
+		Digest:          r.Digest,
+		Size:            r.Size,
 		Vulnerabilities: vulnerabilities,
 	}
 }
 
-// ToModelDomainAsset 将 CreateDomainRequest 转为 DomainAsset
-func ToModelDomainAsset(req *CreateDomainRequest) *model.DomainAsset {
-	dnsServers, _ := json.Marshal(req.DNSServers)
+// ToDomainAsset 将 CreateDomainRequest 转为 DomainAsset
+func (r *CreateDomainRequest) ToDomainAsset() *model.DomainAsset {
+	dnsServers, _ := json.Marshal(r.DNSServers)
 	return &model.DomainAsset{
-		DomainName:    req.DomainName,
-		Registrar:     req.Registrar,
-		ExpiryDate:    req.ExpiryDate,
+		DomainName:    r.DomainName,
+		Registrar:     r.Registrar,
+		ExpiryDate:    r.ExpiryDate,
 		DNSServers:    string(dnsServers),
-		SSLExpiryDate: req.SSLExpiryDate,
+		SSLExpiryDate: r.SSLExpiryDate,
 	}
 }
 
-// ToModelIPAsset 将 CreateIPRequest 转为 IPAsset
-func ToModelIPAsset(req *CreateIPRequest) *model.IPAsset {
+// ToIPAsset 将 CreateIPRequest 转为 IPAsset
+func (r *CreateIPRequest) ToIPAsset() *model.IPAsset {
 	return &model.IPAsset{
-		IPAddress:   req.IPAddress,
-		SubnetMask:  req.SubnetMask,
-		Gateway:     req.Gateway,
-		DHCPEnabled: req.DHCPEnabled,
-		DeviceType:  req.DeviceType,
-		MACAddress:  req.MACAddress,
+		IPAddress:   r.IPAddress,
+		SubnetMask:  r.SubnetMask,
+		Gateway:     r.Gateway,
+		DHCPEnabled: r.DHCPEnabled,
+		DeviceType:  r.DeviceType,
+		MACAddress:  r.MACAddress,
 	}
 }

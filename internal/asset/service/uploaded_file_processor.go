@@ -30,7 +30,7 @@ func (p *UploadedFileProcessor) Create(ctx context.Context, base *model.BaseAsse
 	case *model.UploadedFileAsset:
 		req = v
 	case *dto.CreateUploadedFileRequest:
-		req = dto.ToModelUploadedFileAsset(v)
+		req = v.ToUploadedFileAsset()
 	default:
 		return nil, fmt.Errorf("invalid uploaded file asset type")
 	}
@@ -55,7 +55,7 @@ func (p *UploadedFileProcessor) Update(ctx context.Context, id uint, base *model
 	case *model.UploadedFileAsset:
 		req = v
 	case *dto.CreateUploadedFileRequest:
-		req = dto.ToModelUploadedFileAsset(v)
+		req = v.ToUploadedFileAsset()
 	default:
 		return fmt.Errorf("invalid uploaded file asset type")
 	}
@@ -84,7 +84,7 @@ func (p *UploadedFileProcessor) Validate(base *model.BaseAsset, extension interf
 	case *model.UploadedFileAsset:
 		req = v
 	case *dto.CreateUploadedFileRequest:
-		req = dto.ToModelUploadedFileAsset(v)
+		req = v.ToUploadedFileAsset()
 	default:
 		return fmt.Errorf("invalid uploaded file asset type")
 	}

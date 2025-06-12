@@ -31,7 +31,7 @@ func (p *DesignDocumentProcessor) Create(ctx context.Context, base *model.BaseAs
 	case *model.DesignDocumentAsset:
 		req = v
 	case *dto.CreateDesignDocumentRequest:
-		req = dto.ToModelDesignDocumentAsset(v)
+		req = v.ToDesignDocumentAsset()
 	default:
 		return nil, fmt.Errorf("invalid design document asset type")
 	}
@@ -56,7 +56,7 @@ func (p *DesignDocumentProcessor) Update(ctx context.Context, id uint, base *mod
 	case *model.DesignDocumentAsset:
 		req = v
 	case *dto.CreateDesignDocumentRequest:
-		req = dto.ToModelDesignDocumentAsset(v)
+		req = v.ToDesignDocumentAsset()
 	default:
 		return fmt.Errorf("invalid design document asset type")
 	}
@@ -85,7 +85,7 @@ func (p *DesignDocumentProcessor) Validate(base *model.BaseAsset, extension inte
 	case *model.DesignDocumentAsset:
 		req = v
 	case *dto.CreateDesignDocumentRequest:
-		req = dto.ToModelDesignDocumentAsset(v)
+		req = v.ToDesignDocumentAsset()
 	default:
 		return fmt.Errorf("invalid design document asset type")
 	}

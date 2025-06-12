@@ -1,10 +1,7 @@
 package dto
 
 import (
-	"encoding/json"
 	"time"
-
-	"github.com/blackarbiter/go-sac/internal/asset/repository/model"
 )
 
 // BaseRequest 所有资产请求的基类
@@ -37,6 +34,10 @@ type CreateRequirementRequest struct {
 	Version            string   `json:"version" binding:"required"`
 }
 
+func (r *CreateRequirementRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
+}
+
 // CreateDesignDocumentRequest 创建设计文档请求
 type CreateDesignDocumentRequest struct {
 	BaseRequest
@@ -45,6 +46,10 @@ type CreateDesignDocumentRequest struct {
 	Diagrams        []string `json:"diagrams"`
 	Dependencies    []string `json:"dependencies"`
 	TechnologyStack []string `json:"technology_stack"`
+}
+
+func (r *CreateDesignDocumentRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
 }
 
 // CreateRepositoryRequest 创建代码仓库请求
@@ -58,6 +63,10 @@ type CreateRepositoryRequest struct {
 	CICDConfig     string    `json:"ci_cd_config"`
 }
 
+func (r *CreateRepositoryRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
+}
+
 // CreateUploadedFileRequest 创建上传文件请求
 type CreateUploadedFileRequest struct {
 	BaseRequest
@@ -66,6 +75,10 @@ type CreateUploadedFileRequest struct {
 	FileType   string `json:"file_type" binding:"required"`
 	Checksum   string `json:"checksum" binding:"required"`
 	PreviewURL string `json:"preview_url"`
+}
+
+func (r *CreateUploadedFileRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
 }
 
 // CreateImageRequest 创建容器镜像请求
@@ -79,6 +92,10 @@ type CreateImageRequest struct {
 	Vulnerabilities []string `json:"vulnerabilities"`
 }
 
+func (r *CreateImageRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
+}
+
 // CreateDomainRequest 创建域名请求
 type CreateDomainRequest struct {
 	BaseRequest
@@ -87,6 +104,10 @@ type CreateDomainRequest struct {
 	ExpiryDate    time.Time `json:"expiry_date" binding:"required"`
 	DNSServers    []string  `json:"dns_servers"`
 	SSLExpiryDate time.Time `json:"ssl_expiry_date"`
+}
+
+func (r *CreateDomainRequest) GetBaseRequest() BaseRequest {
+	return r.BaseRequest
 }
 
 // CreateIPRequest 创建IP地址请求
@@ -98,45 +119,6 @@ type CreateIPRequest struct {
 	DHCPEnabled bool   `json:"dhcp_enabled"`
 	DeviceType  string `json:"device_type" binding:"required"`
 	MACAddress  string `json:"mac_address"`
-}
-
-// ToBaseAsset 将请求转换为基础资产模型
-func (r *BaseRequest) ToBaseAsset(assetType string) *model.BaseAsset {
-	tagsBytes, _ := json.Marshal(r.Tags)
-	return &model.BaseAsset{
-		AssetType:      assetType,
-		Name:           r.Name,
-		Status:         r.Status,
-		ProjectID:      r.ProjectID,
-		OrganizationID: r.OrganizationID,
-		Tags:           string(tagsBytes),
-		CreatedBy:      r.CreatedBy,
-		UpdatedBy:      r.UpdatedBy,
-	}
-}
-
-func (r *CreateRequirementRequest) GetBaseRequest() BaseRequest {
-	return r.BaseRequest
-}
-
-func (r *CreateDesignDocumentRequest) GetBaseRequest() BaseRequest {
-	return r.BaseRequest
-}
-
-func (r *CreateRepositoryRequest) GetBaseRequest() BaseRequest {
-	return r.BaseRequest
-}
-
-func (r *CreateUploadedFileRequest) GetBaseRequest() BaseRequest {
-	return r.BaseRequest
-}
-
-func (r *CreateImageRequest) GetBaseRequest() BaseRequest {
-	return r.BaseRequest
-}
-
-func (r *CreateDomainRequest) GetBaseRequest() BaseRequest {
-	return r.BaseRequest
 }
 
 func (r *CreateIPRequest) GetBaseRequest() BaseRequest {

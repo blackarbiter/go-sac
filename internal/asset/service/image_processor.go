@@ -30,7 +30,7 @@ func (p *ImageProcessor) Create(ctx context.Context, base *model.BaseAsset, exte
 	case *model.ImageAsset:
 		req = v
 	case *dto.CreateImageRequest:
-		req = dto.ToModelImageAsset(v)
+		req = v.ToImageAsset()
 	default:
 		return nil, fmt.Errorf("invalid image asset type")
 	}
@@ -55,7 +55,7 @@ func (p *ImageProcessor) Update(ctx context.Context, id uint, base *model.BaseAs
 	case *model.ImageAsset:
 		req = v
 	case *dto.CreateImageRequest:
-		req = dto.ToModelImageAsset(v)
+		req = v.ToImageAsset()
 	default:
 		return fmt.Errorf("invalid image asset type")
 	}
@@ -84,7 +84,7 @@ func (p *ImageProcessor) Validate(base *model.BaseAsset, extension interface{}) 
 	case *model.ImageAsset:
 		req = v
 	case *dto.CreateImageRequest:
-		req = dto.ToModelImageAsset(v)
+		req = v.ToImageAsset()
 	default:
 		return fmt.Errorf("invalid image asset type")
 	}

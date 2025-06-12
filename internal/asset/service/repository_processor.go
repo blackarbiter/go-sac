@@ -30,7 +30,7 @@ func (p *RepositoryProcessor) Create(ctx context.Context, base *model.BaseAsset,
 	case *model.RepositoryAsset:
 		req = v
 	case *dto.CreateRepositoryRequest:
-		req = dto.ToModelRepositoryAsset(v)
+		req = v.ToRepositoryAsset()
 	default:
 		return nil, fmt.Errorf("invalid repository asset type")
 	}
@@ -55,7 +55,7 @@ func (p *RepositoryProcessor) Update(ctx context.Context, id uint, base *model.B
 	case *model.RepositoryAsset:
 		req = v
 	case *dto.CreateRepositoryRequest:
-		req = dto.ToModelRepositoryAsset(v)
+		req = v.ToRepositoryAsset()
 	default:
 		return fmt.Errorf("invalid repository asset type")
 	}
@@ -84,7 +84,7 @@ func (p *RepositoryProcessor) Validate(base *model.BaseAsset, extension interfac
 	case *model.RepositoryAsset:
 		req = v
 	case *dto.CreateRepositoryRequest:
-		req = dto.ToModelRepositoryAsset(v)
+		req = v.ToRepositoryAsset()
 	default:
 		return fmt.Errorf("invalid repository asset type")
 	}
