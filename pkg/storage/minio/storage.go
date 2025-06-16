@@ -3,6 +3,7 @@ package minio
 import (
 	"context"
 	"mime/multipart"
+	"net/url"
 	"time"
 
 	"github.com/minio/minio-go/v7"
@@ -52,6 +53,10 @@ func (s *Storage) DeleteObject(ctx context.Context, path string) error {
 
 // GetPresignedURL 获取预签名URL
 func (s *Storage) GetPresignedURL(ctx context.Context, path string, expiry time.Duration) (string, error) {
-	reqParams := make(map[string]string)
-	return s.client.PresignedGetObject(ctx, s.bucketName, path, expiry, reqParams)
+	reqParams := make(url.Values)
+	url, err := s.client.PresignedGetObject(ctx, s.bucketName, path, expiry, reqParams)
+	if err != nil {
+		return "", err
+	}
+	return url.String(), nil
 }
