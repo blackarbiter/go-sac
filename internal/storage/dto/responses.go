@@ -17,8 +17,32 @@ type StorageListResponse struct {
 	Items []StorageResponse `json:"items"`
 }
 
-// ErrorResponse 表示错误响应
+// BaseResponse represents the common response structure
+type BaseResponse struct {
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data,omitempty"`
+}
+
+// ErrorResponse represents an error response
 type ErrorResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
+}
+
+// NewErrorResponse creates a new error response
+func NewErrorResponse(code int, message string) *ErrorResponse {
+	return &ErrorResponse{
+		Code:    code,
+		Message: message,
+	}
+}
+
+// NewSuccessResponse creates a new success response
+func NewSuccessResponse(data interface{}) *BaseResponse {
+	return &BaseResponse{
+		Code:    200,
+		Message: "success",
+		Data:    data,
+	}
 }

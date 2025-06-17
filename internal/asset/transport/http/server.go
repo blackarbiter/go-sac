@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -48,7 +49,7 @@ func NewServer(cfg *config.Config, binder *AssetBinder, factory service.AssetPro
 func (s *Server) Start(ctx context.Context) error {
 	// 启动服务器
 	go func() {
-		if err := s.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := s.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			panic(err)
 		}
 	}()

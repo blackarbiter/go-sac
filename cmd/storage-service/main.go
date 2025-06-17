@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"github.com/blackarbiter/go-sac/pkg/domain"
+	"github.com/blackarbiter/go-sac/pkg/mq/rabbitmq"
 	"os/signal"
 	"syscall"
 	"time"
@@ -34,6 +36,8 @@ func main() {
 	}
 	defer cleanup()
 
+	registerStorageProcessors(app)
+
 	// 启动HTTP服务
 	go func() {
 		if err := app.HTTPServer.Start(ctx); err != nil {
@@ -43,6 +47,14 @@ func main() {
 
 	logger.Logger.Info("storage service started")
 
+	// 启动MQ消费者
+	go func() {
+		logger.Logger.Info("starting RabbitMQ consumer")
+		if err := app.MQConsumer.Consume(context.Background(), rabbitmq.ResultStorageQueue, app.StorageHandler); err != nil {
+			logger.Logger.Error("MQ consumer failed", zap.Error(err))
+		}
+	}()
+
 	// 优雅停机处理
 	<-ctx.Done()
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -50,4 +62,23 @@ func main() {
 
 	app.HTTPServer.Stop(shutdownCtx)
 	logger.Logger.Info("service stopped gracefully")
+
+	// 停止MQ消费者
+	if err := app.MQConsumer.Close(); err != nil {
+		logger.Logger.Error("MQ consumer close error", zap.Error(err))
+	}
+
+	logger.Logger.Info("rabbitmq stopped gracefully")
+}
+
+// registerStorageProcessors 注册所有结果处理器
+func registerStorageProcessors(app *Application) {
+	app.Factory.RegisterDefaultProcessors(app.Repository)
+
+	logger.Logger.Info("all storage processors registered",
+		zap.Strings("processors", []string{
+			domain.ScanTypeDast.String(),
+			domain.ScanTypeStaticCodeAnalysis.String(),
+			domain.ScanTypeSca.String(),
+		}))
 }

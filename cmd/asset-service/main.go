@@ -69,7 +69,7 @@ func main() {
 		logger.Logger.Error("MQ consumer close error", zap.Error(err))
 	}
 
-	logger.Logger.Info("service stopped gracefully")
+	logger.Logger.Info("rabbitmq stopped gracefully")
 }
 
 // registerAssetProcessors 注册所有资产处理器

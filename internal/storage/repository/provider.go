@@ -9,13 +9,16 @@ import (
 
 // ProviderSet 是 repository 层的依赖注入集合
 var ProviderSet = wire.NewSet(
-	NewStorageRepository,
+	ProvideRepository,
 	mysqlStorage.ProviderSet,
 )
 
-// NewStorageRepository 创建存储服务的数据访问层实例
-func NewStorageRepository(db *gorm.DB) StorageRepository {
-	return &storageRepository{
-		db: db,
+// ProvideRepository 提供资产仓库实例
+func ProvideRepository(db *gorm.DB) Repository {
+	gp := NewGormRepository(db)
+	err := gp.AutoMigrate()
+	if err != nil {
+		panic(err)
 	}
+	return gp
 }
