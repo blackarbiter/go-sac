@@ -31,7 +31,11 @@ func (p *SCAProcessor) Process(ctx context.Context, result *domain.ScanResult) e
 
 	// Parse SCA specific fields from result.Result
 	if result.Status == "success" {
-		if err := json.Unmarshal([]byte(result.Result["data"].(string)), scaResult); err != nil {
+		jsonBytes, err := json.Marshal(result.Result)
+		if err != nil {
+			return err
+		}
+		if err := json.Unmarshal(jsonBytes, scaResult); err != nil {
 			return err
 		}
 	}

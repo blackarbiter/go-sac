@@ -31,7 +31,11 @@ func (p *DASTProcessor) Process(ctx context.Context, result *domain.ScanResult) 
 
 	// Parse DAST specific fields from result.Result
 	if result.Status == "success" {
-		if err := json.Unmarshal([]byte(result.Result["data"].(string)), dastResult); err != nil {
+		jsonBytes, err := json.Marshal(result.Result)
+		if err != nil {
+			return err
+		}
+		if err := json.Unmarshal(jsonBytes, dastResult); err != nil {
 			return err
 		}
 	}

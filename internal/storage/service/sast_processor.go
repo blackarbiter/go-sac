@@ -31,7 +31,11 @@ func (p *SASTProcessor) Process(ctx context.Context, result *domain.ScanResult) 
 
 	// Parse SAST specific fields from result.Result
 	if result.Status == "success" {
-		if err := json.Unmarshal([]byte(result.Result["data"].(string)), sastResult); err != nil {
+		jsonBytes, err := json.Marshal(result.Result)
+		if err != nil {
+			return err
+		}
+		if err := json.Unmarshal(jsonBytes, sastResult); err != nil {
 			return err
 		}
 	}
